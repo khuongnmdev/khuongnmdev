@@ -1,3 +1,3 @@
 - 👋 Hi, I’m @khuongnmdev
-- 👀 I’m interested in Front-end (Angular/Vue).
+- 👀 I’m Front-end developer (Angular/Typescript).
 - 🌱 I’m currently learning React Native.
