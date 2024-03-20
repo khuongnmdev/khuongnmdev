@@ -1,16 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-landing',
+  selector: 'app-overview',
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
   ],
-  templateUrl: './landing.component.html',
-  styleUrl: './landing.component.scss',
+  templateUrl: './overview.component.html',
+  styleUrl: './overview.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LandingComponent { }
+export class OverviewComponent { }
