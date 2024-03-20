@@ -1,0 +1,30 @@
+<form [formGroup]="loginForm" (ngSubmit)="login()" class="form-login">
+  <p-card header="Login Form" class="card-login">
+    <div class="p-field">
+      <p-floatLabel>
+        <input pInputText type="text" formControlName="username" />
+        <label for="username">Username</label>
+      </p-floatLabel>
+    </div>
+    <div class="p-field">
+      <p-floatLabel>
+        <input
+          pInputText
+          type="password"
+          id="password"
+          formControlName="password"
+        />
+        <label for="password">Password</label>
+      </p-floatLabel>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <button
+        type="submit"
+        pButton
+        label="Login"
+        [disabled]="loginForm.invalid"
+      ></button>
+    </ng-template>
+  </p-card>
+</form>

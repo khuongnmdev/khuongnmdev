@@ -1,3 +1,15 @@
 {
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "angular-schematics.schematicsDefaultOptions": {
+    "angular-*": {
+      "style": "scss"
+    },
+    "angular-component": {
+      "skipPathSubfolder": true
+    },
+    "angular-page": {
+      "skipPathSubfolder": true
+    }
+  },
+  "cSpell.words": ["inputtext"]
 }
