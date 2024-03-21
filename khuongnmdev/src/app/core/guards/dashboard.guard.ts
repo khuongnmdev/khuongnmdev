@@ -1,13 +1,13 @@
 import { inject } from "@angular/core";
 import { catchError, map, of, tap } from "rxjs";
 import { ActivatedRouteSnapshot, CanActivateChildFn, CanActivateFn, Router, RouterStateSnapshot, Routes } from "@angular/router";
-import { AuthService } from "../services/auth.service";
+import { AuthFireBaseService } from "../services/auth-firebase.service";
 
 export const canActiveDashboard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {
-  const authService = inject(AuthService);
+  const authService = inject(AuthFireBaseService);
   const router = inject(Router);
 
   return authService.authState$.pipe(

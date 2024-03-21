@@ -1,7 +1,13 @@
-.p-field {
-  margin-bottom: 1rem;
-}
+.form-login {
+  width: 350px;
+  max-width: 80vw;
+  .p-field {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+  }
 
-.p-error {
-  color: red;
+  .p-error {
+    color: red;
+  }
 }

@@ -5,7 +5,8 @@ import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
-import { AuthService } from '../../../core/services/auth.service';
+import { DividerModule } from 'primeng/divider';
+import { AuthFireBaseService } from '../../../core/services/auth-firebase.service';
 
 @Component({
   selector: 'k-form-login',
@@ -16,7 +17,8 @@ import { AuthService } from '../../../core/services/auth.service';
     InputTextModule,
     FloatLabelModule,
     ButtonModule,
-    CardModule
+    CardModule,
+    DividerModule
   ],
   standalone: true
 })
@@ -25,7 +27,7 @@ export class FormLoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService) { }
+    private authService: AuthFireBaseService) { }
 
 
   ngOnInit() {
@@ -37,9 +39,13 @@ export class FormLoginComponent implements OnInit {
 
   login() {
     this.loginForm.markAllAsTouched();
-
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value.username, this.loginForm.value.password)
     }
+  }
+
+
+  loginWithGoogle() {
+    this.authService.loginGoogle();
   }
 }

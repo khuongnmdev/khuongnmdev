@@ -1,6 +1,16 @@
 <form [formGroup]="loginForm" (ngSubmit)="login()" class="form-login">
   <p-card header="Login Form" class="card-login">
     <div class="p-field">
+      <button
+        icon="pi pi-google"
+        type="button"
+        pButton
+        label="Login with Google"
+        (click)="loginWithGoogle()"
+      ></button>
+    </div>
+    <p-divider></p-divider>
+    <div class="p-field">
       <p-floatLabel>
         <input pInputText type="text" formControlName="username" />
         <label for="username">Username</label>
