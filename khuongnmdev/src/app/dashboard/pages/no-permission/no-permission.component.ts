@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-no-permission',
+  selector: 'k-no-permission',
   standalone: true,
   imports: [
     CommonModule,

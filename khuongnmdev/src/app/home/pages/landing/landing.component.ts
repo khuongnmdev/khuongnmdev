@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-landing',
+  selector: 'k-landing',
   standalone: true,
   imports: [
     CommonModule,
