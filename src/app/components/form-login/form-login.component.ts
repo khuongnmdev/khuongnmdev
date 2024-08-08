@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -6,7 +6,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
-import { AuthFireBaseService } from '../../../core/services/auth-firebase.service';
+import { AuthFireBaseService } from '../../core/services/auth-firebase.service';
 
 @Component({
   selector: 'k-form-login',
@@ -24,6 +24,7 @@ import { AuthFireBaseService } from '../../../core/services/auth-firebase.servic
 })
 export class FormLoginComponent implements OnInit {
   protected loginForm!: FormGroup;
+  private destroyRef = inject(DestroyRef);
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -37,11 +38,25 @@ export class FormLoginComponent implements OnInit {
     });
   }
 
-  login() {
+  login(): void {
     this.loginForm.markAllAsTouched();
-    if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value.username, this.loginForm.value.password)
+    if (this.loginForm.invalid) {
+      return;
     }
+    this.authService.login(this.loginForm.value.username, this.loginForm.value.password)
+      .subscribe(
+        {
+          next: rs => {
+            if (rs.user) {
+              this.router.navigate(['dashboard']);
+            }
+            console.log('login rs: ', rs);
+          },
+          error: error => {
+            console.error('login error: ', error);
+          }
+        }
+      );
   }
 
 

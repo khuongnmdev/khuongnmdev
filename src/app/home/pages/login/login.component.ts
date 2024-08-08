@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormLoginComponent } from '../../components/form-login/form-login.component';
+import { FormLoginComponent } from '../../../components/form-login/form-login.component';
 import { CardModule } from 'primeng/card';
 
 @Component({
