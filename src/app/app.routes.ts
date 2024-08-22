@@ -1,10 +1,21 @@
-import { Routes } from '@angular/router';
-import { LandingComponent } from './home/pages/landing/landing.component';
-import { LoginPage } from './home/pages/login/login.component';
+import {Routes} from '@angular/router';
+import {LandingComponent} from './modules/landing/landing.component';
+import {LoginPage} from './modules/login/login.component';
+import {NoPermissionComponent} from "./modules/dashboard/pages/no-permission/no-permission.component";
+import {OverviewComponent} from "./modules/dashboard/pages/overview/overview.component";
+import {canActiveDashboard} from "@core/guards/dashboard.guard";
 
 export const routes: Routes = [
-  { path: '', component: LandingComponent },
-  { path: 'login', component: LoginPage },
-  { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
-  // { path: '**', redirectTo: '/home' }
+  {path: '', component: LandingComponent},
+  {path: 'login', component: LoginPage},
+  {
+    path: 'dashboard', loadComponent: () => import('./modules/dashboard/dashboard.component').then(m => m.DashboardComponent),
+    canActivate: [canActiveDashboard],
+    children: [
+      {path: '', component: OverviewComponent},
+      {path: 'no-permission', component: NoPermissionComponent},
+    ]
+  },
+  {path: 'no-permission', component: NoPermissionComponent},
+  {path: '**', redirectTo: ''}
 ];

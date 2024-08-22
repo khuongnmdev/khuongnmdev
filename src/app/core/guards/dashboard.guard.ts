@@ -1,7 +1,7 @@
-import { inject } from "@angular/core";
-import { catchError, map, of, tap } from "rxjs";
-import { ActivatedRouteSnapshot, CanActivateChildFn, CanActivateFn, Router, RouterStateSnapshot, Routes } from "@angular/router";
-import { AuthFireBaseService } from "../services/auth-firebase.service";
+import {inject} from "@angular/core";
+import {catchError, map, of, tap} from "rxjs";
+import {ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot} from "@angular/router";
+import {AuthFireBaseService} from "@services/auth-firebase.service";
 
 export const canActiveDashboard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
@@ -27,4 +27,3 @@ export const canActiveDashboard: CanActivateFn = (
   );
 }
 
-export const canActivateDashboardChild: CanActivateChildFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => canActiveDashboard(route, state);

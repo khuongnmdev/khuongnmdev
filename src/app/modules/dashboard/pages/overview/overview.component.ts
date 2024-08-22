@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { AuthFireBaseService } from '../../../core/services/auth-firebase.service';
+import { AuthFireBaseService } from '../../../../services/auth-firebase.service';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
 

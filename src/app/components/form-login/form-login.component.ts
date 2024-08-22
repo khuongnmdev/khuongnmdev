@@ -1,12 +1,12 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
-import { CardModule } from 'primeng/card';
-import { DividerModule } from 'primeng/divider';
-import { AuthFireBaseService } from '../../core/services/auth-firebase.service';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {ButtonModule} from 'primeng/button';
+import {FloatLabelModule} from 'primeng/floatlabel';
+import {InputTextModule} from 'primeng/inputtext';
+import {CardModule} from 'primeng/card';
+import {DividerModule} from 'primeng/divider';
+import {AuthFireBaseService} from '@services/auth-firebase.service';
 
 @Component({
   selector: 'k-form-login',
@@ -25,10 +25,12 @@ import { AuthFireBaseService } from '../../core/services/auth-firebase.service';
 export class FormLoginComponent implements OnInit {
   protected loginForm!: FormGroup;
   private destroyRef = inject(DestroyRef);
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthFireBaseService) { }
+    private authService: AuthFireBaseService) {
+  }
 
 
   ngOnInit() {
