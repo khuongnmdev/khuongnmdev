@@ -4,26 +4,32 @@ export const DEFAULT_MENU_ITEMS: MenuItem[] = [
   {
     label: 'Home',
     icon: 'pi pi-home',
-    url: '/'
+    routerLink: ['/'],
+    fragment: 'home',
   },
   {
     label: 'About',
     icon: 'pi pi-user',
-    url: '#about'
+    routerLink: ['/'],
+
+    fragment: 'about'
   },
   {
     label: 'Skills',
     icon: 'pi pi-list',
-    url: '#skill'
+    routerLink: ['/'],
+    fragment: 'skill'
   },
   {
     label: 'Experience',
     icon: 'pi pi-calendar',
-    url: '#skill'
+    routerLink: ['/'],
+    fragment: 'experience'
   },
   {
     label: 'Contact',
     icon: 'pi pi-envelope',
-    url: '#contact'
+    routerLink: ['/'],
+    fragment: 'contact'
   }
 ]

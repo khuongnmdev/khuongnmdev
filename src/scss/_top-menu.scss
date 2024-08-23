@@ -1,0 +1,20 @@
+.top-menubar {
+  display: flex;
+  position: sticky;
+  top: 0;
+
+  .p-menubar {
+    width: 100%;
+    padding: 0.5rem 1rem;
+  }
+
+  .top-menuitem {
+    i {
+      padding-right: 0.5rem;
+    }
+
+    &.is-active {
+      color:var(--primary-color)
+    }
+  }
+}

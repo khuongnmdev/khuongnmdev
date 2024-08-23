@@ -1,12 +1,32 @@
-<p-menubar [model]="items">
-  <ng-template pTemplate="end">
-    <a
-      [routerLink]="['/login']"
-      pRipple
-      class="flex align-items-center p-menuitem-link"
+<p-menubar [model]="items" class="top-menubar">
+  <ng-template pTemplate="item" let-item>
+    <a [routerLink]="item.routerLink" routerLinkActive="active-menuitem" class="p-menuitem-link top-menuitem"
+       [fragment]=item.fragment [ngClass]="item.fragment === fragment() ? 'is-active':''"
     >
-      <span class="pi pi-sign-in"></span>
-      <span class="ml-2">Login</span>
+      <i [class]="item.icon"></i>
+      <span>{{ item.label }}</span>
     </a>
   </ng-template>
+  <ng-template pTemplate="end">
+    <button
+      pRipple
+      type="button"
+      class="flex align-items-center p-menuitem-link  p-button"
+      (click)="switchTheme()"
+    >
+      <span [ngClass]="isDarkMode() ? 'pi-moon' : 'pi-sun' " class="pi"></span>
+      <span class="ml-2">Switch Theme</span>
+    </button>
+
+  </ng-template>
 </p-menubar>
+
+
+<!--    <a-->
+<!--      [routerLink]="['/login']"-->
+<!--      pRipple-->
+<!--      class="flex align-items-center p-menuitem-link"-->
+<!--    >-->
+<!--      <span class="pi pi-sign-in"></span>-->
+<!--      <span class="ml-2">Login</span>-->
+<!--    </a>-->

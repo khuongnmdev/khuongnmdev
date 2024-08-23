@@ -53,7 +53,17 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              {
+                "input": "src/scss/theme/md-dark-indigo.css",
+                "bundleName": "md-dark",
+                "inject": false
+              },
+              {
+                "input": "src/scss/theme/md-light-indigo.css",
+                "bundleName": "md-light",
+                "inject": false
+              }
             ],
             "scripts": [],
             "server": "src/main.server.ts",

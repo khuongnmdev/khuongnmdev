@@ -1,11 +1,16 @@
-<p-sidebar [(visible)]="sidebarVisible">
-  <h3>Sidebar</h3>
-  <a
-    [routerLink]="['/login']"
-    pRipple
-    class="flex align-items-center p-menuitem-link"
-  >
-    <span class="pi pi-sign-in"></span>
-    <span class="ml-2">Login</span>
-  </a>
+<p-sidebar [visible]="leftMenuInvisible()" (visibleChange)="handleInvisibleChange($event)">
+  <ng-template pTemplate="header">
+    <h3>Sidebar</h3>
+  </ng-template>
+  @for (item of menuItems; track item) {
+    <a
+      [routerLink]="item['link']"
+      [fragment]="item.label"
+      pRipple
+      class="flex align-items-center p-button"
+    >
+      <span class="{{item.icon}}"></span>
+      <span class="ml-2">{{ item.label }}</span>
+    </a>
+  }
 </p-sidebar>
