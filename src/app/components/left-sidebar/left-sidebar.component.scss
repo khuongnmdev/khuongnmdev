@@ -1,0 +1,12 @@
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  background-color: var(--surface-0);
+
+
+}

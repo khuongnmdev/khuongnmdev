@@ -1,4 +1,4 @@
-<p-menubar [model]="items" class="top-menubar">
+<p-menubar [model]="menuItems" class="top-menubar">
   <ng-template pTemplate="item" let-item>
     <a [routerLink]="item.routerLink"  class="p-menuitem-link top-menuitem"
        [fragment]=item.fragment [ngClass]="{'is-active' : item.fragment === fragment()}"
@@ -14,19 +14,9 @@
       class="flex align-items-center p-menuitem-link  p-button"
       (click)="switchTheme()"
     >
-      <span [ngClass]="isDarkMode() ? 'pi-moon' : 'pi-sun' " class="pi"></span>
+      <span [ngClass]="isDarkMode() ? 'pi-moon' : 'pi-sun' " class="icon pi"></span>
       <span class="ml-2">Switch Theme</span>
     </button>
 
   </ng-template>
 </p-menubar>
-
-
-<!--    <a-->
-<!--      [routerLink]="['/login']"-->
-<!--      pRipple-->
-<!--      class="flex align-items-center p-menuitem-link"-->
-<!--    >-->
-<!--      <span class="pi pi-sign-in"></span>-->
-<!--      <span class="ml-2">Login</span>-->
-<!--    </a>-->

@@ -1,16 +1,16 @@
-<p-sidebar [visible]="leftMenuInvisible()" (visibleChange)="handleInvisibleChange($event)">
-  <ng-template pTemplate="header">
-    <h3>Sidebar</h3>
-  </ng-template>
+<!--<p-sidebar [visible]="leftMenuInvisible()" (visibleChange)="handleInvisibleChange($event)">-->
+<div class="sidebar-container">
   @for (item of menuItems; track item) {
-    <a
-      [routerLink]="item['link']"
-      [fragment]="item.label"
+    <p-button
+      [routerLink]="item.routerLink"
+      [fragment]="item.fragment"
+      [ngClass]="{'is-active' : item.fragment === fragment()}"
       pRipple
-      class="flex align-items-center p-button"
+      class="flex align-items-center"
+      [text]="true"
     >
-      <span class="{{item.icon}}"></span>
-      <span class="ml-2">{{ item.label }}</span>
-    </a>
+      <span class="icon {{item.icon}}"></span>
+      <span class="p-button-label ml-2">{{ item.label }}</span>
+    </p-button>
   }
-</p-sidebar>
+</div>

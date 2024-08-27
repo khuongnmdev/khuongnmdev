@@ -1,5 +1,6 @@
-<k-header></k-header>
-<div class="flex flex-column gap-3">
+<!--<k-header></k-header>-->
+<k-left-sidebar></k-left-sidebar>
+<div class="landing-container ">
   <section *ngFor="let item of menuItems" [id]="item.fragment" class="section" #section>
     <h2>{{ item.label }}</h2>
   </section>

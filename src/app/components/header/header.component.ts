@@ -21,7 +21,7 @@ import { FragmentService } from "@services/fragment.service";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
-  protected readonly items: MenuItem[] = DEFAULT_MENU_ITEMS;
+  protected readonly menuItems: MenuItem[] = DEFAULT_MENU_ITEMS;
   protected readonly isDarkMode = toSignal(this.themeService.isDarkMode()) as Signal<boolean>;
   protected fragment = signal('');
   private destroyRef = inject(DestroyRef);
