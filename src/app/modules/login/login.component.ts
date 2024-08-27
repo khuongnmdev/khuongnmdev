@@ -15,4 +15,5 @@ import { CardModule } from 'primeng/card';
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginPage { }
+export class LoginPageComponent {
+}

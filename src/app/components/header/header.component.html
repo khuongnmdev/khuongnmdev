@@ -1,7 +1,7 @@
 <p-menubar [model]="items" class="top-menubar">
   <ng-template pTemplate="item" let-item>
-    <a [routerLink]="item.routerLink" routerLinkActive="active-menuitem" class="p-menuitem-link top-menuitem"
-       [fragment]=item.fragment [ngClass]="item.fragment === fragment() ? 'is-active':''"
+    <a [routerLink]="item.routerLink"  class="p-menuitem-link top-menuitem"
+       [fragment]=item.fragment [ngClass]="{'is-active' : item.fragment === fragment()}"
     >
       <i [class]="item.icon"></i>
       <span>{{ item.label }}</span>

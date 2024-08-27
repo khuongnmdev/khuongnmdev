@@ -1,9 +1,6 @@
 <k-header></k-header>
 <div class="flex flex-column gap-3">
-  @for (item of menuItems; track item) {
-    <section [id]="item.fragment" class="section">
-      <h2>{{item.label}}</h2>
-    </section>
-  }
-
+  <section *ngFor="let item of menuItems" [id]="item.fragment" class="section" #section>
+    <h2>{{ item.label }}</h2>
+  </section>
 </div>

@@ -7,6 +7,7 @@
         pButton
         label="Login with Google"
         (click)="loginWithGoogle()"
+        aria-label="Login with Google"
       ></button>
     </div>
     <p-divider></p-divider>
@@ -34,6 +35,7 @@
         pButton
         label="Login"
         [disabled]="loginForm.invalid"
+        aria-label="Login"
       ></button>
     </ng-template>
   </p-card>

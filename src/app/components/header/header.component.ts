@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, signal, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal, Signal } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
 import { Ripple } from "primeng/ripple";
 import { DEFAULT_MENU_ITEMS } from "@constants/app-constants";
-import { ActivatedRoute } from "@angular/router";
 import { ThemeService } from "@services/theme.service";
-import { toSignal } from "@angular/core/rxjs-interop";
+import { takeUntilDestroyed, toSignal } from "@angular/core/rxjs-interop";
+import { FragmentService } from "@services/fragment.service";
 
 @Component({
   selector: 'k-header',
@@ -24,25 +24,25 @@ export class HeaderComponent implements OnInit {
   protected readonly items: MenuItem[] = DEFAULT_MENU_ITEMS;
   protected readonly isDarkMode = toSignal(this.themeService.isDarkMode()) as Signal<boolean>;
   protected fragment = signal('');
+  private destroyRef = inject(DestroyRef);
 
   constructor(
-    private readonly route: ActivatedRoute,
-    protected readonly themeService: ThemeService
+    protected readonly themeService: ThemeService,
+    private readonly fragmentService: FragmentService,
   ) {
-    this.route.fragment.subscribe((frag) => {
-      if (frag) {
-        this.fragment.set(frag)
-      }
-    });
   }
 
   ngOnInit() {
-
+    this.fragmentService.fragment$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(fragment => {
+        if (fragment) {
+          this.fragment.set(fragment);
+        }
+      });
   }
 
   protected switchTheme(): void {
     this.themeService.switchTheme();
   }
-
-  protected readonly menuItems = DEFAULT_MENU_ITEMS;
 }

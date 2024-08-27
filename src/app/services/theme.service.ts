@@ -16,7 +16,7 @@ export class ThemeService {
   }
 
   public switchTheme() {
-    let themeLink = this.document.getElementById('k-theme') as HTMLLinkElement;
+    const themeLink = this.document.getElementById('k-theme') as HTMLLinkElement;
 
     this._isDarkMode.next(!this._isDarkMode.value);
     const hrefLink = `${this._isDarkMode.value ? 'md-dark' : 'md-light'}.css`;

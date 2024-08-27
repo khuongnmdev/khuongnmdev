@@ -7,9 +7,6 @@ import { BehaviorSubject, Observable } from "rxjs";
 export class MenuService {
   private readonly _leftMenuInvisible = new BehaviorSubject<boolean>(true);
 
-  constructor() {
-  }
-
   get leftMenuInvisible(): Observable<boolean> {
     return this._leftMenuInvisible.asObservable();
   }
