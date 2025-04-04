@@ -45,7 +45,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist/cv/browser'
+          path: './cv/dist/cv/browser'
 
       # Step 5: Deploy the uploaded artifacts to GitHub Pages
       - name: Deploy to GitHub Pages
