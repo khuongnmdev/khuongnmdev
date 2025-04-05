@@ -15,7 +15,6 @@
       class="nav-item"
       [ngClass]="{ activated: menuItem.id === activatedItem$$() }"
       (click)="navigateTo(menuItem)"
-      [href]="'#' + menuItem.id"
       >{{ menuItem.name }}</a
     >
     }
