@@ -1,4 +1,12 @@
 .app-container {
-  width: 100vw;
   height: 100vh;
+  .app-nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 17rem;
+  }
+  .main-container {
+    margin-left: 17rem;
+  }
 }

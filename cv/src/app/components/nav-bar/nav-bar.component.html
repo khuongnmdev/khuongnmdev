@@ -1,4 +1,4 @@
-<nav
+<div
   class="nav-bar d-sm-flex d-none flex-column justify-content-center align-items-center gap-2"
 >
   <div class="avatar-block d-flex">
@@ -8,5 +8,16 @@
       alt="Avatar Image"
     />
   </div>
-  <a class="nav-bar-brand" href="#">About</a>
-</nav>
+
+  <nav class="nav-list">
+    @for (menuItem of menuList$$(); track $index) {
+    <a
+      class="nav-item"
+      [ngClass]="{ activated: menuItem.id === activatedItem$$() }"
+      (click)="navigateTo(menuItem)"
+      [href]="'#' + menuItem.id"
+      >{{ menuItem.name }}</a
+    >
+    }
+  </nav>
+</div>

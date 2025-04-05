@@ -1,0 +1,16 @@
+.section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 5rem 3rem;
+  .section-title {
+    color: var(--c-secondary);
+  }
+
+  .section-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 1 auto;
+  }
+}

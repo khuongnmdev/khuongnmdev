@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --bg-primary: #bd5d38;
-  --bg-secondary: #b15b1e;
+  --c-primary: #060504;
+  --c-secondary: #f0690b;
+  --bg-primary: #060504;
+  --bg-secondary: #f0690b;
+  --bs-heading-color: var(--c-primary);
 }

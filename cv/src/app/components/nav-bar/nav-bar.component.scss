@@ -1,5 +1,4 @@
 .nav-bar {
-  max-width: 300px;
   height: 100vh;
   background-color: var(--bg-primary);
   .avatar-block {
@@ -8,5 +7,27 @@
     border-radius: 50%;
     border: 10px solid var(--bg-secondary);
     overflow: hidden;
+  }
+
+  .nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+    padding: 1rem 0;
+    .nav-item {
+      color: #fff;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.25rem;
+      opacity: 0.6;
+      &:hover {
+        opacity: 0.8;
+      }
+      &.activated {
+        opacity: 1;
+      }
+    }
   }
 }
