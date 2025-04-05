@@ -3,8 +3,12 @@
   display: flex;
   flex-direction: column;
   padding: 5rem 3rem;
+
   .section-title {
     color: var(--c-secondary);
+    visibility: hidden;
+    height: 0;
+    margin-bottom: 0;
   }
 
   .section-content {
