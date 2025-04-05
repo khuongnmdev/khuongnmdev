@@ -39,7 +39,7 @@ jobs:
       # Step 3: Build Angular app with prerendering
       - name: Build Static Prerendered Files
         working-directory: ./cv # Continue working inside 'cv' folder
-        run: npm run build
+        run: npm run build-gh
 
       # Step 4: Upload the prerendered files (cv\dist\cv\browser) as artifacts for deployment
       - name: Upload artifact

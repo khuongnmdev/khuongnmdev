@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-gh": "ng build --base-href /khuongnmdev/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "ssr": "ng build && node dist/cv/server/server.mjs",
