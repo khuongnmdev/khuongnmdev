@@ -1,6 +1,7 @@
 .nav-bar {
   height: 100vh;
   background-color: var(--bg-primary);
+  user-select: none;
   .avatar-block {
     max-width: 200px;
     max-height: 200px;
@@ -22,6 +23,7 @@
       font-weight: bold;
       font-size: 1.25rem;
       opacity: 0.6;
+      cursor: pointer;
       &:hover {
         opacity: 0.8;
       }
