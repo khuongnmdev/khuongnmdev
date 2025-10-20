@@ -1,4 +1,4 @@
-<div class="nav-bar d-sm-flex d-none flex-column justify-content-center align-items-center gap-2">
+<div class="nav-bar gap-2">
   <div class="avatar-block d-flex">
     <img class="img-fluid" src="https://avatars.githubusercontent.com/u/120535999" alt="Avatar Image" />
   </div>
@@ -9,4 +9,18 @@
       menuItem.name }}</a>
     }
   </nav>
+  <button class="btn btn-menu" (click)="toggleMenu()">
+    @if(isShowMenu()){
+    <i class="fa-solid fa-circle-xmark"></i>
+    } @else {
+    <i class="fa-solid fa-bars"></i>
+    }
+  </button>
 </div>
+
+<nav class="nav-list-mobile" [ngClass]="{ 'is-show': isShowMenu() }">
+  @for (menuItem of menuList(); track $index) {
+  <a class="nav-item" [ngClass]="{ activated: menuItem.id === activatedItem() }" (click)="navigateTo(menuItem)">{{
+    menuItem.name }}</a>
+  }
+</nav>

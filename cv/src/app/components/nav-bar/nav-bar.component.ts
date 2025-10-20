@@ -22,11 +22,16 @@ export class NavBarComponent implements OnInit {
 
   protected menuList = signal<MenuItem[]>(DEFAULT_MENU);
   protected activatedItem = signal<MenuItem['id']>('');
+  protected isShowMenu = signal<boolean>(false);
 
   constructor(
     @Inject(DOCUMENT) private document: Document) { }
 
-  public ngOnInit() { }
+  ngOnInit() { }
+
+  protected toggleMenu() {
+    this.isShowMenu.set(!this.isShowMenu());
+  }
 
   protected navigateTo(item: MenuItem) {
     if (!item) return;
