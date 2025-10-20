@@ -1,22 +1,12 @@
-<div
-  class="nav-bar d-sm-flex d-none flex-column justify-content-center align-items-center gap-2"
->
+<div class="nav-bar d-sm-flex d-none flex-column justify-content-center align-items-center gap-2">
   <div class="avatar-block d-flex">
-    <img
-      class="img-fluid"
-      src="https://avatars.githubusercontent.com/u/120535999"
-      alt="Avatar Image"
-    />
+    <img class="img-fluid" src="https://avatars.githubusercontent.com/u/120535999" alt="Avatar Image" />
   </div>
 
   <nav class="nav-list">
-    @for (menuItem of menuList$$(); track $index) {
-    <a
-      class="nav-item"
-      [ngClass]="{ activated: menuItem.id === activatedItem$$() }"
-      (click)="navigateTo(menuItem)"
-      >{{ menuItem.name }}</a
-    >
+    @for (menuItem of menuList(); track $index) {
+    <a class="nav-item" [ngClass]="{ activated: menuItem.id === activatedItem() }" (click)="navigateTo(menuItem)">{{
+      menuItem.name }}</a>
     }
   </nav>
 </div>

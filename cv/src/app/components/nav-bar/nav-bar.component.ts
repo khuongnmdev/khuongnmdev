@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   Inject,
+  Input,
   OnInit,
   signal,
 } from '@angular/core';
@@ -15,15 +16,21 @@ import { MenuItem, DEFAULT_MENU } from '../../models/menu-item';
   imports: [NgClass],
 })
 export class NavBarComponent implements OnInit {
-  protected menuList$$ = signal<MenuItem[]>(DEFAULT_MENU);
-  protected activatedItem$$ = signal<MenuItem['id']>('');
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  @Input() set activeSection(activeSection: MenuItem['id']) {
+    this.activatedItem.set(activeSection);
+  }
 
-  public ngOnInit() {}
+  protected menuList = signal<MenuItem[]>(DEFAULT_MENU);
+  protected activatedItem = signal<MenuItem['id']>('');
+
+  constructor(
+    @Inject(DOCUMENT) private document: Document) { }
+
+  public ngOnInit() { }
 
   protected navigateTo(item: MenuItem) {
     if (!item) return;
-    this.activatedItem$$.set(item.id);
+    this.activatedItem.set(item.id);
     this.scrollToElementId(item.id);
   }
 
