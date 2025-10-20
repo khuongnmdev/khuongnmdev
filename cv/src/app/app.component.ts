@@ -4,6 +4,8 @@ import { Meta, Title } from '@angular/platform-browser';
 import { AboutComponent } from './components/about/about.component';
 import { EducationComponent } from './components/education/education.component';
 import { ExperienceComponent } from './components/experience/experience.component';
+import { SkillsComponent } from "./components/skills/skills.component";
+import { HobbiesComponent } from "./components/hobbies/hobbies.component";
 
 @Component({
   selector: 'app-root',
@@ -12,6 +14,8 @@ import { ExperienceComponent } from './components/experience/experience.componen
     AboutComponent,
     EducationComponent,
     ExperienceComponent,
+    SkillsComponent,
+    HobbiesComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

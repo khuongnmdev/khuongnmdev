@@ -21,7 +21,7 @@ export const DEFAULT_MENU = [
     id: 'skills',
   },
   {
-    name: 'Hobby',
-    id: 'hobby',
+    name: 'Hobbies',
+    id: 'hobbies',
   },
 ];
