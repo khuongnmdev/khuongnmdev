@@ -1,0 +1,21 @@
+.app-container {
+  height: 100vh;
+
+  .app-nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+
+    @media only screen and (min-width: 768px) {
+      width: 17rem;
+    }
+  }
+
+  .main-container {
+
+    @media only screen and (min-width: 768px) {
+      margin-left: 17rem;
+    }
+  }
+}

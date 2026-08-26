@@ -1,0 +1,5 @@
+# Build cache
+.angular/cache/
+
+# IDEs and editors
+.idea/

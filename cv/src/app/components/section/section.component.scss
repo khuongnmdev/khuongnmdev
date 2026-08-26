@@ -1,0 +1,28 @@
+.section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 5rem 3rem;
+
+  .section-title {
+    // Visually hidden, but kept rendered so the heading stays in the
+    // accessibility tree — for screen readers, SEO, and the tagged-PDF
+    // structure (unlike the former `visibility: hidden; height: 0`).
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .section-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 1 auto;
+  }
+}
