@@ -25,7 +25,7 @@ const FALLBACK_MENU_ICON = 'fa-solid fa-circle';
   imports: [NgClass, RouterLink],
 })
 export class NavBarComponent {
-  /** Section id currently in view, driven by the scroll-spy in `HomeComponent`. */
+  /** Section id currently in view, driven by the scroll-spy in `MainComponent`. */
   readonly activeSection = input<string>('');
 
   private readonly document = inject(DOCUMENT);

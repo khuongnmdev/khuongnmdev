@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { CvDataService } from '@core/services/cv-data.service';
 import type { CvData } from '@core/models/cv-data.model';
 import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
-import { HomeComponent } from './home.component';
+import { MainComponent } from './main.component';
 
 /**
  * Sections deliberately scrambled: `order` disagrees with array position, one
@@ -23,10 +23,10 @@ function scrambledData(): CvData {
   return data;
 }
 
-describe('HomeComponent', () => {
+describe('MainComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomeComponent],
+      imports: [MainComponent],
       providers: [
         provideRouter([]),
         { provide: CvDataService, useValue: cvDataServiceWith(scrambledData()) },
@@ -41,13 +41,13 @@ describe('HomeComponent', () => {
   }
 
   it('should render the navigation bar', async () => {
-    const fixture = TestBed.createComponent(HomeComponent);
+    const fixture = TestBed.createComponent(MainComponent);
     await fixture.whenStable();
     expect((fixture.nativeElement as HTMLElement).querySelector('app-nav-bar')).toBeTruthy();
   });
 
   it('should render enabled sections sorted by order, skipping disabled and unregistered ids', async () => {
-    const fixture = TestBed.createComponent(HomeComponent);
+    const fixture = TestBed.createComponent(MainComponent);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
 
@@ -58,7 +58,7 @@ describe('HomeComponent', () => {
   });
 
   it('should attach the scroll-spy directive to every rendered section host', async () => {
-    const fixture = TestBed.createComponent(HomeComponent);
+    const fixture = TestBed.createComponent(MainComponent);
     await fixture.whenStable();
     const hosts = (fixture.nativeElement as HTMLElement).querySelectorAll('.section-host');
     expect(hosts.length).toBe(3);
