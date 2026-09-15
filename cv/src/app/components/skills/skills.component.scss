@@ -1,8 +1,14 @@
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  // Mobile-first: one column on phones; from 768px the groups flow into as
+  // many 15rem-plus columns as the width allows.
+  grid-template-columns: 1fr;
   gap: 2.5rem 3.5rem;
   max-width: calc(100% - 10rem);
+
+  @media only screen and (min-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
 }
 
 .skill-group {
