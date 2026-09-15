@@ -197,7 +197,18 @@
 }
 
 .nav-list-mobile {
-  width: 100vw;
+  // Out of the host's flow, deliberately. In normal flow this menu's box
+  // stretched the fixed nav host roughly 13rem below the visible bar even
+  // while closed — the translateX only moves the paint, not the layout box —
+  // and that transparent strip swallowed every tap on the content under it.
+  // Absolutely positioned against the fixed host (the home page positions
+  // it; nothing between host and menu is positioned or clips), the host's
+  // hit area collapses to the visible bar, and the closed menu parks
+  // entirely left of the viewport where hit-testing cannot reach it.
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
   background-color: var(--bg-primary);
   display: flex;
   flex-direction: column;
