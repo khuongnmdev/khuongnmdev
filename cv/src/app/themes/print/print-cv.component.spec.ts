@@ -1,0 +1,121 @@
+import { TestBed } from '@angular/core/testing';
+import type { CvData } from '@core/models/cv-data.model';
+import { CvDataService } from '@core/services/cv-data.service';
+import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
+import { normalizePrintTemplate, PrintCvComponent } from './print-cv.component';
+
+describe('PrintCvComponent', () => {
+  async function render(data: CvData, template?: string): Promise<HTMLElement> {
+    await TestBed.configureTestingModule({
+      imports: [PrintCvComponent],
+      providers: [{ provide: CvDataService, useValue: cvDataServiceWith(data) }],
+    }).compileComponents();
+    const fixture = TestBed.createComponent(PrintCvComponent);
+    if (template !== undefined) {
+      fixture.componentRef.setInput('template', template);
+    }
+    await fixture.whenStable();
+    return fixture.nativeElement as HTMLElement;
+  }
+
+  it('should put the name, headline, and contacts before any section content', async () => {
+    const compiled = await render(cloneCvData());
+    const text = compiled.textContent ?? '';
+
+    // Reading order is DOM order in this theme, so text position proves it:
+    // identity block strictly before the first section's content.
+    expect(text.indexOf('Nguyen Manh Khuong')).toBeGreaterThanOrEqual(0);
+    expect(text.indexOf('Nguyen Manh Khuong')).toBeLessThan(text.indexOf('PAL TECH'));
+
+    // The one h1 is the name, and no heading precedes it.
+    const headings = compiled.querySelectorAll('h1, h2, h3, h4');
+    expect(headings[0]?.tagName).toBe('H1');
+    expect(headings[0]?.textContent).toContain('Nguyen Manh Khuong');
+    expect(compiled.querySelectorAll('h1').length).toBe(1);
+  });
+
+  it('should render the print sections as h2 headings in data order', async () => {
+    const data = cloneCvData();
+    // Scrambled: order disagrees with array position, and one enabled
+    // section is excluded from print.
+    data.sections = [
+      { id: 'skills', title: 'Skills', order: 2, enabled: true, showInPrint: true },
+      { id: 'about', title: 'About', order: 1, enabled: true, showInPrint: true },
+      { id: 'experience', title: 'Experience', order: 3, enabled: true, showInPrint: false },
+      { id: 'education', title: 'Education', order: 4, enabled: true, showInPrint: true },
+    ];
+    const compiled = await render(data);
+    const titles = Array.from(compiled.querySelectorAll('h2')).map((h2) => h2.textContent?.trim());
+    expect(titles).toEqual(['About', 'Skills', 'Education']);
+  });
+
+  it('should include print contacts and exclude showInPrint: false ones', async () => {
+    const compiled = await render(cloneCvData());
+    const text = compiled.textContent ?? '';
+
+    // Print carries what the paper CV carries: email, phone, home address.
+    expect(text).toContain('khuongnm.dev@gmail.com');
+    expect(text).toContain('0378334899');
+    expect(text).toContain('764 National Route 22');
+    // The birthday is showInPrint: false and must never reach the sheet.
+    expect(text).not.toContain('1991');
+  });
+
+  it('should pair every contact icon with visible text', async () => {
+    const compiled = await render(cloneCvData());
+    for (const contact of Array.from(compiled.querySelectorAll('.print-contact'))) {
+      // Strip the icon; real text must remain, or the PDF loses the value.
+      const value = contact.querySelector('a, span:not([class])');
+      expect(value?.textContent?.trim()).toBeTruthy();
+    }
+  });
+
+  it('should format dates with the shared MM/YYYY range pipe', async () => {
+    const compiled = await render(cloneCvData());
+    const text = compiled.textContent ?? '';
+    expect(text).toContain('01/2024 – Present');
+    expect(text).toContain('04/2021 – 07/2023');
+  });
+
+  it('should join tech stacks into plain comma-separated text', async () => {
+    const compiled = await render(cloneCvData());
+    const tech = Array.from(compiled.querySelectorAll('.print-tech')).map(
+      (line) => line.textContent ?? '',
+    );
+    expect(tech.some((line) => line.includes('Angular 14, RxJS'))).toBe(true);
+  });
+
+  it('should hide experience entries and nested projects flagged showInPrint: false', async () => {
+    const data = cloneCvData();
+    data.experience[0].showInPrint = false;
+    data.experience[1].projects![0].showInPrint = false;
+    const compiled = await render(data);
+    const text = compiled.textContent ?? '';
+    expect(text).not.toContain('PAL TECH');
+    expect(text).not.toContain('Stock-related project');
+    // The parent entry of the hidden project still prints.
+    expect(text).toContain('Freelance');
+  });
+
+  it('should apply the compact modifier class only for the compact template', async () => {
+    const compiled = await render(cloneCvData(), 'compact');
+    expect(compiled.querySelector('.print-cv--compact')).toBeTruthy();
+  });
+
+  it('should default to the classic template without the modifier class', async () => {
+    const compiled = await render(cloneCvData());
+    expect(compiled.querySelector('.print-cv')).toBeTruthy();
+    expect(compiled.querySelector('.print-cv--compact')).toBeNull();
+  });
+
+  describe('normalizePrintTemplate', () => {
+    it('should accept known templates and fall back to classic on junk', () => {
+      expect(normalizePrintTemplate('compact')).toBe('compact');
+      expect(normalizePrintTemplate('classic')).toBe('classic');
+      expect(normalizePrintTemplate('shiny')).toBe('classic');
+      expect(normalizePrintTemplate('')).toBe('classic');
+      expect(normalizePrintTemplate(null)).toBe('classic');
+      expect(normalizePrintTemplate(undefined)).toBe('classic');
+    });
+  });
+});
