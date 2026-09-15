@@ -93,7 +93,9 @@ describe('ExperienceComponent', () => {
     const compiled = await render();
     const project = compiled.querySelector('.project-item')!;
     expect(project.querySelector('.project-name')?.textContent).toContain('Visible Project');
-    expect(project.querySelector('.project-meta')?.textContent).toContain('Front-end developer');
+    expect(project.querySelector('.project-meta .project-role')?.textContent).toContain(
+      'Front-end developer',
+    );
     expect(project.querySelector('.project-meta')?.textContent).toContain('Team of 7');
     expect(project.querySelector('.project-description')?.textContent).toContain(
       'A project description.',
