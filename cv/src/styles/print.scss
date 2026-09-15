@@ -145,6 +145,7 @@ app-print-cv {
 .print-entry-heading {
   font-size: 12pt;
   margin: 0 0 1pt;
+  color: var(--c-primary);
 }
 
 .print-entry-company {
@@ -199,6 +200,11 @@ app-print-cv {
   font-size: 10.5pt;
   font-weight: 700;
   margin: 0 0 1pt;
+  color: var(--c-primary);
+}
+
+.print-project-role {
+  color: var(--c-secondary);
 }
 
 .print-project-description {
