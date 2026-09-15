@@ -1,0 +1,423 @@
+// ---------------------------------------------------------------------------
+// Print theme — the A4 sheet and its on-screen preview.
+//
+// Global on purpose, and it must stay that way: Angular's view encapsulation
+// mangles `@page` inside component styles, and `angular.json` caps component
+// CSS at 4 kB. Everything the print route needs lives here.
+//
+// Ground rules for every selector in this file:
+// - Point/millimetre units only for sheet typography and geometry — never
+//   `vh`/`vw`, which map onto the printed page and break pagination.
+// - No flexbox or grid anywhere inside `.print-cv`: `break-inside: avoid` is
+//   silently ignored on flex and grid items, so the sheet uses only block
+//   flow, inline-block, and floats. The only flex container is the
+//   screen-only toolbar, which never prints.
+// - No real content in `::before`/`::after` — pseudo-element text lands
+//   unpredictably in the extracted text stream. The single pseudo-element
+//   below is an empty clearfix.
+// - No `letter-spacing`, no `text-transform`, and `hyphens: none` on sheet
+//   content, so extracted text matches the data character for character.
+// ---------------------------------------------------------------------------
+
+@page {
+  size: A4 portrait;
+  margin: 12mm 14mm; // usable width: 210 - 2 x 14 = 182mm
+}
+
+app-print-cv {
+  display: block;
+}
+
+// ---------------------------------------------------------------------------
+// The sheet — shared by the screen preview and the printed page, so what the
+// preview shows is what the printer receives.
+// ---------------------------------------------------------------------------
+
+.print-cv {
+  width: 182mm;
+  margin: 0 auto;
+  color: #1a1a1a;
+  font-size: 11pt;
+  line-height: 1.45;
+  hyphens: none;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  // Zero-specificity reset (`:where`), so the single-class rules below win
+  // over it by source order while it still beats Bootstrap's bare `p`/`ul`
+  // margins.
+  :where(p, ul) {
+    margin: 0;
+  }
+}
+
+.print-header {
+  margin-bottom: 4pt;
+
+  // Empty clearfix so a tall avatar cannot push into the first section.
+  // The empty string contributes nothing to the extracted text.
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
+.print-avatar {
+  float: right;
+  width: 24mm;
+  height: 24mm;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1pt solid var(--c-secondary);
+  margin-left: 6mm;
+  margin-bottom: 2mm;
+}
+
+.print-name {
+  color: var(--c-primary);
+  font-size: 20pt;
+  font-weight: 700;
+  margin: 0 0 2pt;
+}
+
+.print-headline {
+  color: var(--c-secondary);
+  font-size: 12.5pt;
+  font-weight: 600;
+  margin-bottom: 5pt;
+}
+
+.print-contacts {
+  list-style: none;
+  padding: 0;
+}
+
+.print-contact {
+  display: inline-block;
+  margin: 0 12pt 2pt 0;
+  font-size: 9.5pt;
+}
+
+.print-contact-icon {
+  color: var(--c-secondary);
+  margin-right: 2pt;
+}
+
+.print-section {
+  clear: both;
+  margin-top: 9pt;
+}
+
+.print-section-title {
+  color: var(--c-secondary);
+  font-size: 13.5pt;
+  font-weight: 700;
+  border-bottom: 1pt solid var(--c-secondary);
+  padding-bottom: 1pt;
+  margin: 0 0 5pt;
+}
+
+.print-about-lead {
+  margin-bottom: 3pt;
+}
+
+.print-summary,
+.print-highlights {
+  padding-left: 14pt;
+}
+
+.print-entry {
+  margin-bottom: 8pt;
+}
+
+.print-entry-heading {
+  font-size: 12pt;
+  margin: 0 0 1pt;
+}
+
+.print-entry-company {
+  font-weight: 700;
+}
+
+.print-entry-role {
+  color: var(--c-secondary);
+  font-weight: 600;
+}
+
+.print-entry-meta {
+  color: #555555;
+  font-size: 9.5pt;
+  margin-bottom: 2pt;
+
+  span {
+    margin-right: 10pt;
+  }
+}
+
+.print-entry-summary {
+  margin-bottom: 2pt;
+}
+
+.print-highlights {
+  margin-bottom: 2pt;
+}
+
+.print-tech {
+  font-size: 9.5pt;
+  margin-bottom: 2pt;
+}
+
+.print-tech-label {
+  color: var(--c-secondary);
+  font-weight: 600;
+}
+
+.print-projects {
+  list-style: none;
+  margin-top: 3pt;
+  padding-left: 6pt;
+  border-left: 1.5pt solid #dddddd;
+}
+
+.print-project {
+  margin-bottom: 5pt;
+}
+
+.print-project-name {
+  font-size: 10.5pt;
+  font-weight: 700;
+  margin: 0 0 1pt;
+}
+
+.print-project-description {
+  margin-bottom: 1pt;
+}
+
+.print-skill-group {
+  margin-bottom: 3pt;
+}
+
+.print-skill-category {
+  font-weight: 600;
+}
+
+// ---------------------------------------------------------------------------
+// Compact template — 10pt body, tighter rhythm, aimed at two pages. The
+// `@page` margin cannot vary per template (it is a global page rule), so
+// "tighter" here means block spacing and type size, not sheet margins.
+// ---------------------------------------------------------------------------
+
+.print-cv--compact {
+  font-size: 10pt;
+  line-height: 1.35;
+
+  .print-avatar {
+    width: 19mm;
+    height: 19mm;
+    margin-left: 5mm;
+  }
+
+  .print-name {
+    font-size: 17pt;
+  }
+
+  .print-headline {
+    font-size: 11pt;
+    margin-bottom: 3pt;
+  }
+
+  .print-contact {
+    margin-right: 10pt;
+    font-size: 9pt;
+  }
+
+  .print-section {
+    margin-top: 6pt;
+  }
+
+  .print-section-title {
+    font-size: 12pt;
+    margin-bottom: 3pt;
+  }
+
+  .print-entry {
+    margin-bottom: 5pt;
+  }
+
+  .print-entry-heading {
+    font-size: 11pt;
+  }
+
+  .print-entry-meta,
+  .print-tech {
+    font-size: 9pt; // 9pt is the floor — smaller stops being readable on paper
+  }
+
+  .print-summary,
+  .print-highlights {
+    padding-left: 12pt;
+  }
+
+  .print-projects {
+    margin-top: 2pt;
+  }
+
+  .print-project {
+    margin-bottom: 3pt;
+  }
+
+  .print-project-name {
+    font-size: 10pt;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Screen preview chrome — the dark desk, the sheet's paper look, and the
+// toolbar. Scoped to screen so nothing here can leak into the printed page.
+// The preview is one continuous sheet at A4 width; real page boundaries
+// appear only in the browser's print preview.
+// ---------------------------------------------------------------------------
+
+@media screen {
+  .print-page {
+    min-height: 100dvh;
+    background-color: #46484c;
+    padding-bottom: 3rem;
+  }
+
+  .print-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--bg-primary);
+    color: #ffffff;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1.5rem;
+
+    .toolbar-back {
+      color: #ffffff;
+      font-weight: 600;
+      text-decoration: none;
+      opacity: 0.8;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    .toolbar-field {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-left: auto;
+      font-size: 0.875rem;
+
+      select {
+        text-transform: capitalize;
+      }
+    }
+
+    .toolbar-export {
+      background-color: var(--bg-secondary);
+      color: #ffffff;
+      font-weight: 700;
+      border: 0;
+      border-radius: 0.375rem;
+      padding: 0.5rem 1.25rem;
+
+      &:disabled {
+        opacity: 0.6;
+      }
+    }
+  }
+
+  .print-hint {
+    color: #ced4da;
+    font-size: 0.8125rem;
+    text-align: center;
+    margin: 0 1rem 1rem;
+  }
+
+  // Paper look: white sheet with the real page margins, so the preview's
+  // line lengths match the printed ones.
+  .print-sheet {
+    width: 210mm;
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.35);
+    padding: 12mm 14mm;
+    overflow-x: auto;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Printed output — hide the screen chrome, drop the paper effect, and apply
+// the pagination rules.
+// ---------------------------------------------------------------------------
+
+@media print {
+  .screen-only {
+    display: none !important;
+  }
+
+  .print-page,
+  .print-sheet {
+    display: block;
+    width: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  // The @page margins own the geometry now; a second width constraint here
+  // would fight them.
+  .print-cv {
+    width: auto;
+    margin: 0;
+  }
+
+  // No entry, project, or self-contained block may split across a page.
+  // These are all block-level children of block flow — never flex or grid
+  // items, where break-inside is silently ignored.
+  .print-header,
+  .print-about,
+  .print-entry,
+  .print-project,
+  .print-skill-group {
+    break-inside: avoid;
+    page-break-inside: avoid; // fallback for older engines
+  }
+
+  // A heading never strands alone at the bottom of a page.
+  h1,
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  p,
+  li {
+    orphans: 3;
+    widows: 3;
+  }
+
+  // Utility for forcing a break from markup when a template needs one.
+  .page-break {
+    break-before: page;
+    page-break-before: always;
+  }
+}

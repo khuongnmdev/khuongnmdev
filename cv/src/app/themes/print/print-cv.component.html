@@ -1,0 +1,138 @@
+<!--
+  Reading order is DOM order — nothing here repositions content with floats
+  of text, absolute placement, or flexbox `order`. The identity block leads,
+  then the sections exactly as the data orders them. The avatar float carries
+  no text, so it cannot disturb the extracted stream.
+-->
+<article class="print-cv" [class.print-cv--compact]="isCompact()">
+  <header class="print-header">
+    <img class="print-avatar" [src]="profile().avatar" [alt]="profile().fullName" />
+    <h1 class="print-name">{{ profile().fullName }}</h1>
+    <p class="print-headline">{{ profile().headline }}</p>
+    <ul class="print-contacts">
+      @for (contact of contacts(); track contact.label) {
+        <li class="print-contact">
+          @if (contact.icon; as icon) {
+            <span class="print-contact-icon" aria-hidden="true"><i [class]="icon"></i></span>
+          }
+          <span class="visually-hidden">{{ contact.label }}:</span>
+          @if (contact.href; as href) {
+            <a [href]="href">{{ contact.value }}</a>
+          } @else {
+            <span>{{ contact.value }}</span>
+          }
+        </li>
+      }
+    </ul>
+  </header>
+
+  @for (section of sections(); track section.id) {
+    <section class="print-section">
+      <h2 class="print-section-title">{{ section.title }}</h2>
+      @switch (section.id) {
+        @case ('about') {
+          <div class="print-about">
+            <p class="print-about-lead">
+              {{ profile().headline }} with {{ experienceYears() }} years of experience.
+            </p>
+            <ul class="print-summary">
+              @for (line of profile().summary; track line) {
+                <li>{{ line }}</li>
+              }
+            </ul>
+          </div>
+        }
+        @case ('experience') {
+          @for (entry of experience(); track entry.company + entry.startDate) {
+            <article class="print-entry">
+              <h3 class="print-entry-heading">
+                <span class="print-entry-company">{{ entry.company }}</span>
+                —
+                <span class="print-entry-role">{{ entry.role }}</span>
+              </h3>
+              <p class="print-entry-meta">
+                <span>{{ entry.startDate | dateRange: entry.endDate }}</span>
+                @if (entry.employmentType; as employmentType) {
+                  <span>{{ employmentType }}</span>
+                }
+                @if (entry.location; as location) {
+                  <span>{{ location }}</span>
+                }
+              </p>
+              @if (entry.summary; as summary) {
+                <p class="print-entry-summary">{{ summary }}</p>
+              }
+              @if (entry.highlights?.length) {
+                <ul class="print-highlights">
+                  @for (highlight of entry.highlights; track highlight) {
+                    <li>{{ highlight }}</li>
+                  }
+                </ul>
+              }
+              @if (entry.tech) {
+                <p class="print-tech">
+                  <span class="print-tech-label">Tech stack:</span> {{ entry.tech }}
+                </p>
+              }
+              @if (entry.projects.length) {
+                <ul class="print-projects">
+                  @for (project of entry.projects; track project.name) {
+                    <li class="print-project">
+                      <h4 class="print-project-name">{{ project.name }}</h4>
+                      <p class="print-entry-meta">
+                        <span>{{ project.role }}</span>
+                        @if (project.teamSize; as teamSize) {
+                          <span>Team of {{ teamSize }}</span>
+                        }
+                      </p>
+                      <p class="print-project-description">{{ project.description }}</p>
+                      @if (project.tech) {
+                        <p class="print-tech">
+                          <span class="print-tech-label">Tech stack:</span> {{ project.tech }}
+                        </p>
+                      }
+                    </li>
+                  }
+                </ul>
+              }
+            </article>
+          }
+        }
+        @case ('education') {
+          @for (entry of education(); track entry.school + entry.startDate) {
+            <article class="print-entry">
+              <h3 class="print-entry-heading">
+                <span class="print-entry-company">{{ entry.school }}</span>
+                —
+                <span class="print-entry-role">{{ entry.degree }}</span>
+              </h3>
+              <p class="print-entry-meta">
+                <span>{{ entry.startDate | dateRange: entry.endDate }}</span>
+                @if (entry.field; as field) {
+                  <span>{{ field }}</span>
+                }
+                @if (entry.gpa; as gpa) {
+                  <span>GPA: {{ gpa }}</span>
+                }
+              </p>
+              @if (entry.highlights?.length) {
+                <ul class="print-highlights">
+                  @for (highlight of entry.highlights; track highlight) {
+                    <li>{{ highlight }}</li>
+                  }
+                </ul>
+              }
+            </article>
+          }
+        }
+        @case ('skills') {
+          @for (group of skills(); track group.category) {
+            <p class="print-skill-group">
+              <span class="print-skill-category">{{ group.category }}:</span> {{ group.names }}
+            </p>
+          }
+        }
+      }
+    </section>
+  }
+</article>
