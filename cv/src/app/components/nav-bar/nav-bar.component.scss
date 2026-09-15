@@ -209,11 +209,13 @@
   top: 100%;
   left: 0;
   right: 0;
-  background-color: var(--bg-primary);
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid black;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
+  text-align: left;
   padding: 1rem;
   transition: 0.3s all ease-in-out;
   transform: translateX(-100%);
