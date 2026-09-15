@@ -1,15 +1,18 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   inject,
   signal,
   viewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { Meta } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { PrintService } from '@core/services/print.service';
+import { ROBOTS_INDEXABLE } from '@data/meta';
 import {
   normalizePrintTemplate,
   PRINT_TEMPLATES,
@@ -26,6 +29,10 @@ import {
  * The selected template lives in the `?template=` query parameter rather
  * than component state, so a template choice survives reloads and can be
  * shared as a link. Unknown values fall back to `classic`.
+ *
+ * The sheet shows the print-only contacts (phone, home address), so this
+ * route is rendered on the client only and flags itself `noindex` while it
+ * is active — the data must never sit in a static file or a search index.
  */
 @Component({
   selector: 'app-print-page',
@@ -37,6 +44,8 @@ export class PrintPageComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly printService = inject(PrintService);
+  private readonly meta = inject(Meta);
+  private readonly destroyRef = inject(DestroyRef);
 
   /** The sheet wrapper — the scope whose images must decode before printing. */
   private readonly sheet = viewChild.required<ElementRef<HTMLElement>>('sheet');
@@ -51,6 +60,16 @@ export class PrintPageComponent {
 
   /** True while the export waits for fonts, images, and icons. */
   protected readonly exporting = signal(false);
+
+  constructor() {
+    // The root shell already registers the robots tag, so update it in place
+    // rather than adding a second one, and put the site default back once
+    // the visitor leaves for an indexable route.
+    this.meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
+    this.destroyRef.onDestroy(() => {
+      this.meta.updateTag({ name: 'robots', content: ROBOTS_INDEXABLE });
+    });
+  }
 
   protected onTemplateChange(event: Event): void {
     const selected = normalizePrintTemplate((event.target as HTMLSelectElement).value);

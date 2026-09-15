@@ -1,10 +1,16 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { Meta } from '@angular/platform-browser';
 import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { CvDataService } from '@core/services/cv-data.service';
 import { PrintService } from '@core/services/print.service';
 import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
 import { PrintPageComponent } from './print-page.component';
+
+/** Stand-in for the home route: something indexable to navigate back to. */
+@Component({ template: '' })
+class StubHomeComponent {}
 
 describe('PrintPageComponent', () => {
   let printSpy: ReturnType<typeof vi.fn>;
@@ -13,7 +19,10 @@ describe('PrintPageComponent', () => {
     printSpy = vi.fn().mockResolvedValue(undefined);
     await TestBed.configureTestingModule({
       providers: [
-        provideRouter([{ path: 'print', component: PrintPageComponent }]),
+        provideRouter([
+          { path: '', component: StubHomeComponent },
+          { path: 'print', component: PrintPageComponent },
+        ]),
         { provide: CvDataService, useValue: cvDataServiceWith(cloneCvData()) },
         { provide: PrintService, useValue: { print: printSpy } },
       ],
@@ -70,5 +79,22 @@ describe('PrintPageComponent', () => {
     expect(printSpy).toHaveBeenCalledTimes(1);
     const scope = printSpy.mock.calls[0][0] as HTMLElement;
     expect(scope.classList).toContain('print-sheet');
+  });
+
+  it('should mark the page noindex while active and restore indexing on leave', async () => {
+    const meta = TestBed.inject(Meta);
+    // The jsdom head persists across tests in this file, so start from a
+    // known state: exactly the one robots tag the root shell registers.
+    meta.getTags('name="robots"').forEach((tag) => meta.removeTagElement(tag));
+    meta.addTag({ name: 'robots', content: 'index, follow' });
+
+    const harness = await RouterTestingHarness.create('/print');
+    expect(meta.getTag('name="robots"')?.content).toBe('noindex, nofollow');
+    // Updated in place — a second robots tag would leave the policy ambiguous.
+    expect(meta.getTags('name="robots"').length).toBe(1);
+
+    await harness.navigateByUrl('/');
+    expect(meta.getTag('name="robots"')?.content).toBe('index, follow');
+    expect(meta.getTags('name="robots"').length).toBe(1);
   });
 });
