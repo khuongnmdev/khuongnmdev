@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { CvDataService } from '@core/services/cv-data.service';
-import { cloneCvData, cvDataServiceWith } from '../../testing/cv-data.testing';
+import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
 import { NavBarComponent } from './nav-bar.component';
 
 describe('NavBarComponent', () => {

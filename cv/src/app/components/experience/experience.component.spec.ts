@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import type { CvData } from '@core/models/cv-data.model';
 import { CvDataService } from '@core/services/cv-data.service';
-import { cloneCvData, cvDataServiceWith } from '../../testing/cv-data.testing';
+import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
 import { ExperienceComponent } from './experience.component';
 
 /** Two entries deliberately out of order — oldest first — in the array. */
