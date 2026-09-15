@@ -30,10 +30,6 @@ function setupService(platform: string, doc: Document): PrintService {
 }
 
 describe('PrintService', () => {
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
   it('should do nothing on the server platform', async () => {
     const { doc, printSpy } = fakeDocument();
     const service = setupService('server', doc);
@@ -68,45 +64,41 @@ describe('PrintService', () => {
     expect(printSpy).toHaveBeenCalledTimes(1);
   });
 
+  it('should wait for the images in scope to decode before printing', async () => {
+    let resolveDecode!: () => void;
+    const decoded = new Promise<void>((resolve) => (resolveDecode = resolve));
+    const { doc, body, printSpy } = fakeDocument();
+    body.innerHTML = '<img alt="">';
+    body.querySelector('img')!.decode = () => decoded;
+    const service = setupService('browser', doc);
+
+    const pending = service.print(body);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(printSpy).not.toHaveBeenCalled();
+
+    resolveDecode();
+    await pending;
+    expect(printSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should print anyway when an image fails to decode', async () => {
+    const { doc, body, printSpy } = fakeDocument();
+    body.innerHTML = '<img alt="">';
+    body.querySelector('img')!.decode = () => Promise.reject(new Error('broken image'));
+    const service = setupService('browser', doc);
+
+    await service.print(body);
+
+    // A missing avatar degrades the sheet; it must not block the export.
+    expect(printSpy).toHaveBeenCalledTimes(1);
+  });
+
   it('should tolerate a document without the font loading API', async () => {
     const { doc, printSpy } = fakeDocument({ withFontsApi: false });
     const service = setupService('browser', doc);
 
     await service.print();
 
-    expect(printSpy).toHaveBeenCalledTimes(1);
-  });
-
-  it('should wait for the icon kit to swap <i> tags before printing', async () => {
-    const { doc, body, printSpy } = fakeDocument();
-    body.innerHTML = '<i class="fa-solid fa-envelope"></i>';
-    const service = setupService('browser', doc);
-
-    vi.useFakeTimers();
-    const pending = service.print(body);
-
-    // Still un-swapped after a few polls: not printed yet.
-    await vi.advanceTimersByTimeAsync(300);
-    expect(printSpy).not.toHaveBeenCalled();
-
-    // The kit finishes its work; the next poll must let the print through.
-    body.innerHTML = '<svg class="svg-inline--fa"></svg>';
-    await vi.advanceTimersByTimeAsync(300);
-    await pending;
-    expect(printSpy).toHaveBeenCalledTimes(1);
-  });
-
-  it('should print anyway when the icon kit never runs, after the timeout', async () => {
-    const { doc, body, printSpy } = fakeDocument();
-    body.innerHTML = '<i class="fa-solid fa-envelope"></i>';
-    const service = setupService('browser', doc);
-
-    vi.useFakeTimers();
-    const pending = service.print(body);
-    await vi.advanceTimersByTimeAsync(2500);
-    await pending;
-
-    // Graceful fallback: a missing CDN script must not block the export.
     expect(printSpy).toHaveBeenCalledTimes(1);
   });
 });
