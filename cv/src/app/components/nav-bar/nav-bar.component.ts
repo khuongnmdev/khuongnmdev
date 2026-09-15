@@ -8,6 +8,7 @@ import {
   linkedSignal,
   signal,
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import type { SectionConfig } from '@core/models/cv-data.model';
 import { CvDataService } from '@core/services/cv-data.service';
 
@@ -16,7 +17,7 @@ import { CvDataService } from '@core/services/cv-data.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.scss',
-  imports: [NgClass],
+  imports: [NgClass, RouterLink],
 })
 export class NavBarComponent {
   /** Section id currently in view, driven by the scroll-spy in `AppComponent`. */
@@ -51,6 +52,11 @@ export class NavBarComponent {
     // Close the mobile menu so the selected section is not hidden behind it.
     this.isShowMenu.set(false);
     this.scrollToElementId(item.id);
+  }
+
+  /** Router links leave the page, so the mobile menu must not stay open. */
+  protected closeMenu(): void {
+    this.isShowMenu.set(false);
   }
 
   private scrollToElementId(id: string): void {

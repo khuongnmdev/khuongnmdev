@@ -8,6 +8,10 @@
     <a class="nav-item" [ngClass]="{ activated: menuItem.id === activatedItem() }" (click)="navigateTo(menuItem)">{{
       menuItem.title }}</a>
     }
+    <a class="nav-item nav-item-export" routerLink="/print">
+      <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+      Export PDF
+    </a>
   </nav>
   <button class="btn btn-menu" (click)="toggleMenu()">
     @if (isShowMenu()) {
@@ -23,4 +27,8 @@
   <a class="nav-item" [ngClass]="{ activated: menuItem.id === activatedItem() }" (click)="navigateTo(menuItem)">{{
     menuItem.title }}</a>
   }
+  <a class="nav-item nav-item-export" routerLink="/print" (click)="closeMenu()">
+    <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+    Export PDF
+  </a>
 </nav>
