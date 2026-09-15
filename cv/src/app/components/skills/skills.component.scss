@@ -1,13 +1,16 @@
 .skills-grid {
   display: grid;
   // Mobile-first: one column on phones; from 768px the groups flow into as
-  // many 15rem-plus columns as the width allows.
+  // many 15rem-plus columns as the width allows. The 10rem inset is a desktop
+  // measure — inside the section's 3rem side padding it would leave a grid
+  // roughly 100px wide on a 360px phone, so phones get the full width.
   grid-template-columns: 1fr;
   gap: 2.5rem 3.5rem;
-  max-width: calc(100% - 10rem);
+  max-width: none;
 
   @media only screen and (min-width: 768px) {
     grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    max-width: calc(100% - 10rem);
   }
 }
 
