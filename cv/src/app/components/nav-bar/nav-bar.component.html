@@ -9,8 +9,6 @@
     [attr.aria-label]="isCollapsed() ? 'Expand menu' : 'Collapse menu'"
     [title]="isCollapsed() ? 'Expand menu' : 'Collapse menu'"
   >
-    <!-- Separate <i> per state: the Font Awesome kit swaps a freshly inserted
-         <i> for an <svg>, but never re-renders one whose class merely changed. -->
     @if (isCollapsed()) {
     <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
     } @else {
