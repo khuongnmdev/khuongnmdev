@@ -13,7 +13,7 @@ const SIDEBAR_STORAGE_KEY = 'cv-sidebar-collapsed';
 
 /**
  * Owns the desktop sidebar's collapsed/expanded state. The state matters to
- * two components at once — the nav bar renders the rail and the home page
+ * two components at once — the nav bar renders the rail and the main page
  * shifts its content margin — so it lives in a shared service rather than in
  * either component.
  *

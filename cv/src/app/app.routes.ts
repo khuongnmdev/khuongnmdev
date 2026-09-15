@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from '@app/pages/home/home.component';
+import { MainComponent } from '@app/pages/main/main.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: MainComponent },
   {
     path: 'print',
     // Lazy on purpose: the print theme should not weigh down the initial

@@ -1,7 +1,7 @@
 // Mobile-first: the bar is a fixed top row; from 768px it becomes the
 // floating sidebar panel with rounded right corners. The `collapsed` class
 // (desktop only) shrinks the panel to an icon rail — the host width and the
-// page margin follow in the home page's stylesheet.
+// page margin follow in the main page's stylesheet.
 
 .nav-bar {
   background-color: var(--bg-primary);
@@ -201,7 +201,7 @@
   // stretched the fixed nav host roughly 13rem below the visible bar even
   // while closed — the translateX only moves the paint, not the layout box —
   // and that transparent strip swallowed every tap on the content under it.
-  // Absolutely positioned against the fixed host (the home page positions
+  // Absolutely positioned against the fixed host (the main page positions
   // it; nothing between host and menu is positioned or clips), the host's
   // hit area collapses to the visible bar, and the closed menu parks
   // entirely left of the viewport where hit-testing cannot reach it.

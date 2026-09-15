@@ -8,9 +8,9 @@ import { PrintService } from '@core/services/print.service';
 import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
 import { PrintPageComponent } from './print-page.component';
 
-/** Stand-in for the home route: something indexable to navigate back to. */
+/** Stand-in for the main route: something indexable to navigate back to. */
 @Component({ template: '' })
-class StubHomeComponent {}
+class StubMainComponent {}
 
 describe('PrintPageComponent', () => {
   let printSpy: ReturnType<typeof vi.fn>;
@@ -20,7 +20,7 @@ describe('PrintPageComponent', () => {
     await TestBed.configureTestingModule({
       providers: [
         provideRouter([
-          { path: '', component: StubHomeComponent },
+          { path: '', component: StubMainComponent },
           { path: 'print', component: PrintPageComponent },
         ]),
         { provide: CvDataService, useValue: cvDataServiceWith(cloneCvData()) },

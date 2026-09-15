@@ -147,6 +147,11 @@
   color: var(--c-text-muted);
   font-size: 0.875rem;
   margin-bottom: 0.5rem;
+
+  // Lifted out of the muted meta line, echoing the entry role's accent.
+  .project-role {
+    color: var(--c-secondary);
+  }
 }
 
 .project-description {

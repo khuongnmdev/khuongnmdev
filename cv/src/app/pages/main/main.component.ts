@@ -31,13 +31,13 @@ const SECTION_COMPONENTS: Partial<Record<SectionId, Type<unknown>>> = {
  * render without the shell.
  */
 @Component({
-  selector: 'app-home',
+  selector: 'app-main',
   imports: [NavBarComponent, ActiveSectionDirective, NgComponentOutlet],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+  templateUrl: './main.component.html',
+  styleUrl: './main.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent {
+export class MainComponent {
   private readonly cvData = inject(CvDataService);
   private readonly sidebar = inject(SidebarService);
 
