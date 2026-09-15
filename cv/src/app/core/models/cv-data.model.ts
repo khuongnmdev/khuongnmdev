@@ -14,35 +14,48 @@ export type YearMonth = string;
 /** `YYYY-MM-DD`, for example `"2026-08-10"`. */
 export type IsoDate = string;
 
-/** 1 = beginner, 5 = expert. */
-export type SkillLevel = 1 | 2 | 3 | 4 | 5;
+/*
+ * Each literal union below is declared once as an `as const` array, and the
+ * type derives from it. The runtime validator iterates the same arrays, so the
+ * compile-time unions and the runtime checks can never drift apart.
+ */
 
-export type EmploymentType =
-  | 'full-time'
-  | 'part-time'
-  | 'freelance'
-  | 'contract'
-  | 'internship';
+/** Allowed skill levels: 1 = beginner, 5 = expert. */
+export const SKILL_LEVELS = [1, 2, 3, 4, 5] as const;
+export type SkillLevel = (typeof SKILL_LEVELS)[number];
 
-export type ContactType =
-  | 'email'
-  | 'phone'
-  | 'linkedin'
-  | 'github'
-  | 'website'
-  | 'address'
-  | 'birthday'
-  | 'other';
+export const EMPLOYMENT_TYPES = [
+  'full-time',
+  'part-time',
+  'freelance',
+  'contract',
+  'internship',
+] as const;
+export type EmploymentType = (typeof EMPLOYMENT_TYPES)[number];
 
-export type SectionId =
-  | 'about'
-  | 'experience'
-  | 'education'
-  | 'skills'
-  | 'projects'
-  | 'certifications'
-  | 'languages'
-  | 'hobbies';
+export const CONTACT_TYPES = [
+  'email',
+  'phone',
+  'linkedin',
+  'github',
+  'website',
+  'address',
+  'birthday',
+  'other',
+] as const;
+export type ContactType = (typeof CONTACT_TYPES)[number];
+
+export const SECTION_IDS = [
+  'about',
+  'experience',
+  'education',
+  'skills',
+  'projects',
+  'certifications',
+  'languages',
+  'hobbies',
+] as const;
+export type SectionId = (typeof SECTION_IDS)[number];
 
 /** Shared visibility flags. An omitted flag is treated as `true`. */
 export interface Visibility {
