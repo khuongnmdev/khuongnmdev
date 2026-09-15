@@ -20,7 +20,7 @@ import { CvDataService } from '@core/services/cv-data.service';
   imports: [NgClass, RouterLink],
 })
 export class NavBarComponent {
-  /** Section id currently in view, driven by the scroll-spy in `AppComponent`. */
+  /** Section id currently in view, driven by the scroll-spy in `HomeComponent`. */
   readonly activeSection = input<string>('');
 
   private readonly document = inject(DOCUMENT);
