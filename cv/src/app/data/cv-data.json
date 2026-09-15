@@ -345,8 +345,8 @@
         { "name": "JavaScript", "level": 5 },
         { "name": "HTML5", "level": 5 },
         { "name": "CSS3", "level": 5 },
-        { "name": "SCSS", "level": 4 },
-        { "name": "TypeScript", "level": 3 }
+        { "name": "SCSS", "level": 5 },
+        { "name": "TypeScript", "level": 4 }
       ]
     },
     {
@@ -354,9 +354,10 @@
       "showInWeb": true,
       "showInPrint": true,
       "items": [
+        { "name": "Angular Modern", "level": 4 },
         { "name": "Angular", "level": 5 },
-        { "name": "RxJS", "level": 3 },
         { "name": "AngularJS", "level": 3 },
+        { "name": "RxJS", "level": 4 },
         { "name": "React", "level": 3 },
         { "name": "Vue", "level": 3 },
         { "name": "StencilJS", "level": 3 }
@@ -377,7 +378,7 @@
       "showInPrint": true,
       "items": [
         { "name": "Git", "level": 5 },
-        { "name": "Jira", "level": 3 }
+        { "name": "Jira", "level": 4 }
       ]
     }
   ],
