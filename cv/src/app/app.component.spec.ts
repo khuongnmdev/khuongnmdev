@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Title } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 import { CvDataService } from '@core/services/cv-data.service';
 import type { CvData } from '@core/models/cv-data.model';
 import { AppComponent } from './app.component';
@@ -13,6 +13,11 @@ import { cloneCvData, cvDataServiceWith } from './testing/cv-data.testing';
  */
 function scrambledData(): CvData {
   const data = cloneCvData();
+  // Custom profile values prove that title and meta derive from the data
+  // rather than repeating hardcoded strings.
+  data.profile.fullName = 'Test Person';
+  data.profile.displayName = 'Testy';
+  data.profile.headline = 'Test Engineer';
   data.sections = [
     { id: 'skills', title: 'Skills', order: 2, enabled: true, showInPrint: true },
     { id: 'about', title: 'About', order: 1, enabled: true, showInPrint: true },
@@ -42,9 +47,21 @@ describe('AppComponent', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should set the document title', () => {
+  it('should derive the document title from the profile', () => {
     TestBed.createComponent(AppComponent);
-    expect(TestBed.inject(Title).getTitle()).toBe(`Khuong Nguyen's Resume`);
+    expect(TestBed.inject(Title).getTitle()).toBe('Testy — Test Engineer');
+  });
+
+  it('should derive description and author meta tags from the profile', () => {
+    TestBed.createComponent(AppComponent);
+    const meta = TestBed.inject(Meta);
+    expect(meta.getTag('name="author"')?.content).toBe('Test Person');
+    expect(meta.getTag('name="description"')?.content).toContain('Test Person');
+    expect(meta.getTag('name="description"')?.content).toContain('Test Engineer');
+    expect(meta.getTag('property="og:title"')?.content).toBe('Testy — Test Engineer');
+    // Static by design: policy and deployment values, not CV content.
+    expect(meta.getTag('name="robots"')?.content).toBe('index, follow');
+    expect(meta.getTag('property="og:type"')?.content).toBe('website');
   });
 
   it('should render the navigation bar', async () => {

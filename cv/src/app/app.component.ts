@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, signal, Type } from '@angul
 import { Meta, Title } from '@angular/platform-browser';
 import type { SectionId } from '@core/models/cv-data.model';
 import { CvDataService } from '@core/services/cv-data.service';
-import { META_TAGS } from '@data/meta';
+import { buildMetaTags, buildPageTitle } from '@data/meta';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { AboutComponent } from './components/about/about.component';
 import { ExperienceComponent } from './components/experience/experience.component';
@@ -38,8 +38,6 @@ export class AppComponent {
   private readonly meta = inject(Meta);
   private readonly cvData = inject(CvDataService);
 
-  protected readonly appTitle = `Khuong Nguyen's Resume`;
-
   /** Enabled sections in data order — the single source of the page layout. */
   protected readonly sections = this.cvData.sections;
 
@@ -52,8 +50,12 @@ export class AppComponent {
   protected readonly currentActiveSection = signal('');
 
   constructor() {
-    this.title.setTitle(this.appTitle);
-    this.meta.addTags(META_TAGS);
+    // One-shot on purpose: the dataset is fixed for the lifetime of the app
+    // today. Revisit with an effect if loading user-supplied data ever needs
+    // the tags to follow a store swap.
+    const profile = this.cvData.profile();
+    this.title.setTitle(buildPageTitle(profile));
+    this.meta.addTags(buildMetaTags(profile));
   }
 
   protected componentFor(id: SectionId): Type<unknown> | undefined {
