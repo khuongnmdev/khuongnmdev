@@ -2,7 +2,7 @@
   "meta": {
     "version": "1.0.0",
     "locale": "en",
-    "updatedAt": "2026-08-10"
+    "updatedAt": "2026-09-15"
   },
   "profile": {
     "fullName": "Nguyen Manh Khuong",
@@ -82,18 +82,66 @@
       "startDate": "2024-01",
       "endDate": null,
       "current": true,
-      "techStack": ["Angular 14", "RxJS"],
+      "summary": "Front-end developer across a portfolio of real-time sports-data and gaming web products — customer-facing member sites, agent and back-office portals, and an AWS cloud-management console — spanning Angular (v14 to v18+, Signals) and React/Redux codebases.",
+      "highlights": [
+        "Migrated production member sites from Angular 14 to 18 through an incremental standalone-component migration, then moved a core UI package from RxJS-subject state to Angular Signals (signal, computed, toSignal) with OnPush change detection.",
+        "Replaced an event-bus data-retrieval mechanism with RxJS services for predictable, controllable data streams; rebuilt the betslip UI with mobile support, removing dead logic and optimizing render paths.",
+        "Led the Bootstrap 5 migration of a legacy games package, rewriting its HTML/SCSS on flex and grid layouts and fixing long-standing UI defects along the way.",
+        "Delivered React/Redux features for an AWS cloud console, introducing ESLint and Redux-hooks conventions across the admin and customer apps.",
+        "Mentored junior colleagues and paired on complex form components to keep deliveries on schedule."
+      ],
+      "techStack": ["Angular 14–18", "Angular Signals", "TypeScript", "RxJS", "Bootstrap 5", "SCSS", "Angular Forms", "React", "Redux", "MUI", "Axios", "Directus", "ESLint", "WebSocket", "Git", "SVN"],
       "showInWeb": true,
       "showInPrint": true,
       "projects": [
         {
           "name": "AQS",
-          "description": "Analysis of Running Market was built with an old-fashioned UI and information is not presented in a very clean and neat way. Implement new solutions to analyze data and show to user in new UI - which is more friendly and easier to use.",
+          "description": "Real-time running-market analysis tool: replaced an old-fashioned UI with a cleaner presentation of market data, added HK odds conversion, infinite scrolling and refined scroll handling.",
           "role": "Front-end developer",
           "teamSize": 20,
           "techStack": ["Angular 14", "RxJS"],
           "showInWeb": true,
           "showInPrint": true
+        },
+        {
+          "name": "Multi-brand member sites",
+          "description": "Customer-facing Angular sites for several brands: migrated the codebase from Angular 14 to 18, rebuilt the betslip UI with mobile support and render optimization, implemented liability forecasting, brand layout and template switching shared across sites, multi-bank-account management on strongly typed FormArray, plus Toll-Free Call and WhatsApp contact features.",
+          "role": "Front-end developer",
+          "techStack": ["Angular 18", "RxJS", "Bootstrap 5", "SCSS", "Directus"],
+          "showInWeb": true,
+          "showInPrint": true
+        },
+        {
+          "name": "Live sports and games UI package",
+          "description": "Built the Inplay and sport-highlight pages, a Competition Mode ported from Vue/JavaScript into strongly typed Angular, Popular Online Games, a new Exchange Games UI on flex/grid with a Bootstrap 5 migration, a Live section, and brand registration forms; migrated the package's state management to Angular Signals.",
+          "role": "Front-end developer",
+          "techStack": ["Angular 18+", "Angular Signals", "RxJS", "Bootstrap 5", "SCSS"],
+          "showInWeb": true,
+          "showInPrint": true
+        },
+        {
+          "name": "Agent portal",
+          "description": "Greenfield agent-facing site built from scratch on Angular 18 standalone components and Signals with a shared design system; delivered the Account Statement module.",
+          "role": "Front-end developer",
+          "techStack": ["Angular 18", "Angular Signals", "SCSS"],
+          "showInWeb": true,
+          "showInPrint": true
+        },
+        {
+          "name": "Cloud management console",
+          "description": "React/Redux admin and customer portals for an AWS-based cloud service: responsive layout refactor, Redux-hooks migration, ESLint adoption across both apps, order-management pages, Elastic IP attach/detach, policy pages, provider switching, Axios migration, upload-progress UI, permissions and i18n fixes.",
+          "role": "Front-end developer",
+          "techStack": ["React", "Redux", "MUI", "Axios", "ESLint", "AWS"],
+          "showInWeb": true,
+          "showInPrint": true
+        },
+        {
+          "name": "Trading ticket dashboard",
+          "description": "Implemented a pending lay-ticket feature, integrating and customizing a third-party charting library around the platform's data models.",
+          "role": "Front-end developer",
+          "techStack": ["Angular", "TypeScript"],
+          "showInWeb": true,
+          "showInPrint": false
         }
       ]
     },
@@ -345,8 +393,8 @@
         { "name": "JavaScript", "level": 5 },
         { "name": "HTML5", "level": 5 },
         { "name": "CSS3", "level": 5 },
-        { "name": "SCSS", "level": 4 },
-        { "name": "TypeScript", "level": 3 }
+        { "name": "SCSS", "level": 5 },
+        { "name": "TypeScript", "level": 4 }
       ]
     },
     {
@@ -354,9 +402,10 @@
       "showInWeb": true,
       "showInPrint": true,
       "items": [
+        { "name": "Angular Modern", "level": 4 },
         { "name": "Angular", "level": 5 },
-        { "name": "RxJS", "level": 3 },
         { "name": "AngularJS", "level": 3 },
+        { "name": "RxJS", "level": 4 },
         { "name": "React", "level": 3 },
         { "name": "Vue", "level": 3 },
         { "name": "StencilJS", "level": 3 }
@@ -377,7 +426,7 @@
       "showInPrint": true,
       "items": [
         { "name": "Git", "level": 5 },
-        { "name": "Jira", "level": 3 }
+        { "name": "Jira", "level": 4 }
       ]
     }
   ],
