@@ -6,6 +6,12 @@
     top: 0;
     left: 0;
     width: 100vw;
+    // The nav must paint above everything the page scrolls under it. Without
+    // an explicit z-index this fixed host has z-index auto, so any positioned
+    // content later in the DOM — such as the timeline entries, which are
+    // position: relative for their dots — painted over the bar. The mobile
+    // slide-in menu lives inside this host, so it rises with it.
+    z-index: 100;
 
     @media only screen and (min-width: 768px) {
       width: 17rem;
