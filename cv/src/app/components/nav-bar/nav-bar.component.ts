@@ -11,6 +11,11 @@ import {
 import { RouterLink } from '@angular/router';
 import type { SectionConfig } from '@core/models/cv-data.model';
 import { CvDataService } from '@core/services/cv-data.service';
+import { SidebarService } from '@core/services/sidebar.service';
+import { ThemeService } from '@core/services/theme.service';
+
+/** Rendered when a section carries no icon, so the menu never breaks. */
+const FALLBACK_MENU_ICON = 'fa-solid fa-circle';
 
 @Component({
   selector: 'app-nav-bar',
@@ -25,6 +30,8 @@ export class NavBarComponent {
 
   private readonly document = inject(DOCUMENT);
   private readonly cvData = inject(CvDataService);
+  private readonly sidebar = inject(SidebarService);
+  private readonly themeService = inject(ThemeService);
 
   protected readonly profile = this.cvData.profile;
 
@@ -35,6 +42,11 @@ export class NavBarComponent {
    */
   protected readonly menuList = this.cvData.sections;
 
+  /** Desktop-only icon-rail state; shared so the page margin can follow. */
+  protected readonly isCollapsed = this.sidebar.collapsed;
+
+  protected readonly theme = this.themeService.theme;
+
   /**
    * Follows `activeSection`, but is also set locally on click so the highlight
    * moves immediately instead of waiting for the smooth scroll to settle.
@@ -42,6 +54,18 @@ export class NavBarComponent {
   protected readonly activatedItem = linkedSignal(() => this.activeSection());
 
   protected readonly isShowMenu = signal(false);
+
+  protected iconFor(item: SectionConfig): string {
+    return item.icon ?? FALLBACK_MENU_ICON;
+  }
+
+  protected toggleCollapse(): void {
+    this.sidebar.toggle();
+  }
+
+  protected toggleTheme(): void {
+    this.themeService.toggle();
+  }
 
   protected toggleMenu(): void {
     this.isShowMenu.update((isShown) => !isShown);

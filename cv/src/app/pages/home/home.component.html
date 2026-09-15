@@ -1,4 +1,4 @@
-<div class="app-container">
+<div class="app-container" [class.sidebar-collapsed]="sidebarCollapsed()">
   <app-nav-bar [activeSection]="currentActiveSection()" class="app-nav-bar"></app-nav-bar>
   <main class="main-container">
     <!--

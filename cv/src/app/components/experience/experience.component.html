@@ -42,6 +42,7 @@
           <ul class="project-list">
             @for (project of entry.projects; track project.name) {
               <li class="project-item">
+                <span class="project-dot" aria-hidden="true"></span>
                 <h4 class="project-name">{{ project.name }}</h4>
                 <p class="project-meta">
                   <span>{{ project.role }}</span>

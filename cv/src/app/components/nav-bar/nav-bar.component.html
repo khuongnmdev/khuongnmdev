@@ -1,18 +1,69 @@
-<div class="nav-bar gap-2">
+<div class="nav-bar gap-2" [ngClass]="{ collapsed: isCollapsed() }">
+  <!-- Desktop only: shrinks the sidebar to an icon rail. Sits on the panel's
+       right edge, so it must live inside the panel for the absolute offset. -->
+  <button
+    type="button"
+    class="btn btn-collapse"
+    (click)="toggleCollapse()"
+    [attr.aria-expanded]="!isCollapsed()"
+    [attr.aria-label]="isCollapsed() ? 'Expand menu' : 'Collapse menu'"
+    [title]="isCollapsed() ? 'Expand menu' : 'Collapse menu'"
+  >
+    <!-- Separate <i> per state: the Font Awesome kit swaps a freshly inserted
+         <i> for an <svg>, but never re-renders one whose class merely changed. -->
+    @if (isCollapsed()) {
+    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+    } @else {
+    <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+    }
+  </button>
+
   <div class="avatar-block d-flex">
     <img class="img-fluid" [src]="profile().avatar" [alt]="profile().fullName" />
   </div>
 
   <nav class="nav-list">
     @for (menuItem of menuList(); track menuItem.id) {
-    <a class="nav-item" [ngClass]="{ activated: menuItem.id === activatedItem() }" (click)="navigateTo(menuItem)">{{
-      menuItem.title }}</a>
-    }
-    <a class="nav-item nav-item-export" routerLink="/print">
-      <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
-      Export PDF
+    <a
+      class="nav-item"
+      [ngClass]="{ activated: menuItem.id === activatedItem() }"
+      [title]="menuItem.title"
+      [attr.aria-label]="menuItem.title"
+      (click)="navigateTo(menuItem)"
+    >
+      <span class="nav-icon"><i [class]="iconFor(menuItem)" aria-hidden="true"></i></span>
+      <span class="nav-label">{{ menuItem.title }}</span>
     </a>
+    }
   </nav>
+
+  <!-- The sidebar's top row on desktop (via order), the right side of the bar
+       on mobile — the export button keeps working in every state. -->
+  <div class="top-actions">
+    <button
+      type="button"
+      class="btn btn-icon btn-theme"
+      (click)="toggleTheme()"
+      [attr.aria-label]="theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+      [title]="theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+    >
+      @if (theme() === 'dark') {
+      <i class="fa-solid fa-sun" aria-hidden="true"></i>
+      } @else {
+      <i class="fa-solid fa-moon" aria-hidden="true"></i>
+      }
+    </button>
+    <a
+      class="btn btn-icon btn-export"
+      routerLink="/print"
+      aria-label="Export CV as PDF"
+      title="Export CV as PDF"
+      (click)="closeMenu()"
+    >
+      <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+    </a>
+  </div>
+
   <button class="btn btn-menu" (click)="toggleMenu()">
     @if (isShowMenu()) {
     <i class="fa-solid fa-circle-xmark"></i>
@@ -24,11 +75,13 @@
 
 <nav class="nav-list-mobile" [ngClass]="{ 'is-show': isShowMenu() }">
   @for (menuItem of menuList(); track menuItem.id) {
-  <a class="nav-item" [ngClass]="{ activated: menuItem.id === activatedItem() }" (click)="navigateTo(menuItem)">{{
-    menuItem.title }}</a>
-  }
-  <a class="nav-item nav-item-export" routerLink="/print" (click)="closeMenu()">
-    <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
-    Export PDF
+  <a
+    class="nav-item"
+    [ngClass]="{ activated: menuItem.id === activatedItem() }"
+    (click)="navigateTo(menuItem)"
+  >
+    <span class="nav-icon"><i [class]="iconFor(menuItem)" aria-hidden="true"></i></span>
+    <span class="nav-label">{{ menuItem.title }}</span>
   </a>
+  }
 </nav>

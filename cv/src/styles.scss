@@ -1,8 +1,87 @@
-/* You can add global styles to this file, and also import other style files */
-:root {
+// ---------------------------------------------------------------------------
+// Design tokens — the two web palettes and the rules that switch them.
+//
+// Semantics:
+//   --c-primary     ink: headings and strong text
+//   --c-secondary   the brand accent (identical in both palettes)
+//   --bg-primary    panel surfaces: the sidebar and the mobile top bar
+//   --bg-secondary  accent fill for buttons and borders
+//   --bg-body       the page background behind the sections
+//   --bg-surface    raised cards (for example nested project cards)
+//   --c-text        body text on --bg-body
+//   --c-text-muted  secondary text: dates, meta lines
+//   --c-border      hairline separators
+//   --c-nav-item    sidebar labels and icons in their resting state
+//   --c-on-accent   text and icons sitting on an accent fill
+//
+// Switching: light is the default; `data-theme` on <html> pins a palette
+// explicitly, and with no attribute the system `prefers-color-scheme` decides.
+// The print output is always light — see the @media print block at the end.
+// ---------------------------------------------------------------------------
+
+@mixin light-tokens {
+  color-scheme: light;
   --c-primary: #060504;
+  --c-secondary: #f0690b;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f0690b;
+  --bg-body: #ffffff;
+  --bg-surface: #f8f9fa;
+  --c-text: #212529;
+  --c-text-muted: #6c757d;
+  --c-border: #dee2e6;
+  --c-nav-item: #f0690b;
+  --c-on-accent: #ffffff;
+}
+
+@mixin dark-tokens {
+  color-scheme: dark;
+  --c-primary: #f3efe9;
   --c-secondary: #f0690b;
   --bg-primary: #060504;
   --bg-secondary: #f0690b;
+  --bg-body: #141210;
+  --bg-surface: #211e1b;
+  --c-text: #e8e4de;
+  --c-text-muted: #a49e96;
+  --c-border: #3a3733;
+  --c-nav-item: #d9d4cd;
+  --c-on-accent: #ffffff;
+}
+
+:root {
+  @include light-tokens;
   --bs-heading-color: var(--c-primary);
+}
+
+:root[data-theme='dark'] {
+  @include dark-tokens;
+}
+
+// No explicit choice pinned on <html>: follow the system scheme. Because this
+// is pure CSS, a system-dark visitor gets dark on the very first paint, with
+// no script in the way.
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    @include dark-tokens;
+  }
+}
+
+body {
+  background-color: var(--bg-body);
+  color: var(--c-text);
+}
+
+// ---------------------------------------------------------------------------
+// Paper is always the light palette, whatever the web theme says. The
+// `:root:not([data-theme='light'])` selector repeats the system-dark rule's
+// specificity (0,2,0) so this later block wins the tie on source order —
+// a bare `:root` would lose to it on specificity while printing.
+// ---------------------------------------------------------------------------
+@media print {
+  :root,
+  :root[data-theme='dark'],
+  :root:not([data-theme='light']) {
+    @include light-tokens;
+  }
 }

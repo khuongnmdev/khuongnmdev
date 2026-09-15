@@ -8,10 +8,33 @@
 .experience-item {
   position: relative;
   padding-left: 1.75rem;
-  border-left: 2px solid color-mix(in srgb, var(--c-secondary) 35%, transparent);
+
+  // Timeline rail. One segment per entry, stretched by -3rem to bridge the
+  // list's gap, so the rail reads as a single line from the first dot to the
+  // end of the last entry. `::before` so the dots — this entry's `::after`
+  // and each project's marker — paint above it.
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: -3rem; // must match .experience-list's gap
+    left: -2px;
+    width: 2px;
+    background-color: color-mix(in srgb, var(--c-secondary) 35%, transparent);
+  }
+
+  // The rail starts at the first entry's dot — never above it.
+  &:first-child::before {
+    top: 0.875rem; // the dot's center: 0.5rem offset + half its 0.75rem size
+  }
+
+  // ...and ends with the last entry instead of running into the gap.
+  &:last-child::before {
+    bottom: 0;
+  }
 
   // Timeline dot — purely decorative, so an empty pseudo-element is fine.
-  &::before {
+  &::after {
     content: '';
     position: absolute;
     top: 0.5rem;
@@ -46,7 +69,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem 1.5rem;
-  color: #6c757d;
+  color: var(--c-text-muted);
   font-size: 0.9375rem;
   margin-bottom: 0.75rem;
 }
@@ -88,9 +111,27 @@
 }
 
 .project-item {
-  background-color: #f8f9fa;
+  position: relative;
+  background-color: var(--bg-surface);
   border-radius: 0.5rem;
   padding: 1rem 1.25rem;
+}
+
+// Each nested project gets its own marker on the entry's rail — smaller and
+// outlined, so it reads as subordinate to the entry's filled dot. A real
+// element rather than a pseudo, so the one-dot-per-project structure is
+// visible to tests; it stays empty and aria-hidden.
+.project-dot {
+  position: absolute;
+  // Centered on the rail: the card sits 1.75rem (entry padding) right of the
+  // rail's -1px center line; back up by that plus half the dot's width.
+  left: calc(-2rem - 1px);
+  top: 1.5rem; // level with the project title's first line
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--c-secondary) 60%, transparent);
+  background-color: var(--bg-body);
 }
 
 .project-name {
@@ -103,7 +144,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem 1.5rem;
-  color: #6c757d;
+  color: var(--c-text-muted);
   font-size: 0.875rem;
   margin-bottom: 0.5rem;
 }

@@ -109,4 +109,18 @@ describe('ExperienceComponent', () => {
     expect(compiled.textContent).not.toContain('Hidden Project');
     expect(compiled.querySelectorAll('.project-item').length).toBe(1);
   });
+
+  it('should give every rendered project its own timeline marker', async () => {
+    const compiled = await render();
+    const projects = Array.from(compiled.querySelectorAll('.project-item'));
+    expect(projects.length).toBeGreaterThan(0);
+    for (const project of projects) {
+      const dot = project.querySelector('.project-dot');
+      expect(dot).toBeTruthy();
+      // Decorative only: it must carry no text and stay out of the
+      // accessibility tree.
+      expect(dot?.textContent).toBe('');
+      expect(dot?.getAttribute('aria-hidden')).toBe('true');
+    }
+  });
 });
