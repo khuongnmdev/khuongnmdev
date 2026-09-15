@@ -10,4 +10,8 @@ export const routes: Routes = [
     loadComponent: () =>
       import('@app/themes/print/print-page.component').then((module) => module.PrintPageComponent),
   },
+  // Last on purpose: the static host serves the app shell for any unknown
+  // path, so a mistyped or stale link must land on the CV rather than on an
+  // empty outlet with a router error in the console.
+  { path: '**', redirectTo: '' },
 ];
