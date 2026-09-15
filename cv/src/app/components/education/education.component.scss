@@ -1,0 +1,39 @@
+.education-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 48rem;
+}
+
+.education-school {
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.education-degree {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  color: var(--c-secondary);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+
+  .education-field {
+    color: #6c757d;
+    font-weight: 400;
+  }
+}
+
+.education-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  color: #6c757d;
+  font-size: 0.9375rem;
+  margin-bottom: 0.5rem;
+}
+
+.education-highlights {
+  margin-bottom: 0;
+}

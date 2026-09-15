@@ -1,12 +1,12 @@
 <div class="nav-bar gap-2">
   <div class="avatar-block d-flex">
-    <img class="img-fluid" src="https://avatars.githubusercontent.com/u/120535999" alt="Avatar Image" />
+    <img class="img-fluid" [src]="profile().avatar" [alt]="profile().fullName" />
   </div>
 
   <nav class="nav-list">
     @for (menuItem of menuList(); track menuItem.id) {
     <a class="nav-item" [ngClass]="{ activated: menuItem.id === activatedItem() }" (click)="navigateTo(menuItem)">{{
-      menuItem.name }}</a>
+      menuItem.title }}</a>
     }
   </nav>
   <button class="btn btn-menu" (click)="toggleMenu()">
@@ -21,6 +21,6 @@
 <nav class="nav-list-mobile" [ngClass]="{ 'is-show': isShowMenu() }">
   @for (menuItem of menuList(); track menuItem.id) {
   <a class="nav-item" [ngClass]="{ activated: menuItem.id === activatedItem() }" (click)="navigateTo(menuItem)">{{
-    menuItem.name }}</a>
+    menuItem.title }}</a>
   }
 </nav>

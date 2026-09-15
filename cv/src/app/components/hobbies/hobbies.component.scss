@@ -1,0 +1,23 @@
+.hobby-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-width: 48rem;
+}
+
+.hobby-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 1rem;
+  border: 1px solid var(--c-secondary);
+  border-radius: 2rem;
+  font-weight: 600;
+
+  .hobby-icon {
+    color: var(--c-secondary);
+  }
+}
