@@ -1,3 +1,74 @@
-<app-section title="Experience" id="experience">
-  Experience content
+<app-section [title]="title()" id="experience">
+  <div class="experience-list">
+    @for (entry of entries(); track entry.company + entry.startDate) {
+      <article class="experience-item">
+        <header>
+          <h3 class="experience-heading">
+            <span class="experience-company">{{ entry.company }}</span>
+            <span class="experience-role">{{ entry.role }}</span>
+          </h3>
+          <p class="experience-meta">
+            <span>{{ entry.startDate | dateRange: entry.endDate }}</span>
+            @if (entry.employmentType; as employmentType) {
+              <span>{{ employmentType }}</span>
+            }
+            @if (entry.location; as location) {
+              <span>{{ location }}</span>
+            }
+          </p>
+        </header>
+
+        @if (entry.summary; as summary) {
+          <p class="experience-summary">{{ summary }}</p>
+        }
+
+        @if (entry.highlights?.length) {
+          <ul class="experience-highlights">
+            @for (highlight of entry.highlights; track highlight) {
+              <li>{{ highlight }}</li>
+            }
+          </ul>
+        }
+
+        @if (entry.techStack?.length) {
+          <ul class="chip-list" aria-label="Technologies">
+            @for (tech of entry.techStack; track tech) {
+              <li class="chip">{{ tech }}</li>
+            }
+          </ul>
+        }
+
+        @if (entry.projects.length) {
+          <ul class="project-list">
+            @for (project of entry.projects; track project.name) {
+              <li class="project-item">
+                <h4 class="project-name">{{ project.name }}</h4>
+                <p class="project-meta">
+                  <span>{{ project.role }}</span>
+                  @if (project.teamSize; as teamSize) {
+                    <span>Team of {{ teamSize }}</span>
+                  }
+                </p>
+                <p class="project-description">{{ project.description }}</p>
+                @if (project.highlights?.length) {
+                  <ul class="project-highlights">
+                    @for (highlight of project.highlights; track highlight) {
+                      <li>{{ highlight }}</li>
+                    }
+                  </ul>
+                }
+                @if (project.techStack.length) {
+                  <ul class="chip-list" aria-label="Technologies">
+                    @for (tech of project.techStack; track tech) {
+                      <li class="chip">{{ tech }}</li>
+                    }
+                  </ul>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </article>
+    }
+  </div>
 </app-section>

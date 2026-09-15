@@ -1,3 +1,35 @@
-<app-section title="About" id="about">
-  About
+<app-section [title]="title()" id="about">
+  <div class="about">
+    <h3 class="about-name">{{ profile().fullName }}</h3>
+    <p class="about-headline">{{ profile().headline }}</p>
+
+    <p class="about-facts">
+      @if (profile().location; as location) {
+        <span class="about-fact">{{ location }}</span>
+      }
+      <span class="about-fact">{{ experienceYears() }} years of experience</span>
+    </p>
+
+    <ul class="about-summary">
+      @for (line of profile().summary; track line) {
+        <li>{{ line }}</li>
+      }
+    </ul>
+
+    <ul class="about-contacts list-unstyled">
+      @for (contact of contacts(); track contact.label) {
+        <li class="about-contact">
+          @if (contact.icon; as icon) {
+            <span class="contact-icon" aria-hidden="true"><i [class]="icon"></i></span>
+          }
+          <span class="visually-hidden">{{ contact.label }}:</span>
+          @if (contact.href; as href) {
+            <a [href]="href" [attr.target]="targetFor(href)" rel="noopener">{{ contact.value }}</a>
+          } @else {
+            <span>{{ contact.value }}</span>
+          }
+        </li>
+      }
+    </ul>
+  </div>
 </app-section>

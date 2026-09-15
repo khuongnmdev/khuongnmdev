@@ -15,8 +15,8 @@ describe('SectionComponent', () => {
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
 
-    // The heading is visually hidden but must stay rendered, so screen
-    // readers and the tagged-PDF export still see it.
+    // The heading must be a real, rendered h2 in the DOM, so screen
+    // readers and the tagged-PDF export see the section structure.
     expect(compiled.querySelector('h2.section-title')?.textContent).toContain('Experience');
     expect(compiled.querySelector('section')?.id).toBe('experience');
   });

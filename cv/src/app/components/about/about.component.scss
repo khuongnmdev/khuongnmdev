@@ -1,0 +1,62 @@
+.about {
+  max-width: 48rem;
+}
+
+.about-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.about-headline {
+  color: var(--c-secondary);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.about-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 2rem;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+}
+
+.about-summary {
+  margin-bottom: 1.5rem;
+
+  li {
+    margin-bottom: 0.375rem;
+  }
+}
+
+.about-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin-bottom: 0;
+}
+
+.about-contact {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+
+  .contact-icon {
+    color: var(--c-secondary);
+    width: 1.25rem;
+    display: inline-flex;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration-color: var(--c-secondary);
+
+    &:hover {
+      color: var(--c-secondary);
+    }
+  }
+}

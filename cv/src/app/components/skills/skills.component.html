@@ -1,3 +1,27 @@
-<app-section title="Skills" id="skills">
-  Skills content
+<app-section [title]="title()" id="skills">
+  <div class="skills-grid">
+    @for (group of groups(); track group.category) {
+      <div class="skill-group">
+        <h3 class="skill-category">{{ group.category }}</h3>
+        <ul class="skill-list">
+          @for (item of group.items; track item.name) {
+            <li class="skill-item">
+              <span class="skill-name">{{ item.name }}</span>
+              @if (item.level; as level) {
+                <span
+                  class="skill-level"
+                  role="img"
+                  [attr.aria-label]="'Level ' + level + ' of ' + levelSteps.length"
+                >
+                  @for (step of levelSteps; track step) {
+                    <span class="level-dot" [class.filled]="step <= level"></span>
+                  }
+                </span>
+              }
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
 </app-section>

@@ -1,3 +1,12 @@
-<app-section title="Hobbies" id="hobbies">
-  Hobbies content
+<app-section [title]="title()" id="hobbies">
+  <ul class="hobby-list">
+    @for (hobby of hobbies(); track hobby.name) {
+      <li class="hobby-chip" [attr.title]="hobby.description || null">
+        @if (hobby.icon; as icon) {
+          <span class="hobby-icon" aria-hidden="true"><i [class]="icon"></i></span>
+        }
+        {{ hobby.name }}
+      </li>
+    }
+  </ul>
 </app-section>

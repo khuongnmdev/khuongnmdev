@@ -5,24 +5,15 @@
   padding: 5rem 3rem;
 
   .section-title {
-    // Visually hidden, but kept rendered so the heading stays in the
-    // accessibility tree — for screen readers, SEO, and the tagged-PDF
-    // structure (unlike the former `visibility: hidden; height: 0`).
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    border: 0;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
+    color: var(--c-secondary);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
   }
 
   .section-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    // Real content reads top-down; the remaining flex height only keeps a
+    // short section from collapsing the 100vh block.
     flex: 1 1 auto;
   }
 }

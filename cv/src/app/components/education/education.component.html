@@ -1,3 +1,28 @@
-<app-section title="Education" id="education">
-  Education content
+<app-section [title]="title()" id="education">
+  <div class="education-list">
+    @for (entry of entries(); track entry.school + entry.startDate) {
+      <article class="education-item">
+        <h3 class="education-school">{{ entry.school }}</h3>
+        <p class="education-degree">
+          <span>{{ entry.degree }}</span>
+          @if (entry.field; as field) {
+            <span class="education-field">{{ field }}</span>
+          }
+        </p>
+        <p class="education-meta">
+          <span>{{ entry.startDate | dateRange: entry.endDate }}</span>
+          @if (entry.gpa; as gpa) {
+            <span>GPA: {{ gpa }}</span>
+          }
+        </p>
+        @if (entry.highlights?.length) {
+          <ul class="education-highlights">
+            @for (highlight of entry.highlights; track highlight) {
+              <li>{{ highlight }}</li>
+            }
+          </ul>
+        }
+      </article>
+    }
+  </div>
 </app-section>
