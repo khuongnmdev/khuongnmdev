@@ -9,6 +9,7 @@
 
     @media only screen and (min-width: 768px) {
       width: 17rem;
+      transition: width 0.3s ease-in-out;
     }
   }
 
@@ -16,6 +17,20 @@
 
     @media only screen and (min-width: 768px) {
       margin-left: 17rem;
+      transition: margin-left 0.3s ease-in-out;
+    }
+  }
+
+  // Desktop icon rail: the panel narrows and the content margin follows.
+  &.sidebar-collapsed {
+    @media only screen and (min-width: 768px) {
+      .app-nav-bar {
+        width: 4.5rem;
+      }
+
+      .main-container {
+        margin-left: 4.5rem;
+      }
     }
   }
 }

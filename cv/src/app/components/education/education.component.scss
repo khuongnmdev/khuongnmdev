@@ -20,7 +20,7 @@
   margin-bottom: 0.25rem;
 
   .education-field {
-    color: #6c757d;
+    color: var(--c-text-muted);
     font-weight: 400;
   }
 }
@@ -29,7 +29,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem 1.5rem;
-  color: #6c757d;
+  color: var(--c-text-muted);
   font-size: 0.9375rem;
   margin-bottom: 0.5rem;
 }

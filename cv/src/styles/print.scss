@@ -34,6 +34,12 @@ app-print-cv {
 // ---------------------------------------------------------------------------
 
 .print-cv {
+  // The sheet is always the light palette: the tokens are pinned locally so
+  // the web theme's `data-theme` switch can never reach the paper — nor the
+  // on-screen preview of it.
+  --c-primary: #060504;
+  --c-secondary: #f0690b;
+
   width: 182mm;
   margin: 0 auto;
   color: #1a1a1a;
@@ -298,7 +304,9 @@ app-print-cv {
     display: flex;
     align-items: center;
     gap: 1rem;
-    background-color: var(--bg-primary);
+    // Literal on purpose: `--bg-primary` follows the web theme, and this
+    // toolbar must stay the same dark chrome in both.
+    background-color: #060504;
     color: #ffffff;
     padding: 0.75rem 1.25rem;
     margin-bottom: 1.5rem;
@@ -327,7 +335,8 @@ app-print-cv {
     }
 
     .toolbar-export {
-      background-color: var(--bg-secondary);
+      // Literal for the same reason as the toolbar background above.
+      background-color: #f0690b;
       color: #ffffff;
       font-weight: 700;
       border: 0;
