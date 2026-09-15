@@ -8,7 +8,8 @@ import {
   linkedSignal,
   signal,
 } from '@angular/core';
-import { DEFAULT_MENU, MenuItem } from '@models/menu-item';
+import type { SectionConfig } from '@core/models/cv-data.model';
+import { CvDataService } from '@core/services/cv-data.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -19,11 +20,19 @@ import { DEFAULT_MENU, MenuItem } from '@models/menu-item';
 })
 export class NavBarComponent {
   /** Section id currently in view, driven by the scroll-spy in `AppComponent`. */
-  readonly activeSection = input<MenuItem['id']>('');
+  readonly activeSection = input<string>('');
 
   private readonly document = inject(DOCUMENT);
+  private readonly cvData = inject(CvDataService);
 
-  protected readonly menuList = signal<MenuItem[]>(DEFAULT_MENU);
+  protected readonly profile = this.cvData.profile;
+
+  /**
+   * The menu is the enabled sections in `order` — the data's `sections[]` is
+   * the single source of menu contents, so adding or reordering a section is
+   * a JSON edit.
+   */
+  protected readonly menuList = this.cvData.sections;
 
   /**
    * Follows `activeSection`, but is also set locally on click so the highlight
@@ -37,7 +46,7 @@ export class NavBarComponent {
     this.isShowMenu.update((isShown) => !isShown);
   }
 
-  protected navigateTo(item: MenuItem): void {
+  protected navigateTo(item: SectionConfig): void {
     this.activatedItem.set(item.id);
     // Close the mobile menu so the selected section is not hidden behind it.
     this.isShowMenu.set(false);

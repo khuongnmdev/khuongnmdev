@@ -1,10 +1,28 @@
 <div class="app-container">
   <app-nav-bar [activeSection]="currentActiveSection()" class="app-nav-bar"></app-nav-bar>
-  <div class="main-container">
-    <app-about appActiveSection (sectionIntersecting)="onSectionActive('about', $event)"></app-about>
-    <app-experience appActiveSection (sectionIntersecting)="onSectionActive('experience', $event)"></app-experience>
-    <app-education appActiveSection (sectionIntersecting)="onSectionActive('education', $event)"></app-education>
-    <app-skills appActiveSection (sectionIntersecting)="onSectionActive('skills', $event)"></app-skills>
-    <app-hobbies appActiveSection (sectionIntersecting)="onSectionActive('hobbies', $event)"></app-hobbies>
-  </div>
+  <main class="main-container">
+    <!--
+      Sections render in the order the data dictates; disabled ids never get
+      here because `sections()` filters them out.
+
+      Scroll-spy: activation triggers when a section overlaps a thin band
+      around the middle of the viewport (rootMargin trims the viewport to
+      that band, threshold 0 fires on any overlap). A ratio-based threshold
+      would break here: a section taller than the viewport can never reach a
+      0.5 intersection ratio.
+    -->
+    @for (section of sections(); track section.id) {
+      @if (componentFor(section.id); as sectionComponent) {
+        <div
+          class="section-host"
+          appActiveSection
+          rootMargin="-45% 0px -45% 0px"
+          [threshold]="0"
+          (sectionIntersecting)="onSectionActive(section.id, $event)"
+        >
+          <ng-container [ngComponentOutlet]="sectionComponent" />
+        </div>
+      }
+    }
+  </main>
 </div>
