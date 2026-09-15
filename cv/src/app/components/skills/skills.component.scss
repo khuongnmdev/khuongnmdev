@@ -2,7 +2,13 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
   gap: 2.5rem 3.5rem;
-  max-width: 52rem;
+  max-width: calc(100% - 10rem);
+}
+
+.skill-group {
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  background-color: var(--bg-surface);
 }
 
 .skill-category {
