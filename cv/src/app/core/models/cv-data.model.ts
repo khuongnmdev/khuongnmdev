@@ -197,6 +197,8 @@ export interface SectionConfig {
   order: number;
   enabled: boolean;
   showInPrint: boolean;
+  /** Menu icon class, for example `"fa-solid fa-user"`. Themes may ignore it. */
+  icon?: string;
 }
 
 export interface CvData {

@@ -391,28 +391,32 @@
       "title": "About",
       "order": 1,
       "enabled": true,
-      "showInPrint": true
+      "showInPrint": true,
+      "icon": "fa-solid fa-user"
     },
     {
       "id": "experience",
       "title": "Experience",
       "order": 2,
       "enabled": true,
-      "showInPrint": true
+      "showInPrint": true,
+      "icon": "fa-solid fa-briefcase"
     },
     {
       "id": "education",
       "title": "Education",
       "order": 3,
       "enabled": true,
-      "showInPrint": true
+      "showInPrint": true,
+      "icon": "fa-solid fa-graduation-cap"
     },
     {
       "id": "skills",
       "title": "Skills",
       "order": 4,
       "enabled": true,
-      "showInPrint": true
+      "showInPrint": true,
+      "icon": "fa-solid fa-code"
     },
     {
       "id": "projects",
@@ -440,7 +444,8 @@
       "title": "Hobbies",
       "order": 8,
       "enabled": false,
-      "showInPrint": false
+      "showInPrint": false,
+      "icon": "fa-solid fa-heart"
     }
   ]
 }
