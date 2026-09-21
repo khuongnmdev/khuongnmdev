@@ -19,9 +19,8 @@
       [attr.aria-current]="option.active ? 'page' : null"
       [title]="option.title"
     >
-      <span class="lang-code" aria-hidden="true" [attr.lang]="option.locale">{{
-        option.code
-      }}</span>&ngsp;
+      <span class="lang-code" aria-hidden="true" [attr.lang]="option.locale">{{ option.code }}</span
+      >&ngsp;
       <span class="visually-hidden">{{ option.title }}</span>
     </a>
   }

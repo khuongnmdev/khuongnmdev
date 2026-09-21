@@ -73,7 +73,10 @@ describe('PageMetaService', () => {
     apply('en');
     const english = [TestBed.inject(Title).getTitle(), meta.getTag('name="description"')?.content];
     apply('vi');
-    const vietnamese = [TestBed.inject(Title).getTitle(), meta.getTag('name="description"')?.content];
+    const vietnamese = [
+      TestBed.inject(Title).getTitle(),
+      meta.getTag('name="description"')?.content,
+    ];
     expect(vietnamese[0]).not.toBe(english[0]);
     expect(vietnamese[1]).not.toBe(english[1]);
   });

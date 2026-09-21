@@ -10,7 +10,8 @@
 
     <p class="about-facts">
       @if (profile().location; as location) {
-        <span class="about-fact">{{ location }}</span>&ngsp;
+        <span class="about-fact">{{ location }}</span
+        >&ngsp;
       }
       <span class="about-fact">{{
         ui().yearsOfExperience | interpolate: { years: experienceYears() }
