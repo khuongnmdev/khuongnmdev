@@ -231,6 +231,8 @@ export const UI_STRING_KEYS = [
   'collapseMenu',
   'openMenu',
   'closeMenu',
+  'sectionNavigation',
+  'sectionMenu',
   'switchLight',
   'switchDark',
   'exportPdf',

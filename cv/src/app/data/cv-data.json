@@ -17,6 +17,8 @@
     "collapseMenu": "Collapse menu",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
+    "sectionNavigation": "Sections",
+    "sectionMenu": "Section menu",
     "switchLight": "Switch to light theme",
     "switchDark": "Switch to dark theme",
     "exportPdf": "Export CV as PDF",
