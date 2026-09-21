@@ -61,14 +61,23 @@ describe('LanguageToggleComponent', () => {
     expect(link('VI').hasAttribute('aria-current')).toBe(false);
   });
 
-  it('should link each segment to the same page in its language, with lang and hreflang', async () => {
+  it('should link each segment to the same page in its language, with hreflang', async () => {
     const { link } = await open('/');
     expect(link('EN').getAttribute('href')).toBe('/');
     expect(link('VI').getAttribute('href')).toBe('/vi');
     expect(link('VI').getAttribute('hreflang')).toBe('vi');
-    expect(link('VI').getAttribute('lang')).toBe('vi');
     expect(link('EN').getAttribute('hreflang')).toBe('en');
-    expect(link('EN').getAttribute('lang')).toBe('en');
+  });
+
+  it('should mark only the visible code with the target language', async () => {
+    const { link } = await open('/');
+    expect(link('VI').querySelector('.lang-code')?.getAttribute('lang')).toBe('vi');
+    expect(link('EN').querySelector('.lang-code')?.getAttribute('lang')).toBe('en');
+    // The link's title and hidden label are English text on an English page,
+    // so neither the link nor the label may claim the target language.
+    expect(link('VI').hasAttribute('lang')).toBe(false);
+    expect(link('EN').hasAttribute('lang')).toBe(false);
+    expect(link('VI').querySelector('.visually-hidden')?.hasAttribute('lang')).toBe(false);
   });
 
   it('should name each link in the language of the page being viewed', async () => {
@@ -76,8 +85,6 @@ describe('LanguageToggleComponent', () => {
     expect(english.link('VI').getAttribute('title')).toBe('View in Vietnamese');
     const label = english.link('VI').querySelector('.visually-hidden')!;
     expect(label.textContent?.trim()).toBe('View in Vietnamese');
-    // The page language, not the target language: the name is English text.
-    expect(label.getAttribute('lang')).toBe('en');
   });
 
   it('should switch state and names on a Vietnamese page', async () => {
@@ -87,7 +94,12 @@ describe('LanguageToggleComponent', () => {
     expect(link('EN').classList).not.toContain('active');
     expect(link('EN').getAttribute('href')).toBe('/');
     expect(link('EN').getAttribute('title')).toBe('Xem bằng tiếng Anh');
-    expect(link('EN').querySelector('.visually-hidden')?.getAttribute('lang')).toBe('vi');
+    expect(link('EN').querySelector('.visually-hidden')?.textContent?.trim()).toBe(
+      'Xem bằng tiếng Anh',
+    );
+    // Vietnamese text inside a link that must not say it is English.
+    expect(link('EN').hasAttribute('lang')).toBe(false);
+    expect(link('EN').querySelector('.lang-code')?.getAttribute('lang')).toBe('en');
     expect(root.querySelector('.lang-toggle')?.getAttribute('aria-label')).toBe('Ngôn ngữ');
   });
 
