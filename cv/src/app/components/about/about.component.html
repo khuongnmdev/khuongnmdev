@@ -1,6 +1,8 @@
-<app-section [title]="title()" id="about">
+<!-- The profile name is the page's only h1, so the section title above it
+     stays a label: an h2 before the h1 would start the outline at level two. -->
+<app-section [title]="title()" [titleIsHeading]="false" id="about">
   <div class="about">
-    <h3 class="about-name">{{ profile().fullName }}</h3>
+    <h1 class="about-name">{{ profile().fullName }}</h1>
     <p class="about-headline">{{ profile().headline }}</p>
 
     <p class="about-facts">
