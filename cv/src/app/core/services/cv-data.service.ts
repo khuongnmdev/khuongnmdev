@@ -1,8 +1,13 @@
 import { computed, Injectable, signal } from '@angular/core';
-import type { CvData, Profile, SectionConfig, UiStrings } from '@core/models/cv-data.model';
+import type {
+  CvData,
+  Profile,
+  SectionConfig,
+  SectionId,
+  UiStrings,
+} from '@core/models/cv-data.model';
 import { validateCvData } from '@core/validators/cv-data.validator';
 import { CV_DATA } from '@data/cv-data';
-import { CV_DATA_VI } from '@data/cv-data.vi';
 
 /** Result of a `loadFrom` call. `errors` name the offending paths. */
 export type LoadResult = { ok: true } | { ok: false; errors: string[] };
@@ -15,7 +20,6 @@ export type LoadResult = { ok: true } | { ok: false; errors: string[] };
 @Injectable({ providedIn: 'root' })
 export class CvDataService {
   private readonly state = signal<CvData>(CV_DATA);
-  private currentLanguage: 'en' | 'vi' = 'en';
 
   /** The full dataset, read-only, seeded from the bundled JSON. */
   readonly data = this.state.asReadonly();
@@ -36,16 +40,14 @@ export class CvDataService {
   );
 
   /**
-   * Switches language by setting the state to the bundled data.
+   * Heading of a section: its `sections[]` title, or the interface's default
+   * title for that id when the data carries no entry for it.
    */
-  switchLanguage(): void {
-    if (this.currentLanguage === 'en') {
-      this.state.set(CV_DATA_VI);
-      this.currentLanguage = 'vi';
-    } else {
-      this.state.set(CV_DATA);
-      this.currentLanguage = 'en';
-    }
+  sectionTitle(id: SectionId): string {
+    return (
+      this.data().sections.find((section) => section.id === id)?.title ??
+      this.ui().sectionTitles[id]
+    );
   }
 
   /**
@@ -59,7 +61,6 @@ export class CvDataService {
       return { ok: false, errors: result.errors };
     }
     this.state.set(result.data);
-    this.currentLanguage = result.data.meta.locale === 'vi' ? 'vi' : 'en';
     return { ok: true };
   }
 }

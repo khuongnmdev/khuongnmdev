@@ -6,13 +6,51 @@
   },
   "ui": {
     "present": "Hiện tại",
-    "yearsOfExperience": "năm kinh nghiệm",
+    "yearsOfExperience": "{years} năm kinh nghiệm",
+    "printLead": "{headline} với {years} năm kinh nghiệm.",
+    "teamSize": "Nhóm {count} người",
+    "gpa": "GPA",
+    "technologies": "Công nghệ",
+    "techStack": "Công nghệ sử dụng",
+    "skillLevel": "Mức {level} trên {max}",
     "expandMenu": "Mở rộng menu",
     "collapseMenu": "Thu gọn menu",
+    "openMenu": "Mở menu",
+    "closeMenu": "Đóng menu",
     "switchLight": "Chuyển sang giao diện sáng",
     "switchDark": "Chuyển sang giao diện tối",
     "exportPdf": "Xuất CV dạng PDF",
-    "switchLanguage": "Switch to English"
+    "language": "Ngôn ngữ",
+    "printBack": "Quay lại trang web",
+    "printTemplate": "Mẫu",
+    "printTemplateClassic": "Cổ điển",
+    "printTemplateCompact": "Gọn",
+    "printExport": "Xuất PDF",
+    "printPreviewNote": "Bản xem trước là một trang liền mạch khổ A4 — ranh giới giữa các trang chỉ hiện ra trong bản xem trước khi in của trình duyệt.",
+    "metaDescription": "CV của {name} — {headline} tại {location}.",
+    "metaDescriptionNoLocation": "CV của {name} — {headline}.",
+    "metaKeywords": "hồ sơ xin việc, CV",
+    "employmentTypes": {
+      "full-time": "Toàn thời gian",
+      "part-time": "Bán thời gian",
+      "freelance": "Tự do",
+      "contract": "Hợp đồng",
+      "internship": "Thực tập"
+    },
+    "sectionTitles": {
+      "about": "Giới thiệu",
+      "experience": "Kinh nghiệm",
+      "education": "Học vấn",
+      "skills": "Kỹ năng",
+      "projects": "Dự án",
+      "certifications": "Chứng chỉ",
+      "languages": "Ngoại ngữ",
+      "hobbies": "Sở thích"
+    },
+    "viewInLanguage": {
+      "en": "Xem bằng tiếng Anh",
+      "vi": "Xem bằng tiếng Việt"
+    }
   },
   "profile": {
     "fullName": "Nguyen Manh Khuong",

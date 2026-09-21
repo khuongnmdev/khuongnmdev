@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import type { SectionId } from '@core/models/cv-data.model';
 import { DateRangePipe, yearsOfExperience } from '@core/pipes/date-range.pipe';
+import { InterpolatePipe } from '@core/pipes/interpolate.pipe';
 import { CvDataService } from '@core/services/cv-data.service';
 
 /** The available print template variants. `classic` is the default. */
@@ -42,7 +43,7 @@ const RENDERABLE_SECTIONS: ReadonlySet<SectionId> = new Set([
  */
 @Component({
   selector: 'app-print-cv',
-  imports: [DateRangePipe],
+  imports: [DateRangePipe, InterpolatePipe],
   templateUrl: './print-cv.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

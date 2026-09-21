@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   ElementRef,
   inject,
@@ -11,6 +12,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { Meta } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
+import { CvDataService } from '@core/services/cv-data.service';
 import { PrintService } from '@core/services/print.service';
 import { ROBOTS_INDEXABLE } from '@data/meta';
 import {
@@ -43,6 +45,7 @@ import {
 export class PrintPageComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly cvData = inject(CvDataService);
   private readonly printService = inject(PrintService);
   private readonly meta = inject(Meta);
   private readonly destroyRef = inject(DestroyRef);
@@ -50,7 +53,15 @@ export class PrintPageComponent {
   /** The sheet wrapper — the scope whose images must decode before printing. */
   private readonly sheet = viewChild.required<ElementRef<HTMLElement>>('sheet');
 
+  protected readonly ui = this.cvData.ui;
+
   protected readonly templates = PRINT_TEMPLATES;
+
+  /** Typed per template, so adding one without a label fails to compile. */
+  protected readonly templateLabels = computed<Record<PrintTemplate, string>>(() => ({
+    classic: this.ui().printTemplateClassic,
+    compact: this.ui().printTemplateCompact,
+  }));
 
   /** Query parameter mapped straight onto a signal, junk values normalized. */
   protected readonly template = toSignal(

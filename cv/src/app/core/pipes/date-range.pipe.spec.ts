@@ -4,15 +4,16 @@ describe('DateRangePipe', () => {
   const pipe = new DateRangePipe();
 
   it('formats a closed range as MM/YYYY – MM/YYYY', () => {
-    expect(pipe.transform('2021-04', '2023-07')).toBe('04/2021 – 07/2023');
+    expect(pipe.transform('2021-04', '2023-07', 'Present')).toBe('04/2021 – 07/2023');
   });
 
-  it('formats an open range with Present', () => {
-    expect(pipe.transform('2016-01', null)).toBe('01/2016 – Present');
+  it('formats an open range with the given present text', () => {
+    expect(pipe.transform('2016-01', null, 'Present')).toBe('01/2016 – Present');
+    expect(pipe.transform('2016-01', null, 'Hiện tại')).toBe('01/2016 – Hiện tại');
   });
 
   it('separates with an en dash, not a hyphen', () => {
-    const result = pipe.transform('2021-04', '2023-07');
+    const result = pipe.transform('2021-04', '2023-07', 'Present');
     expect(result).toContain(' – ');
     expect(result).not.toContain(' - ');
   });

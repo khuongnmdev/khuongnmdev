@@ -12,7 +12,7 @@
         <p class="education-meta">
           <span>{{ entry.startDate | dateRange: entry.endDate : ui().present }}</span>
           @if (entry.gpa; as gpa) {
-            <span>GPA: {{ gpa }}</span>
+            <span>{{ ui().gpa }}: {{ gpa }}</span>
           }
         </p>
         @if (entry.highlights?.length) {

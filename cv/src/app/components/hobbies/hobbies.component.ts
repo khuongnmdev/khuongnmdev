@@ -13,10 +13,7 @@ export class HobbiesComponent {
   private readonly cvData = inject(CvDataService);
 
   /** Section heading from the data, so a JSON edit renames it everywhere. */
-  protected readonly title = computed(
-    () =>
-      this.cvData.data().sections.find((section) => section.id === 'hobbies')?.title ?? 'Hobbies',
-  );
+  protected readonly title = computed(() => this.cvData.sectionTitle('hobbies'));
 
   /**
    * Web-visible hobbies. The dataset ships this empty (the section is

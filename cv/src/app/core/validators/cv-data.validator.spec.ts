@@ -1,3 +1,4 @@
+import { UI_STRING_KEYS, UI_STRING_MAPS, UI_STRING_PLACEHOLDERS } from '@core/models/cv-data.model';
 import { CV_DATA } from '@data/cv-data';
 import { validateCvData } from './cv-data.validator';
 
@@ -112,6 +113,73 @@ describe('validateCvData', () => {
     const data = clone();
     delete data.sections;
     expect(errorsOf(data)).toEqual(['sections: expected an array']);
+  });
+
+  describe('ui strings', () => {
+    it('rejects a missing ui block', () => {
+      const data = clone();
+      delete data.ui;
+      expect(errorsOf(data)).toEqual(['ui: expected an object']);
+    });
+
+    it('requires every key the model lists, as a non-empty string', () => {
+      // Driven by the model's key list: a key added there is enforced here
+      // without touching the validator.
+      for (const key of UI_STRING_KEYS) {
+        const missing = clone();
+        delete missing.ui[key];
+        expect(errorsOf(missing)).toEqual([`ui.${key}: expected a non-empty string`]);
+      }
+      const empty = clone();
+      empty.ui.gpa = '';
+      expect(errorsOf(empty)).toEqual(['ui.gpa: expected a non-empty string']);
+    });
+
+    it('rejects a sentence template that lost a placeholder', () => {
+      const data = clone();
+      data.ui.printLead = '{headline} with many years of experience.';
+      data.ui.teamSize = 'Team of {cout}';
+      expect(errorsOf(data)).toEqual([
+        'ui.printLead: missing the {years} placeholder',
+        'ui.teamSize: missing the {count} placeholder',
+      ]);
+    });
+
+    it('checks every placeholder the model declares', () => {
+      for (const [key, names] of Object.entries(UI_STRING_PLACEHOLDERS)) {
+        for (const name of names) {
+          const data = clone();
+          data.ui[key] = data.ui[key].replace(`{${name}}`, name);
+          expect(errorsOf(data)).toEqual([`ui.${key}: missing the {${name}} placeholder`]);
+        }
+      }
+    });
+
+    it('requires a label for every employment type', () => {
+      const data = clone();
+      delete data.ui.employmentTypes.internship;
+      data.ui.employmentTypes['full-time'] = '';
+      expect(errorsOf(data)).toEqual([
+        'ui.employmentTypes.full-time: expected a non-empty string',
+        'ui.employmentTypes.internship: expected a non-empty string',
+      ]);
+    });
+
+    it('checks every nested label map against its union', () => {
+      for (const [mapKey, keys] of Object.entries(UI_STRING_MAPS)) {
+        const missingMap = clone();
+        delete missingMap.ui[mapKey];
+        expect(errorsOf(missingMap)).toEqual([`ui.${mapKey}: expected an object`]);
+
+        for (const key of keys) {
+          const missingLabel = clone();
+          delete missingLabel.ui[mapKey][key];
+          expect(errorsOf(missingLabel)).toEqual([
+            `ui.${mapKey}.${key}: expected a non-empty string`,
+          ]);
+        }
+      }
+    });
   });
 
   it('collects every error instead of stopping at the first', () => {

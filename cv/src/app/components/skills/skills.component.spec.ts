@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { CvDataService } from '@core/services/cv-data.service';
+import { CV_DATA_VI } from '@data/cv-data.vi';
 import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
 import { SkillsComponent } from './skills.component';
 
@@ -56,5 +57,14 @@ describe('SkillsComponent', () => {
     const unrated = items[1];
     expect(unrated.textContent).toContain('Unrated Tool');
     expect(unrated.querySelector('.skill-level')).toBeNull();
+  });
+
+  it('should name the level indicator in the dataset language', async () => {
+    const service = TestBed.inject(CvDataService);
+    const data = structuredClone(service.data());
+    data.ui = structuredClone(CV_DATA_VI.ui);
+    service.loadFrom(data);
+    const compiled = await render();
+    expect(compiled.querySelector('.skill-level')?.getAttribute('aria-label')).toBe('Mức 4 trên 5');
   });
 });

@@ -3,7 +3,11 @@ import {
   EMPLOYMENT_TYPES,
   SECTION_IDS,
   SKILL_LEVELS,
+  UI_STRING_KEYS,
+  UI_STRING_MAPS,
+  UI_STRING_PLACEHOLDERS,
   type CvData,
+  type UiStringKey,
 } from '@core/models/cv-data.model';
 
 /**
@@ -133,24 +137,41 @@ function validateMeta(meta: unknown, errors: string[]): void {
   }
 }
 
+/**
+ * Interface strings: every key the model lists must be a non-empty string,
+ * every sentence template must keep its placeholders, and every nested label
+ * map must label each value of its union.
+ */
 function validateUi(ui: unknown, errors: string[]): void {
   if (!isRecord(ui)) {
     errors.push('ui: expected an object');
     return;
   }
-  const requiredStrings = [
-    'present',
-    'yearsOfExperience',
-    'expandMenu',
-    'collapseMenu',
-    'switchLight',
-    'switchDark',
-    'exportPdf',
-    'switchLanguage',
-  ];
-  for (const key of requiredStrings) {
-    if (typeof ui[key] !== 'string') {
-      errors.push(`ui.${key}: expected a string`);
+  for (const key of UI_STRING_KEYS) {
+    const value = ui[key];
+    if (typeof value !== 'string' || value.length === 0) {
+      errors.push(`ui.${key}: expected a non-empty string`);
+      continue;
+    }
+    const required: readonly string[] =
+      (UI_STRING_PLACEHOLDERS as Partial<Record<UiStringKey, readonly string[]>>)[key] ?? [];
+    for (const name of required) {
+      if (!value.includes(`{${name}}`)) {
+        errors.push(`ui.${key}: missing the {${name}} placeholder`);
+      }
+    }
+  }
+  for (const [mapKey, keys] of Object.entries(UI_STRING_MAPS)) {
+    const map = ui[mapKey];
+    if (!isRecord(map)) {
+      errors.push(`ui.${mapKey}: expected an object`);
+      continue;
+    }
+    for (const key of keys) {
+      const label = map[key];
+      if (typeof label !== 'string' || label.length === 0) {
+        errors.push(`ui.${mapKey}.${key}: expected a non-empty string`);
+      }
     }
   }
 }

@@ -51,15 +51,6 @@
       <i class="fa-solid fa-moon" aria-hidden="true"></i>
       }
     </button>
-    <button
-      type="button"
-      class="btn btn-icon btn-lang"
-      (click)="switchLanguage()"
-      [attr.aria-label]="ui().switchLanguage"
-      [title]="ui().switchLanguage"
-    >
-      <i class="fa-solid fa-language" aria-hidden="true"></i>
-    </button>
     <a
       class="btn btn-icon btn-export"
       routerLink="/print"
@@ -71,11 +62,18 @@
     </a>
   </div>
 
-  <button class="btn btn-menu" (click)="toggleMenu()">
+  <button
+    type="button"
+    class="btn btn-menu"
+    (click)="toggleMenu()"
+    [attr.aria-expanded]="isShowMenu()"
+    [attr.aria-label]="isShowMenu() ? ui().closeMenu : ui().openMenu"
+    [title]="isShowMenu() ? ui().closeMenu : ui().openMenu"
+  >
     @if (isShowMenu()) {
-    <i class="fa-solid fa-circle-xmark"></i>
+    <i class="fa-solid fa-circle-xmark" aria-hidden="true"></i>
     } @else {
-    <i class="fa-solid fa-bars"></i>
+    <i class="fa-solid fa-bars" aria-hidden="true"></i>
     }
   </button>
 </div>

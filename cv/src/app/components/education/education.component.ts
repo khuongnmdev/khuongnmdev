@@ -16,11 +16,7 @@ export class EducationComponent {
   protected readonly ui = this.cvData.ui;
 
   /** Section heading from the data, so a JSON edit renames it everywhere. */
-  protected readonly title = computed(
-    () =>
-      this.cvData.data().sections.find((section) => section.id === 'education')?.title ??
-      'Education',
-  );
+  protected readonly title = computed(() => this.cvData.sectionTitle('education'));
 
   /** Web-visible entries, newest first regardless of array position. */
   protected readonly entries = computed(() =>

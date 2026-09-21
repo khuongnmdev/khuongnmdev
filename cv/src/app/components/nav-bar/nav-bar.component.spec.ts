@@ -125,6 +125,23 @@ describe('NavBarComponent', () => {
     expect(link.querySelector('i.fa-file-pdf')).toBeTruthy();
   });
 
+  it('should give the mobile menu button an accessible name that follows its state', async () => {
+    const fixture = TestBed.createComponent(NavBarComponent);
+    await fixture.whenStable();
+    const button = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>(
+      '.btn-menu',
+    )!;
+    expect(button.getAttribute('type')).toBe('button');
+    expect(button.getAttribute('aria-label')).toBe('Open menu');
+    expect(button.getAttribute('aria-expanded')).toBe('false');
+
+    button.click();
+    await fixture.whenStable();
+    expect(button.getAttribute('aria-label')).toBe('Close menu');
+    expect(button.getAttribute('title')).toBe('Close menu');
+    expect(button.getAttribute('aria-expanded')).toBe('true');
+  });
+
   it('should toggle the collapsed rail and persist the choice', async () => {
     const fixture = TestBed.createComponent(NavBarComponent);
     await fixture.whenStable();

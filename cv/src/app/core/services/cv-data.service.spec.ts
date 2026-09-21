@@ -59,4 +59,14 @@ describe('CvDataService', () => {
     }
     expect(service.data()).toEqual(CV_DATA);
   });
+
+  it('titles a section from the data, falling back to the interface default', () => {
+    const data = structuredClone(CV_DATA);
+    data.sections = [
+      { id: 'skills', title: 'Toolbox', order: 1, enabled: true, showInPrint: true },
+    ];
+    service.loadFrom(data);
+    expect(service.sectionTitle('skills')).toBe('Toolbox');
+    expect(service.sectionTitle('hobbies')).toBe(data.ui.sectionTitles.hobbies);
+  });
 });

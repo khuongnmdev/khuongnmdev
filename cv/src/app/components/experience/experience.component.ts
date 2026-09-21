@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { DateRangePipe } from '@core/pipes/date-range.pipe';
+import { InterpolatePipe } from '@core/pipes/interpolate.pipe';
 import { CvDataService } from '@core/services/cv-data.service';
 import { SectionComponent } from '../section/section.component';
 
 @Component({
   selector: 'app-experience',
-  imports: [SectionComponent, DateRangePipe],
+  imports: [SectionComponent, DateRangePipe, InterpolatePipe],
   templateUrl: './experience.component.html',
   styleUrl: './experience.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,11 +17,7 @@ export class ExperienceComponent {
   protected readonly ui = this.cvData.ui;
 
   /** Section heading from the data, so a JSON edit renames it everywhere. */
-  protected readonly title = computed(
-    () =>
-      this.cvData.data().sections.find((section) => section.id === 'experience')?.title ??
-      'Experience',
-  );
+  protected readonly title = computed(() => this.cvData.sectionTitle('experience'));
 
   /**
    * Web-visible entries, newest first. Sorting on `startDate` — not array

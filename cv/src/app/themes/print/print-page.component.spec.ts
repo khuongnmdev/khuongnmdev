@@ -29,6 +29,25 @@ describe('PrintPageComponent', () => {
     }).compileComponents();
   });
 
+  it('should render the toolbar from the English interface strings', async () => {
+    const harness = await RouterTestingHarness.create('/print');
+    const compiled = harness.routeNativeElement!;
+    const back = compiled.querySelector('.toolbar-back')!;
+    expect(back.textContent?.trim()).toBe('Back to the website');
+    expect(back.getAttribute('href')).toBe('/');
+    expect(compiled.querySelector('.toolbar-field')?.textContent).toContain('Template');
+    const options = Array.from(compiled.querySelectorAll('option')).map((option) => [
+      option.value,
+      option.textContent?.trim(),
+    ]);
+    expect(options).toEqual([
+      ['classic', 'Classic'],
+      ['compact', 'Compact'],
+    ]);
+    expect(compiled.querySelector('.toolbar-export')?.textContent?.trim()).toBe('Export PDF');
+    expect(compiled.querySelector('.print-hint')?.textContent).toContain('A4');
+  });
+
   it('should render the classic sheet when no template is requested', async () => {
     const harness = await RouterTestingHarness.create('/print');
     const compiled = harness.routeNativeElement!;

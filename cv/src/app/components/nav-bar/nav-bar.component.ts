@@ -72,10 +72,6 @@ export class NavBarComponent {
     this.isShowMenu.update((isShown) => !isShown);
   }
 
-  protected switchLanguage(): void {
-    this.cvData.switchLanguage();
-  }
-
   protected navigateTo(item: SectionConfig): void {
     this.activatedItem.set(item.id);
     // Close the mobile menu so the selected section is not hidden behind it.

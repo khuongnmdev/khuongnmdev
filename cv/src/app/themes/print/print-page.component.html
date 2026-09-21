@@ -1,8 +1,8 @@
 <div class="print-page">
   <header class="print-toolbar screen-only">
-    <a class="toolbar-back" routerLink="/">Back to the website</a>
+    <a class="toolbar-back" routerLink="/">{{ ui().printBack }}</a>
     <label class="toolbar-field">
-      Template
+      {{ ui().printTemplate }}
       <select
         class="form-select form-select-sm"
         [value]="template()"
@@ -10,20 +10,17 @@
       >
         @for (option of templates; track option) {
           <option [value]="option" [attr.selected]="option === template() ? '' : null">
-            {{ option }}
+            {{ templateLabels()[option] }}
           </option>
         }
       </select>
     </label>
     <button type="button" class="toolbar-export" [disabled]="exporting()" (click)="exportPdf()">
-      Export PDF
+      {{ ui().printExport }}
     </button>
   </header>
 
-  <p class="print-hint screen-only">
-    The preview is one continuous sheet at A4 width — page boundaries appear in the browser's print
-    preview.
-  </p>
+  <p class="print-hint screen-only">{{ ui().printPreviewNote }}</p>
 
   <div class="print-sheet" #sheet>
     <app-print-cv [template]="template()" />

@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { CvDataService } from '@core/services/cv-data.service';
+import { CV_DATA_VI } from '@data/cv-data.vi';
 import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
 import { AboutComponent } from './about.component';
 
@@ -54,6 +55,16 @@ describe('AboutComponent', () => {
     // The figure is derived from careerStartDate at runtime, so only its
     // shape is pinned — a hardcoded number here would rot within a year.
     expect(compiled.textContent).toMatch(/\d+\+ years of experience/);
+  });
+
+  it('should phrase the years of experience with the dataset language template', async () => {
+    const service = TestBed.inject(CvDataService);
+    const data = structuredClone(service.data());
+    data.ui = structuredClone(CV_DATA_VI.ui);
+    service.loadFrom(data);
+    const compiled = await render();
+    expect(compiled.textContent).toMatch(/\d+\+ năm kinh nghiệm/);
+    expect(compiled.textContent).not.toContain('years of experience');
   });
 
   it('should render every summary bullet as a list item', async () => {
