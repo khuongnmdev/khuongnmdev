@@ -137,8 +137,8 @@
     }
   }
 
-  // The phone bar is one row, 76px tall, and each section leaves exactly
-  // that much room above its heading, so nothing in the row may wrap. The
+  // The phone bar is one row, 76px tall, and each section leaves only 5rem
+  // (80px) above its heading, so nothing in the row may wrap. The
   // avatar, the actions, and the menu button keep their size; the active
   // section's label is the only part that gives way, cut with an ellipsis
   // when the phone is too narrow for it (the full name stays in the link's
