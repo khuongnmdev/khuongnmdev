@@ -1,4 +1,4 @@
-<div class="nav-bar" [ngClass]="{ collapsed: isCollapsed() }">
+<div class="nav-bar" [ngClass]="{ collapsed: isCollapsed(), animating: isAnimating() }">
   <!-- Desktop only: shrinks the sidebar to an icon rail. Sits on the panel's
        right edge, so it must live inside the panel for the absolute offset. -->
   <button

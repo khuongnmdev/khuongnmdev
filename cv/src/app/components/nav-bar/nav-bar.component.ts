@@ -62,6 +62,9 @@ export class NavBarComponent {
   /** Desktop-only icon-rail state; shared so the page margin can follow. */
   protected readonly isCollapsed = this.sidebar.collapsed;
 
+  /** True only while a toggle resizes the panel; the avatar animates along. */
+  protected readonly isAnimating = this.sidebar.animating;
+
   protected readonly theme = this.themeService.theme;
 
   /**

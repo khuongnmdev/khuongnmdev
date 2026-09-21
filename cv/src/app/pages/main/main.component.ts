@@ -50,6 +50,9 @@ export class MainComponent {
    */
   protected readonly sidebarCollapsed = this.sidebar.collapsed;
 
+  /** Whether the sidebar is resizing after a toggle — the only time it animates. */
+  protected readonly sidebarAnimating = this.sidebar.animating;
+
   /**
    * Section currently in view. Must be a signal, not a plain field: the value
    * arrives from an IntersectionObserver callback, which fires outside
@@ -57,6 +60,18 @@ export class MainComponent {
    * render.
    */
   protected readonly currentActiveSection = signal('');
+
+  /**
+   * The content margin follows the panel width with the same transition, so
+   * its end marks the end of the resize. Transition events bubble: filter
+   * out everything else — the avatar, hover effects, the mobile menu.
+   */
+  protected onTransitionEnd(event: TransitionEvent): void {
+    const target = event.target as Element | null;
+    if (event.propertyName === 'margin-left' && target?.classList.contains('main-container')) {
+      this.sidebar.endAnimation();
+    }
+  }
 
   protected componentFor(id: SectionId): Type<unknown> | undefined {
     return SECTION_COMPONENTS[id];
