@@ -22,7 +22,7 @@ import {
   PRINT_TEMPLATES,
   PrintCvComponent,
   PrintTemplate,
-} from './print-cv.component';
+} from '@app/components/print-cv/print-cv.component';
 
 /**
  * The print preview route: the A4 sheet rendered on screen, with a
