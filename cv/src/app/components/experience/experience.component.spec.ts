@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import type { CvData } from '@core/models/cv-data.model';
+import { EMPLOYMENT_TYPES, type CvData } from '@core/models/cv-data.model';
 import { CvDataService } from '@core/services/cv-data.service';
+import { CV_DATA_VI } from '@data/cv-data.vi';
 import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
 import { ExperienceComponent } from './experience.component';
 
@@ -73,7 +74,9 @@ describe('ExperienceComponent', () => {
     const compiled = await render();
     const first = compiled.querySelector('.experience-item')!;
     expect(first.querySelector('.experience-role')?.textContent).toContain('Senior Developer');
-    expect(first.querySelector('.experience-meta')?.textContent).toContain('freelance');
+    // The label from the interface strings, never the raw enum value.
+    expect(first.querySelector('.experience-meta')?.textContent).toContain('Freelance');
+    expect(first.querySelector('.experience-meta')?.textContent).not.toContain('freelance');
     expect(first.querySelector('.experience-meta')?.textContent).toContain('03/2022 – Present');
     expect(first.querySelector('.experience-summary')?.textContent).toContain(
       'Entry summary text.',
@@ -110,6 +113,49 @@ describe('ExperienceComponent', () => {
     const compiled = await render();
     expect(compiled.textContent).not.toContain('Hidden Project');
     expect(compiled.querySelectorAll('.project-item').length).toBe(1);
+  });
+
+  it('should label the tech stack lists for assistive technology', async () => {
+    const compiled = await render();
+    const labels = Array.from(compiled.querySelectorAll('.chip-list')).map((list) =>
+      list.getAttribute('aria-label'),
+    );
+    expect(labels.length).toBeGreaterThan(0);
+    expect(new Set(labels)).toEqual(new Set(['Technologies']));
+  });
+
+  it('should render every interface string in the dataset language', async () => {
+    const data = experienceData();
+    data.ui = structuredClone(CV_DATA_VI.ui);
+    TestBed.overrideProvider(CvDataService, { useValue: cvDataServiceWith(data) });
+    const compiled = await render();
+    const first = compiled.querySelector('.experience-item')!;
+    expect(first.querySelector('.experience-meta')?.textContent).toContain('03/2022 – Hiện tại');
+    expect(first.querySelector('.experience-meta')?.textContent).toContain('Tự do');
+    expect(compiled.querySelector('.project-meta')?.textContent).toContain('Nhóm 7 người');
+    expect(compiled.querySelector('.chip-list')?.getAttribute('aria-label')).toBe('Công nghệ');
+    expect(compiled.textContent).not.toContain('Team of');
+  });
+
+  it('should label every employment type', async () => {
+    const data = experienceData();
+    const [template] = data.experience;
+    data.experience = EMPLOYMENT_TYPES.map((employmentType, i) => ({
+      ...template,
+      company: `Company ${i}`,
+      startDate: `201${i}-01`,
+      employmentType,
+    }));
+    TestBed.overrideProvider(CvDataService, { useValue: cvDataServiceWith(data) });
+    const compiled = await render();
+    const meta = Array.from(compiled.querySelectorAll('.experience-meta')).map(
+      (line) => line.textContent ?? '',
+    );
+    for (const employmentType of EMPLOYMENT_TYPES) {
+      const label = data.ui.employmentTypes[employmentType];
+      expect(meta.some((line) => line.includes(label))).toBe(true);
+      expect(meta.some((line) => line.includes(employmentType))).toBe(false);
+    }
   });
 
   it('should give every rendered project its own timeline marker', async () => {

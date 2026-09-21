@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { Meta } from '@angular/platform-browser';
 import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
+import { languageResolver } from '@core/i18n/language.resolver';
 import { CvDataService } from '@core/services/cv-data.service';
 import { PrintService } from '@core/services/print.service';
 import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
@@ -20,6 +21,14 @@ describe('PrintPageComponent', () => {
     await TestBed.configureTestingModule({
       providers: [
         provideRouter([
+          {
+            path: 'vi',
+            resolve: { language: languageResolver('vi') },
+            children: [
+              { path: '', component: StubMainComponent },
+              { path: 'print', component: PrintPageComponent },
+            ],
+          },
           { path: '', component: StubMainComponent },
           { path: 'print', component: PrintPageComponent },
         ]),
@@ -27,6 +36,42 @@ describe('PrintPageComponent', () => {
         { provide: PrintService, useValue: { print: printSpy } },
       ],
     }).compileComponents();
+  });
+
+  it('should render the toolbar from the English interface strings', async () => {
+    const harness = await RouterTestingHarness.create('/print');
+    const compiled = harness.routeNativeElement!;
+    const back = compiled.querySelector('.toolbar-back')!;
+    expect(back.textContent?.trim()).toBe('Back to the website');
+    expect(back.getAttribute('href')).toBe('/');
+    expect(compiled.querySelector('.toolbar-field')?.textContent).toContain('Template');
+    const options = Array.from(compiled.querySelectorAll('option')).map((option) => [
+      option.value,
+      option.textContent?.trim(),
+    ]);
+    expect(options).toEqual([
+      ['classic', 'Classic'],
+      ['compact', 'Compact'],
+    ]);
+    expect(compiled.querySelector('.toolbar-export')?.textContent?.trim()).toBe('Export PDF');
+    expect(compiled.querySelector('.print-hint')?.textContent).toContain('A4');
+  });
+
+  it('should render the toolbar in Vietnamese and stay in Vietnamese on the way back', async () => {
+    const harness = await RouterTestingHarness.create('/vi/print?template=compact');
+    const compiled = harness.routeNativeElement!;
+    const back = compiled.querySelector('.toolbar-back')!;
+    expect(back.textContent?.trim()).toBe('Quay lại trang web');
+    expect(back.getAttribute('href')).toBe('/vi');
+    expect(compiled.querySelector('.toolbar-field')?.textContent).toContain('Mẫu');
+    expect(
+      Array.from(compiled.querySelectorAll('option')).map((o) => o.textContent?.trim()),
+    ).toEqual(['Cổ điển', 'Gọn']);
+    expect(compiled.querySelector('.toolbar-export')?.textContent?.trim()).toBe('Xuất PDF');
+    expect(compiled.querySelector('.print-hint')?.textContent).not.toContain('The preview');
+    // The toggle leads to the same template in English.
+    const english = compiled.querySelector('.print-toolbar .lang-option[hreflang="en"]');
+    expect(english?.getAttribute('href')).toBe('/print?template=compact');
   });
 
   it('should render the classic sheet when no template is requested', async () => {

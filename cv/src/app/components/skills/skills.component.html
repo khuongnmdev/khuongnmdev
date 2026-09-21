@@ -11,7 +11,9 @@
                 <span
                   class="skill-level"
                   role="img"
-                  [attr.aria-label]="'Level ' + level + ' of ' + levelSteps.length"
+                  [attr.aria-label]="
+                    ui().skillLevel | interpolate: { level: level, max: levelSteps.length }
+                  "
                 >
                   @for (step of levelSteps; track step) {
                     <span class="level-dot" [class.filled]="step <= level"></span>

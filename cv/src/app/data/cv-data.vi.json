@@ -6,28 +6,66 @@
   },
   "ui": {
     "present": "Hiện tại",
-    "yearsOfExperience": "năm kinh nghiệm",
+    "yearsOfExperience": "{years} năm kinh nghiệm",
+    "printLead": "{headline} với {years} năm kinh nghiệm.",
+    "teamSize": "Nhóm {count} người",
+    "gpa": "GPA",
+    "technologies": "Công nghệ",
+    "techStack": "Công nghệ sử dụng",
+    "skillLevel": "Mức {level} trên {max}",
     "expandMenu": "Mở rộng menu",
     "collapseMenu": "Thu gọn menu",
+    "openMenu": "Mở menu",
+    "closeMenu": "Đóng menu",
     "switchLight": "Chuyển sang giao diện sáng",
     "switchDark": "Chuyển sang giao diện tối",
     "exportPdf": "Xuất CV dạng PDF",
-    "switchLanguage": "Switch to English"
+    "language": "Ngôn ngữ",
+    "printBack": "Quay lại trang web",
+    "printTemplate": "Mẫu",
+    "printTemplateClassic": "Cổ điển",
+    "printTemplateCompact": "Gọn",
+    "printExport": "Xuất PDF",
+    "printPreviewNote": "Bản xem trước là một trang liền mạch khổ A4 — ranh giới giữa các trang chỉ hiện ra trong bản xem trước khi in của trình duyệt.",
+    "metaDescription": "CV của {name} — {headline} tại {location}.",
+    "metaDescriptionNoLocation": "CV của {name} — {headline}.",
+    "metaKeywords": "hồ sơ xin việc, CV",
+    "employmentTypes": {
+      "full-time": "Toàn thời gian",
+      "part-time": "Bán thời gian",
+      "freelance": "Tự do",
+      "contract": "Hợp đồng",
+      "internship": "Thực tập"
+    },
+    "sectionTitles": {
+      "about": "Giới thiệu",
+      "experience": "Kinh nghiệm",
+      "education": "Học vấn",
+      "skills": "Kỹ năng",
+      "projects": "Dự án",
+      "certifications": "Chứng chỉ",
+      "languages": "Ngoại ngữ",
+      "hobbies": "Sở thích"
+    },
+    "viewInLanguage": {
+      "en": "Xem bằng tiếng Anh",
+      "vi": "Xem bằng tiếng Việt"
+    }
   },
   "profile": {
-    "fullName": "Nguyen Manh Khuong",
-    "displayName": "Khuong Nguyen",
-    "headline": "Front-end Developer",
+    "fullName": "Nguyễn Mạnh Khương",
+    "displayName": "Khương Nguyễn",
+    "headline": "Lập trình viên Front-end",
     "avatar": "avatar.jpg",
-    "location": "Ho Chi Minh City, Vietnam",
+    "location": "TP. Hồ Chí Minh, Việt Nam",
     "careerStartDate": "2016-01",
     "summary": [
-      "Highly specialized in the Software Development Life Cycle.",
-      "Having great working experience in Agile environments.",
-      "Skilled in HTML, SCSS, and JavaScript.",
-      "Creative, self-motivated, and good communication skills.",
-      "Knowing unit testing and customer-oriented.",
-      "Adapting to change and fast learning in technologies."
+      "Có chuyên môn sâu về vòng đời phát triển phần mềm.",
+      "Có nhiều kinh nghiệm làm việc trong môi trường Agile.",
+      "Thành thạo HTML, SCSS và JavaScript.",
+      "Sáng tạo, chủ động và có kỹ năng giao tiếp tốt.",
+      "Có kiến thức về unit test và có tư duy hướng đến khách hàng.",
+      "Có khả năng thích nghi với thay đổi và học hỏi công nghệ nhanh."
     ]
   },
   "contacts": [
@@ -60,7 +98,7 @@
     },
     {
       "type": "phone",
-      "label": "Phone",
+      "label": "Điện thoại",
       "value": "0378334899",
       "href": "tel:+84378334899",
       "icon": "fa-solid fa-phone",
@@ -69,15 +107,15 @@
     },
     {
       "type": "address",
-      "label": "Address",
-      "value": "764 National Route 22, Quarter 2, Cu Chi Town, Ho Chi Minh City",
+      "label": "Địa chỉ",
+      "value": "764 Quốc lộ 22, Khu phố 2, Thị trấn Củ Chi, TP. Hồ Chí Minh",
       "icon": "fa-solid fa-location-dot",
       "showInWeb": false,
       "showInPrint": true
     },
     {
       "type": "birthday",
-      "label": "Date of birth",
+      "label": "Ngày sinh",
       "value": "12/11/1991",
       "icon": "fa-solid fa-cake-candles",
       "showInWeb": false,
@@ -87,17 +125,17 @@
   "experience": [
     {
       "company": "PAL TECH",
-      "role": "Front End Developer",
+      "role": "Lập trình viên Front-end",
       "employmentType": "full-time",
       "startDate": "2024-01",
       "endDate": null,
       "current": true,
-      "summary": "Front-end developer across a portfolio of real-time sports-data web products — customer-facing member sites, agent and back-office portals, and an AWS cloud-management console — spanning Angular (v14 to v20+, Signals) and React/Redux codebases.",
+      "summary": "Lập trình viên Front-end cho một loạt sản phẩm web về dữ liệu thể thao thời gian thực — các website thành viên dành cho khách hàng, cổng thông tin đại lý và back-office, cùng một bảng điều khiển quản lý đám mây trên AWS — trên các codebase Angular (từ v14 đến v20+, Signals) và React/Redux.",
       "highlights": [
-        "Migrated production member sites from Angular 14 to 18 through an incremental standalone-component migration, then moved a core UI package from RxJS-subject state to Angular Signals (signal, computed, toSignal) with OnPush change detection.",
-        "Led the Bootstrap 5 migration of a legacy games package, rewriting its HTML/SCSS on flex and grid layouts and fixing long-standing UI defects along the way.",
-        "Delivered React/Redux features for an AWS cloud console, introducing ESLint and Redux-hooks conventions across the admin and customer apps.",
-        "Mentored junior colleagues and paired on complex form components to keep deliveries on schedule."
+        "Nâng cấp các website thành viên đang chạy production từ Angular 14 lên 18 bằng cách chuyển dần từng phần sang standalone component, sau đó chuyển phần quản lý state của một package giao diện cốt lõi từ RxJS Subject sang Angular Signals (signal, computed, toSignal) kết hợp change detection OnPush.",
+        "Chủ trì việc chuyển sang Bootstrap 5 cho một package trò chơi legacy, viết lại HTML/SCSS theo layout flex và grid, đồng thời khắc phục các lỗi giao diện tồn đọng lâu nay.",
+        "Triển khai các tính năng React/Redux cho một bảng điều khiển đám mây trên AWS, đồng thời đưa ESLint và quy ước Redux hooks vào áp dụng trên cả ứng dụng quản trị lẫn ứng dụng khách hàng.",
+        "Kèm cặp các đồng nghiệp Junior và tham gia pair programming trên các component form phức tạp để đảm bảo bàn giao đúng tiến độ."
       ],
       "techStack": ["Angular 14–21", "Angular Signals", "TypeScript", "RxJS", "Bootstrap 5", "SCSS", "Angular Forms", "React", "Redux", "WebSocket", "Git", "SVN"],
       "showInWeb": true,
@@ -105,49 +143,49 @@
       "projects": [
         {
           "name": "AQS",
-          "description": "Real-time running-market analysis tool: replaced an old-fashioned UI with a cleaner presentation of market data, added HK odds conversion, infinite scrolling and refined scroll handling.",
-          "role": "Front-end developer",
+          "description": "Công cụ phân tích running market theo thời gian thực: thay giao diện lỗi thời bằng một giao diện trình bày dữ liệu thị trường gọn gàng hơn, bổ sung tính năng quy đổi tỷ lệ cược HK, infinite scrolling và tinh chỉnh cơ chế xử lý cuộn trang.",
+          "role": "Lập trình viên Front-end",
           "teamSize": 20,
           "techStack": ["Angular 14", "RxJS"],
           "showInWeb": true,
           "showInPrint": true
         },
         {
-          "name": "Multi-brand member sites",
-          "description": "Customer-facing Angular sites for several brands: migrated the codebase from Angular 14 to 18, rebuilt the UI with mobile support and render optimization, implemented brand layout and template switching shared across sites, multi-bank-account management on strongly typed FormArray.",
-          "role": "Front-end developer",
+          "name": "Website thành viên đa thương hiệu",
+          "description": "Các website Angular dành cho khách hàng của nhiều thương hiệu: nâng cấp codebase từ Angular 14 lên 18, xây dựng lại giao diện với hỗ trợ thiết bị di động và tối ưu hóa render, triển khai cơ chế chuyển đổi layout và template theo thương hiệu dùng chung giữa các website, cùng tính năng quản lý nhiều tài khoản ngân hàng dựa trên FormArray được định kiểu chặt chẽ.",
+          "role": "Lập trình viên Front-end",
           "techStack": ["Angular 18", "RxJS", "Bootstrap 5", "SCSS", "Directus"],
           "showInWeb": true,
           "showInPrint": true
         },
         {
-          "name": "Live sports and games UI package",
-          "description": "Built the Inplay and sport-highlight pages, convert legacy code into strongly typed Angular, create new Games UI on flex/grid with a Bootstrap 5 migration, a Live section, and brand registration forms; migrated the package's state management to Angular Signals.",
-          "role": "Front-end developer",
+          "name": "Package giao diện thể thao trực tiếp và trò chơi",
+          "description": "Xây dựng trang Inplay và trang highlight thể thao, chuyển code legacy sang Angular được định kiểu chặt chẽ, tạo mới giao diện Games trên flex/grid (kèm việc chuyển sang Bootstrap 5), mục Live và các form đăng ký theo thương hiệu; chuyển phần quản lý state của package sang Angular Signals.",
+          "role": "Lập trình viên Front-end",
           "techStack": ["Angular 18+", "Angular Signals", "RxJS", "Bootstrap 5", "SCSS"],
           "showInWeb": true,
           "showInPrint": true
         },
         {
-          "name": "Agent portal",
-          "description": "Greenfield agent-facing site built from scratch on Angular 18 standalone components and Signals with a shared design system; delivered the Account Statement module.",
-          "role": "Front-end developer",
+          "name": "Cổng thông tin đại lý",
+          "description": "Website mới dành cho đại lý, xây dựng từ đầu trên standalone component và Signals của Angular 18 cùng một design system dùng chung; triển khai module Sao kê tài khoản (Account Statement).",
+          "role": "Lập trình viên Front-end",
           "techStack": ["Angular 18", "Angular Signals", "SCSS"],
           "showInWeb": true,
           "showInPrint": true
         },
         {
-          "name": "Cloud management console",
-          "description": "React/Redux admin and customer portals for an AWS-based cloud service: responsive layout refactor, Redux-hooks migration, ESLint adoption across both apps, order-management pages, Elastic IP attach/detach, policy pages, provider switching, Axios migration, upload-progress UI, permissions and i18n fixes.",
-          "role": "Front-end developer",
+          "name": "Bảng điều khiển quản lý đám mây",
+          "description": "Cổng thông tin quản trị và cổng thông tin khách hàng xây dựng bằng React/Redux cho một dịch vụ đám mây trên nền tảng AWS: tái cấu trúc layout responsive, chuyển sang Redux hooks, áp dụng ESLint cho cả hai ứng dụng, các trang quản lý đơn hàng, gắn/gỡ Elastic IP, các trang chính sách, chuyển đổi nhà cung cấp, chuyển sang Axios, giao diện tiến trình tải lên, sửa lỗi phân quyền và i18n.",
+          "role": "Lập trình viên Front-end",
           "techStack": ["React", "Redux", "MUI", "Axios", "ESLint", "AWS"],
           "showInWeb": true,
           "showInPrint": true
         },
         {
-          "name": "Trading ticket dashboard",
-          "description": "Implemented a pending ticket feature, integrating and customizing a third-party charting library around the platform's data models.",
-          "role": "Front-end developer",
+          "name": "Dashboard ticket giao dịch",
+          "description": "Triển khai tính năng pending ticket, tích hợp và tùy biến một thư viện biểu đồ bên thứ ba theo các mô hình dữ liệu của nền tảng.",
+          "role": "Lập trình viên Front-end",
           "techStack": ["Angular", "TypeScript"],
           "showInWeb": true,
           "showInPrint": false
@@ -155,21 +193,21 @@
       ]
     },
     {
-      "company": "Freelance",
-      "role": "Freelancer",
+      "company": "Làm việc tự do",
+      "role": "Lập trình viên tự do",
       "employmentType": "freelance",
       "startDate": "2023-07",
       "endDate": "2023-12",
       "current": false,
-      "summary": "Maintain Touchwaiter project and another stock-related project.",
+      "summary": "Bảo trì dự án Touchwaiter và một dự án khác liên quan đến chứng khoán.",
       "techStack": ["Angular 14", "RxJS", "Angular Material"],
       "showInWeb": true,
       "showInPrint": true,
       "projects": [
         {
-          "name": "Stock-related project",
-          "description": "Implement a Dashboard to track the stock trends in real-time, including user assets in the stock exchange and other stock funds. Optimize the process of selling and buying. Analyze the stock market and provide recommended actions.",
-          "role": "Front-end developer",
+          "name": "Dự án liên quan đến chứng khoán",
+          "description": "Triển khai dashboard theo dõi xu hướng cổ phiếu theo thời gian thực, bao gồm tài sản của người dùng trên sàn giao dịch chứng khoán và các quỹ cổ phiếu khác. Tối ưu hóa quy trình mua và bán. Phân tích thị trường chứng khoán và đưa ra các khuyến nghị hành động.",
+          "role": "Lập trình viên Front-end",
           "teamSize": 8,
           "techStack": ["Angular 14", "RxJS", "Angular Material"],
           "showInWeb": true,
@@ -179,7 +217,7 @@
     },
     {
       "company": "Saritasa",
-      "role": "Senior Front End Developer",
+      "role": "Lập trình viên Front-end Senior",
       "employmentType": "full-time",
       "startDate": "2021-04",
       "endDate": "2023-07",
@@ -199,8 +237,8 @@
       "projects": [
         {
           "name": "VetTalk",
-          "description": "A new startup seeking to build a member-based SaaS (Software as a Service) platform for veterinary practices, helping fill the client communication gap within existing practice management systems. VetTalk is a cloud-based messaging platform that will increase engagement and drastically reduce staff workload and improve customer service, by integrating with existing Vet Practice Information Management Systems (PIMS), to facilitate follow-ups, with automated messaging and chat communications.",
-          "role": "Front-end developer",
+          "description": "Một startup mới hướng tới xây dựng nền tảng SaaS (Software as a Service) theo mô hình thành viên dành cho các phòng khám thú y, giúp lấp khoảng trống về giao tiếp với khách hàng trong các hệ thống quản lý phòng khám hiện có. VetTalk là nền tảng nhắn tin dựa trên đám mây, sẽ giúp tăng mức độ tương tác, giảm mạnh khối lượng công việc của nhân viên và cải thiện dịch vụ khách hàng, thông qua việc tích hợp với các Hệ thống quản lý thông tin phòng khám thú y (PIMS) hiện có để hỗ trợ việc theo dõi (follow-up) bằng tin nhắn tự động và giao tiếp qua chat.",
+          "role": "Lập trình viên Front-end",
           "teamSize": 14,
           "techStack": ["Angular 14", "RxJS", "Angular Material"],
           "showInWeb": true,
@@ -208,8 +246,8 @@
         },
         {
           "name": "ZinCasa",
-          "description": "Develop a home sell/buying platform. Create questionnaires to collect user property information and evaluate prices. Manage tasks for repair/improve the property (from a 3rd-party partner) before selling again.",
-          "role": "Front-end developer",
+          "description": "Phát triển nền tảng mua bán nhà. Tạo các bảng câu hỏi để thu thập thông tin bất động sản của người dùng và định giá. Quản lý các công việc sửa chữa/cải tạo bất động sản (từ đối tác bên thứ ba) trước khi bán lại.",
+          "role": "Lập trình viên Front-end",
           "teamSize": 10,
           "techStack": ["Angular 13", "RxJS", "Angular Material"],
           "showInWeb": true,
@@ -217,8 +255,8 @@
         },
         {
           "name": "Crossing Guard",
-          "description": "Maintain a project that manages schools and their human resources. Provide a dashboard for admin, schedule shifts, employees, teachers, and mentors in schools.",
-          "role": "Front-end developer",
+          "description": "Bảo trì dự án quản lý trường học và nhân sự của trường. Cung cấp dashboard cho quản trị viên, lịch ca làm việc, nhân viên, giáo viên và cố vấn trong trường.",
+          "role": "Lập trình viên Front-end",
           "teamSize": 10,
           "techStack": ["Nuxt.js", "Vue", "Vuex", "Docker"],
           "showInWeb": true,
@@ -226,8 +264,8 @@
         },
         {
           "name": "Trek App",
-          "description": "Maintain and improve a back-office system written in Node.js. They generate Word documents from templates and upload them to cloud storage (Dropbox).",
-          "role": "Back-end developer",
+          "description": "Bảo trì và cải tiến hệ thống back-office viết bằng Node.js. Hệ thống tạo tài liệu Word từ template và tải lên dịch vụ lưu trữ đám mây (Dropbox).",
+          "role": "Lập trình viên Back-end",
           "teamSize": 5,
           "techStack": ["Node.js", "AWS S3", "Dropbox API"],
           "showInWeb": true,
@@ -237,7 +275,7 @@
     },
     {
       "company": "Elisoft",
-      "role": "Senior Front End Developer",
+      "role": "Lập trình viên Front-end Senior",
       "employmentType": "full-time",
       "startDate": "2020-08",
       "endDate": "2021-04",
@@ -248,8 +286,8 @@
       "projects": [
         {
           "name": "Touch Waiter",
-          "description": "Build PWA to order meals/beverages and checkout payment for a Swiss customer. Support offline mode with PWA techniques to cache APIs.",
-          "role": "Front-end developer / Lead front-end team",
+          "description": "Xây dựng PWA cho một khách hàng Thụy Sĩ, cho phép gọi món ăn/đồ uống và thanh toán. Hỗ trợ chế độ offline bằng các kỹ thuật PWA để cache API.",
+          "role": "Lập trình viên Front-end / Trưởng nhóm Front-end",
           "teamSize": 6,
           "techStack": ["StencilJS", "PWA"],
           "showInWeb": true,
@@ -257,8 +295,8 @@
         },
         {
           "name": "File Explorer",
-          "description": "Building file manager system in the cloud, with functions: Multiple Select, Cut/Copy/Paste, Move, Create, Delete, Rename, Search, Share, Send, Create Shortcut, and Bookmark.",
-          "role": "Lead front-end team",
+          "description": "Xây dựng hệ thống quản lý tệp trên đám mây với các chức năng: Chọn nhiều, Cắt/Sao chép/Dán, Di chuyển, Tạo mới, Xóa, Đổi tên, Tìm kiếm, Chia sẻ, Gửi, Tạo lối tắt và Đánh dấu.",
+          "role": "Trưởng nhóm Front-end",
           "teamSize": 8,
           "techStack": ["React", "Redux"],
           "showInWeb": true,
@@ -268,7 +306,7 @@
     },
     {
       "company": "Kyanon Digital",
-      "role": "Team Leader",
+      "role": "Trưởng nhóm",
       "employmentType": "full-time",
       "startDate": "2017-10",
       "endDate": "2020-07",
@@ -287,8 +325,8 @@
       "projects": [
         {
           "name": "Our Better World",
-          "description": "Given birth by the Singapore International Foundation in 2011, Our Better World (OBW) is a story-telling platform that brings the internet communities to real life for good causes. We built a user-centric platform to empower the stories told by OBW and drive better community engagement. The new decoupled system has helped people discover good-cause stories, be inspired, and make a contribution in any form in one streamlined journey.",
-          "role": "Lead front-end team",
+          "description": "Ra đời năm 2011 dưới sự khởi xướng của Singapore International Foundation, Our Better World (OBW) là nền tảng kể chuyện đưa cộng đồng mạng đến với đời thực vì những mục đích tốt đẹp. Chúng tôi đã xây dựng một nền tảng lấy người dùng làm trung tâm nhằm tiếp thêm sức mạnh cho những câu chuyện do OBW kể và thúc đẩy sự gắn kết cộng đồng tốt hơn. Hệ thống tách rời (decoupled) mới đã giúp mọi người khám phá những câu chuyện vì mục đích tốt đẹp, tìm thấy cảm hứng và đóng góp dưới mọi hình thức trong một hành trình liền mạch.",
+          "role": "Trưởng nhóm Front-end",
           "teamSize": 12,
           "techStack": [
             "Angular 7",
@@ -301,8 +339,8 @@
         },
         {
           "name": "Wecheer.io",
-          "description": "Dashboard Management System - A system that receives data from IOT devices (a smart bottle opener) and its Mobile Application. It will analyze and visualize all the data it receives to show info about cheering moments (location, time, quantity, etc.). It also has an AI to detect the beer brand that is opening and a backend that allows the admin to train the AI for more accurate recognition.",
-          "role": "Front-end developer",
+          "description": "Hệ thống quản lý dashboard - hệ thống tiếp nhận dữ liệu từ thiết bị IoT (đồ mở chai thông minh) và ứng dụng di động đi kèm. Hệ thống sẽ phân tích và trực quan hóa toàn bộ dữ liệu nhận được để hiển thị thông tin về các khoảnh khắc cụng ly (địa điểm, thời gian, số lượng, v.v.). Hệ thống còn có AI nhận diện thương hiệu bia đang được mở và một Back-end cho phép quản trị viên huấn luyện AI để nhận diện chính xác hơn.",
+          "role": "Lập trình viên Front-end",
           "teamSize": 10,
           "techStack": ["Angular 7", "FeathersJS", "Real-time dashboard"],
           "showInWeb": true,
@@ -310,8 +348,8 @@
         },
         {
           "name": "Stadium",
-          "description": "Building a virtual tour map of the ANZ stadium and precinct area including Stadium Seat View and nearby facilities (bar, pub, cafe, restaurant, etc.). The project also has a CMS that allows users to add, edit, and delete seats and facilities as well as all other content. We provided modules for facilities/seats management and optimized applications to maximize speed and scalability.",
-          "role": "Lead front-end team",
+          "description": "Xây dựng bản đồ tham quan ảo sân vận động ANZ và khu vực lân cận, bao gồm Stadium Seat View và các tiện ích xung quanh (quầy bar, quán pub, quán cà phê, nhà hàng, v.v.). Dự án còn có CMS cho phép người dùng thêm, sửa, xóa ghế ngồi và tiện ích cũng như toàn bộ nội dung khác. Chúng tôi cung cấp các module quản lý tiện ích/ghế ngồi và tối ưu hóa ứng dụng để tối đa hóa tốc độ và khả năng mở rộng.",
+          "role": "Trưởng nhóm Front-end",
           "teamSize": 5,
           "techStack": ["AngularJS", "Fabric.js", "C# (Umbraco)"],
           "showInWeb": true,
@@ -321,7 +359,7 @@
     },
     {
       "company": "3FORCOM",
-      "role": "Front End Developer",
+      "role": "Lập trình viên Front-end",
       "employmentType": "full-time",
       "startDate": "2017-03",
       "endDate": "2017-09",
@@ -332,8 +370,8 @@
       "projects": [
         {
           "name": "Hoa Sen Group",
-          "description": "Develop a new website for Hoa Sen Group with a cart, user management, and live chat plugin.",
-          "role": "Fullstack developer",
+          "description": "Phát triển website mới cho Tập đoàn Hoa Sen với giỏ hàng, quản lý người dùng và plugin chat trực tuyến.",
+          "role": "Lập trình viên Fullstack",
           "teamSize": 5,
           "techStack": ["ASP.NET MVC 3", "SCSS", "jQuery"],
           "showInWeb": true,
@@ -341,8 +379,8 @@
         },
         {
           "name": "Outsource",
-          "description": "Manage timeline and delivery of mobile apps for customers from Singapore. Tracking and reporting status by Jira.",
-          "role": "Project Manager",
+          "description": "Quản lý tiến độ và bàn giao ứng dụng di động cho khách hàng đến từ Singapore. Theo dõi và báo cáo trạng thái bằng Jira.",
+          "role": "Quản lý dự án",
           "teamSize": 4,
           "techStack": ["Firebase", "Android", "iOS", "Socket.io", "WebRTC"],
           "showInWeb": true,
@@ -352,7 +390,7 @@
     },
     {
       "company": "FPT Software",
-      "role": "Software Engineer",
+      "role": "Kỹ sư phần mềm",
       "employmentType": "full-time",
       "startDate": "2016-01",
       "endDate": "2017-03",
@@ -363,8 +401,8 @@
       "projects": [
         {
           "name": "FSPIKA",
-          "description": "Develop a hybrid chat-bot app for Fujitsu Japan. End-users can use it for in-app chatting, video calls (WebRTC), or making questions for robots (as Skype).",
-          "role": "Front-end developer",
+          "description": "Phát triển ứng dụng chatbot hybrid cho Fujitsu Nhật Bản. Người dùng cuối có thể chat trong ứng dụng, gọi video (WebRTC) hoặc đặt câu hỏi cho robot (tương tự Skype).",
+          "role": "Lập trình viên Front-end",
           "teamSize": 40,
           "techStack": ["AngularJS", "Cordova", "Socket.io", "WebRTC"],
           "showInWeb": true,
@@ -372,8 +410,8 @@
         },
         {
           "name": "Hitachi Medical",
-          "description": "Develop a program for operating CT scan machines, and diagnostic images of abnormalities in bones, lungs, and other internal organs.",
-          "role": "Back-end developer",
+          "description": "Phát triển chương trình vận hành máy chụp CT và hình ảnh chẩn đoán các bất thường ở xương, phổi và các cơ quan nội tạng khác.",
+          "role": "Lập trình viên Back-end",
           "teamSize": 35,
           "techStack": ["C# .NET", "C++", "MVC .NET", "Jenkins"],
           "showInWeb": true,
@@ -384,9 +422,9 @@
   ],
   "education": [
     {
-      "school": "FPT University",
-      "degree": "Bachelor of Software Engineering",
-      "field": "Software Engineering",
+      "school": "Trường Đại học FPT",
+      "degree": "Cử nhân Kỹ thuật phần mềm",
+      "field": "Kỹ thuật phần mềm",
       "startDate": "2009-09",
       "endDate": "2015-12",
       "showInWeb": true,
@@ -395,7 +433,7 @@
   ],
   "skills": [
     {
-      "category": "Languages & Markup",
+      "category": "Ngôn ngữ lập trình & đánh dấu",
       "showInWeb": true,
       "showInPrint": true,
       "items": [
@@ -407,7 +445,7 @@
       ]
     },
     {
-      "category": "Frameworks & Libraries",
+      "category": "Framework & thư viện",
       "showInWeb": true,
       "showInPrint": true,
       "items": [
@@ -421,7 +459,7 @@
       ]
     },
     {
-      "category": "Backend & Cloud",
+      "category": "Back-end & đám mây",
       "showInWeb": true,
       "showInPrint": true,
       "items": [
@@ -430,7 +468,7 @@
       ]
     },
     {
-      "category": "Tools & Workflow",
+      "category": "Công cụ & quy trình làm việc",
       "showInWeb": true,
       "showInPrint": true,
       "items": [
@@ -446,7 +484,7 @@
   "sections": [
     {
       "id": "about",
-      "title": "About",
+      "title": "Giới thiệu",
       "order": 1,
       "enabled": true,
       "showInPrint": true,
@@ -454,7 +492,7 @@
     },
     {
       "id": "experience",
-      "title": "Experience",
+      "title": "Kinh nghiệm",
       "order": 2,
       "enabled": true,
       "showInPrint": true,
@@ -462,7 +500,7 @@
     },
     {
       "id": "education",
-      "title": "Education",
+      "title": "Học vấn",
       "order": 3,
       "enabled": true,
       "showInPrint": true,
@@ -470,7 +508,7 @@
     },
     {
       "id": "skills",
-      "title": "Skills",
+      "title": "Kỹ năng",
       "order": 4,
       "enabled": true,
       "showInPrint": true,
@@ -478,28 +516,28 @@
     },
     {
       "id": "projects",
-      "title": "Projects",
+      "title": "Dự án",
       "order": 5,
       "enabled": false,
       "showInPrint": false
     },
     {
       "id": "certifications",
-      "title": "Certifications",
+      "title": "Chứng chỉ",
       "order": 6,
       "enabled": false,
       "showInPrint": false
     },
     {
       "id": "languages",
-      "title": "Languages",
+      "title": "Ngoại ngữ",
       "order": 7,
       "enabled": false,
       "showInPrint": false
     },
     {
       "id": "hobbies",
-      "title": "Hobbies",
+      "title": "Sở thích",
       "order": 8,
       "enabled": false,
       "showInPrint": false,

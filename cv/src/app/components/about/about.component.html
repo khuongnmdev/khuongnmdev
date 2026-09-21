@@ -7,7 +7,9 @@
       @if (profile().location; as location) {
         <span class="about-fact">{{ location }}</span>
       }
-      <span class="about-fact">{{ experienceYears() }} {{ ui().yearsOfExperience }}</span>
+      <span class="about-fact">{{
+        ui().yearsOfExperience | interpolate: { years: experienceYears() }
+      }}</span>
     </p>
 
     <ul class="about-summary">

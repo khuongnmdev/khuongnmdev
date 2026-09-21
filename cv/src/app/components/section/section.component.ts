@@ -7,6 +7,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   styleUrl: './section.component.scss',
 })
 export class SectionComponent {
-  readonly title = input<string>('Default Title');
+  /** Required: every heading comes from the data, never from a placeholder. */
+  readonly title = input.required<string>();
   readonly id = input<string>('');
 }

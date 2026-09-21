@@ -57,6 +57,18 @@ export const SECTION_IDS = [
 ] as const;
 export type SectionId = (typeof SECTION_IDS)[number];
 
+/**
+ * Languages the site ships a dataset for. The first entry is the default: it
+ * is bundled eagerly and served from the unprefixed URLs.
+ */
+export const SUPPORTED_LOCALES = ['en', 'vi'] as const;
+export type Locale = (typeof SUPPORTED_LOCALES)[number];
+export const DEFAULT_LOCALE: Locale = SUPPORTED_LOCALES[0];
+
+export function isLocale(value: unknown): value is Locale {
+  return (SUPPORTED_LOCALES as readonly unknown[]).includes(value);
+}
+
 /** Shared visibility flags. An omitted flag is treated as `true`. */
 export interface Visibility {
   showInWeb?: boolean;
@@ -201,16 +213,73 @@ export interface SectionConfig {
   icon?: string;
 }
 
-export interface UiStrings {
-  present: string;
-  yearsOfExperience: string;
-  expandMenu: string;
-  collapseMenu: string;
-  switchLight: string;
-  switchDark: string;
-  exportPdf: string;
-  switchLanguage: string;
-}
+/**
+ * Every flat interface string a theme renders — labels, accessible names,
+ * tooltips, and sentence templates. Declared once: `UiStrings` derives from
+ * this list and the runtime validator iterates it.
+ */
+export const UI_STRING_KEYS = [
+  'present',
+  'yearsOfExperience',
+  'printLead',
+  'teamSize',
+  'gpa',
+  'technologies',
+  'techStack',
+  'skillLevel',
+  'expandMenu',
+  'collapseMenu',
+  'openMenu',
+  'closeMenu',
+  'switchLight',
+  'switchDark',
+  'exportPdf',
+  'language',
+  'printBack',
+  'printTemplate',
+  'printTemplateClassic',
+  'printTemplateCompact',
+  'printExport',
+  'printPreviewNote',
+  'metaDescription',
+  'metaDescriptionNoLocation',
+  'metaKeywords',
+] as const;
+export type UiStringKey = (typeof UI_STRING_KEYS)[number];
+
+/**
+ * Sentence templates and the `{name}` placeholders each must contain. A
+ * translation that drops one would silently lose a value on the page, so the
+ * validator rejects it.
+ */
+export const UI_STRING_PLACEHOLDERS = {
+  yearsOfExperience: ['years'],
+  printLead: ['headline', 'years'],
+  teamSize: ['count'],
+  skillLevel: ['level', 'max'],
+  metaDescription: ['name', 'headline', 'location'],
+  metaDescriptionNoLocation: ['name', 'headline'],
+} as const satisfies Partial<Record<UiStringKey, readonly string[]>>;
+
+/**
+ * Nested label maps, each keyed by every value of a union so that no value
+ * can render without a label. The validator checks the keys against the same
+ * arrays.
+ */
+export const UI_STRING_MAPS = {
+  /** Display label per `EmploymentType`, instead of the raw enum value. */
+  employmentTypes: EMPLOYMENT_TYPES,
+  /** Heading used when a section has no entry in `sections[]`. */
+  sectionTitles: SECTION_IDS,
+  /** Tooltip and accessible name of the link to each language. */
+  viewInLanguage: SUPPORTED_LOCALES,
+} as const;
+export type UiStringMapKey = keyof typeof UI_STRING_MAPS;
+
+/** Interface strings in the dataset's own language. */
+export type UiStrings = Record<UiStringKey, string> & {
+  [K in UiStringMapKey]: Record<(typeof UI_STRING_MAPS)[K][number], string>;
+};
 
 export interface CvData {
   meta: CvMeta;

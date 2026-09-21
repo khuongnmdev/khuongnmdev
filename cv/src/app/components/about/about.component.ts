@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { yearsOfExperience } from '@core/pipes/date-range.pipe';
+import { InterpolatePipe } from '@core/pipes/interpolate.pipe';
 import { CvDataService } from '@core/services/cv-data.service';
 import { SectionComponent } from '../section/section.component';
 
 @Component({
   selector: 'app-about',
-  imports: [SectionComponent],
+  imports: [SectionComponent, InterpolatePipe],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,9 +18,7 @@ export class AboutComponent {
   protected readonly ui = this.cvData.ui;
 
   /** Section heading from the data, so a JSON edit renames it everywhere. */
-  protected readonly title = computed(
-    () => this.cvData.data().sections.find((section) => section.id === 'about')?.title ?? 'About',
-  );
+  protected readonly title = computed(() => this.cvData.sectionTitle('about'));
 
   /** Derived from `careerStartDate`, so the figure never goes stale. */
   protected readonly experienceYears = computed(() =>

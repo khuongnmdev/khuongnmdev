@@ -2,6 +2,7 @@ import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   DOCUMENT,
   inject,
   input,
@@ -9,6 +10,8 @@ import {
   signal,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { LanguageToggleComponent } from '@app/components/language-toggle/language-toggle.component';
+import { localizedCommands } from '@core/i18n/localized-url';
 import type { SectionConfig } from '@core/models/cv-data.model';
 import { CvDataService } from '@core/services/cv-data.service';
 import { SidebarService } from '@core/services/sidebar.service';
@@ -22,7 +25,7 @@ const FALLBACK_MENU_ICON = 'fa-solid fa-circle';
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.scss',
-  imports: [NgClass, RouterLink],
+  imports: [NgClass, RouterLink, LanguageToggleComponent],
 })
 export class NavBarComponent {
   /** Section id currently in view, driven by the scroll-spy in `MainComponent`. */
@@ -35,6 +38,11 @@ export class NavBarComponent {
 
   protected readonly profile = this.cvData.profile;
   protected readonly ui = this.cvData.ui;
+
+  /** The export opens the print preview in the language being viewed. */
+  protected readonly printLink = computed(() =>
+    localizedCommands(this.cvData.language(), ['print']),
+  );
 
   /**
    * The menu is the enabled sections in `order` — the data's `sections[]` is
@@ -70,10 +78,6 @@ export class NavBarComponent {
 
   protected toggleMenu(): void {
     this.isShowMenu.update((isShown) => !isShown);
-  }
-
-  protected switchLanguage(): void {
-    this.cvData.switchLanguage();
   }
 
   protected navigateTo(item: SectionConfig): void {

@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import type { CvData } from '@core/models/cv-data.model';
 import { CvDataService } from '@core/services/cv-data.service';
+import { CV_DATA_VI } from '@data/cv-data.vi';
 import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
 import { normalizePrintTemplate, PrintCvComponent } from './print-cv.component';
 
@@ -95,6 +96,46 @@ describe('PrintCvComponent', () => {
     expect(text).not.toContain('Stock-related project');
     // The parent entry of the hidden project still prints.
     expect(text).toContain('Freelance');
+  });
+
+  it('should render the lead line and labels from the interface strings', async () => {
+    const data = cloneCvData();
+    data.education[0].gpa = '3.2';
+    const compiled = await render(data);
+    const lead = compiled.querySelector('.print-about-lead')?.textContent?.trim();
+    expect(lead).toMatch(
+      new RegExp(`^${data.profile.headline} with \\d+\\+ years of experience\\.$`),
+    );
+    expect(compiled.textContent).toContain('GPA: 3.2');
+    expect(compiled.querySelector('.print-tech-label')?.textContent).toBe('Tech stack:');
+    expect(compiled.textContent).toMatch(/Team of \d+/);
+  });
+
+  it('should render the employment type label, never the raw enum value', async () => {
+    const compiled = await render(cloneCvData());
+    const meta = Array.from(compiled.querySelectorAll('.print-entry-meta')).map(
+      (line) => line.textContent ?? '',
+    );
+    expect(meta.some((line) => line.includes('Full-time'))).toBe(true);
+    expect(meta.some((line) => line.includes('full-time'))).toBe(false);
+  });
+
+  it('should render every interface string in the dataset language', async () => {
+    const data = cloneCvData();
+    data.ui = structuredClone(CV_DATA_VI.ui);
+    data.education[0].gpa = '3.2';
+    const compiled = await render(data);
+    const text = compiled.textContent ?? '';
+    expect(compiled.querySelector('.print-about-lead')?.textContent).toMatch(
+      /với \d+\+ năm kinh nghiệm\./,
+    );
+    expect(text).toContain('01/2024 – Hiện tại');
+    expect(text).toContain('Toàn thời gian');
+    expect(text).toMatch(/Nhóm \d+ người/);
+    expect(compiled.querySelector('.print-tech-label')?.textContent).toBe('Công nghệ sử dụng:');
+    expect(text).not.toContain('Tech stack');
+    expect(text).not.toContain('Present');
+    expect(text).not.toContain('years of experience');
   });
 
   it('should apply the compact modifier class only for the compact template', async () => {

@@ -10,7 +10,7 @@
           <p class="experience-meta">
             <span>{{ entry.startDate | dateRange: entry.endDate : ui().present }}</span>
             @if (entry.employmentType; as employmentType) {
-              <span>{{ employmentType }}</span>
+              <span>{{ ui().employmentTypes[employmentType] }}</span>
             }
             @if (entry.location; as location) {
               <span>{{ location }}</span>
@@ -31,7 +31,7 @@
         }
 
         @if (entry.techStack?.length) {
-          <ul class="chip-list" aria-label="Technologies">
+          <ul class="chip-list" [attr.aria-label]="ui().technologies">
             @for (tech of entry.techStack; track tech) {
               <li class="chip">{{ tech }}</li>
             }
@@ -47,7 +47,7 @@
                 <p class="project-meta">
                   <span class="project-role">{{ project.role }}</span>
                   @if (project.teamSize; as teamSize) {
-                    <span>Team of {{ teamSize }}</span>
+                    <span>{{ ui().teamSize | interpolate: { count: teamSize } }}</span>
                   }
                 </p>
                 <p class="project-description">{{ project.description }}</p>
@@ -59,7 +59,7 @@
                   </ul>
                 }
                 @if (project.techStack.length) {
-                  <ul class="chip-list" aria-label="Technologies">
+                  <ul class="chip-list" [attr.aria-label]="ui().technologies">
                     @for (tech of project.techStack; track tech) {
                       <li class="chip">{{ tech }}</li>
                     }

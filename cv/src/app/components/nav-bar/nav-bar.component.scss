@@ -9,7 +9,9 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 0 1rem;
+  // Tight on phones, where every pixel of the row goes to the active label.
+  gap: 0.25rem;
+  padding: 0 0.75rem;
   overflow: hidden;
   border-bottom: 1px solid var(--c-border);
 
@@ -20,6 +22,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    gap: 0.5rem;
     padding: 1.25rem 0.75rem;
     border-bottom: 0;
     border-radius: 0 1.5rem 1.5rem 0;
@@ -131,6 +134,41 @@
 
     @media only screen and (min-width: 768px) {
       display: none;
+    }
+  }
+
+  // The phone bar is one row, 76px tall, and each section leaves only 5rem
+  // (80px) above its heading, so nothing in the row may wrap. The
+  // avatar, the actions, and the menu button keep their size; the active
+  // section's label is the only part that gives way, cut with an ellipsis
+  // when the phone is too narrow for it (the full name stays in the link's
+  // title and accessible name). Scoped to phones so none of it reaches the
+  // sidebar.
+  @media only screen and (max-width: 767.98px) {
+    .avatar-block,
+    .top-actions,
+    .btn-menu {
+      flex-shrink: 0;
+    }
+
+    // A flex item never shrinks below its content by default; the label can
+    // only give way if the list and the pill around it may shrink too.
+    .nav-list,
+    .nav-list .nav-item {
+      min-width: 0;
+    }
+
+    // Horizontal room only: the vertical padding and the label's line height
+    // are what make the bar 76px tall.
+    .nav-list .nav-item {
+      gap: 0.375rem;
+      padding: 0.5rem 0.75rem;
+    }
+
+    .nav-list .nav-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 

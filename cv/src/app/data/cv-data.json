@@ -6,13 +6,51 @@
   },
   "ui": {
     "present": "Present",
-    "yearsOfExperience": "years of experience",
+    "yearsOfExperience": "{years} years of experience",
+    "printLead": "{headline} with {years} years of experience.",
+    "teamSize": "Team of {count}",
+    "gpa": "GPA",
+    "technologies": "Technologies",
+    "techStack": "Tech stack",
+    "skillLevel": "Level {level} of {max}",
     "expandMenu": "Expand menu",
     "collapseMenu": "Collapse menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
     "switchLight": "Switch to light theme",
     "switchDark": "Switch to dark theme",
     "exportPdf": "Export CV as PDF",
-    "switchLanguage": "Switch to Vietnamese"
+    "language": "Language",
+    "printBack": "Back to the website",
+    "printTemplate": "Template",
+    "printTemplateClassic": "Classic",
+    "printTemplateCompact": "Compact",
+    "printExport": "Export PDF",
+    "printPreviewNote": "The preview is one continuous sheet at A4 width — page boundaries appear in the browser's print preview.",
+    "metaDescription": "Resume of {name} — {headline}, based in {location}.",
+    "metaDescriptionNoLocation": "Resume of {name} — {headline}.",
+    "metaKeywords": "resume, CV",
+    "employmentTypes": {
+      "full-time": "Full-time",
+      "part-time": "Part-time",
+      "freelance": "Freelance",
+      "contract": "Contract",
+      "internship": "Internship"
+    },
+    "sectionTitles": {
+      "about": "About",
+      "experience": "Experience",
+      "education": "Education",
+      "skills": "Skills",
+      "projects": "Projects",
+      "certifications": "Certifications",
+      "languages": "Languages",
+      "hobbies": "Hobbies"
+    },
+    "viewInLanguage": {
+      "en": "View in English",
+      "vi": "View in Vietnamese"
+    }
   },
   "profile": {
     "fullName": "Nguyen Manh Khuong",

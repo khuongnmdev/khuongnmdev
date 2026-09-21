@@ -9,14 +9,16 @@ export function formatYearMonth(date: YearMonth): string {
 
 /**
  * `"2021-04"` + `"2023-07"` → `"04/2021 – 07/2023"`;
- * `"2016-01"` + `null` → `"01/2016 – Present"`.
+ * `"2016-01"` + `null` + `"Present"` → `"01/2016 – Present"`.
  *
  * The separator is an en dash (U+2013), the typographic convention for ranges.
+ * `presentText` has no default on purpose: it is a translated interface
+ * string, and a silent English fallback would leak into other languages.
  */
 export function formatDateRange(
   start: YearMonth,
   end: YearMonth | null,
-  presentText: string = 'Present',
+  presentText: string,
 ): string {
   return `${formatYearMonth(start)} – ${end === null ? presentText : formatYearMonth(end)}`;
 }
@@ -35,15 +37,15 @@ export function yearsOfExperience(start: YearMonth, now: Date = new Date()): str
 
 /**
  * Formats a `YearMonth` range with the one date format shared by every theme:
- * `MM/YYYY – MM/YYYY`, or `MM/YYYY – Present` while the period is ongoing.
+ * `MM/YYYY – MM/YYYY`, or `MM/YYYY – <present>` while the period is ongoing.
  *
  * ```html
- * {{ job.startDate | dateRange: job.endDate }}
+ * {{ job.startDate | dateRange: job.endDate : ui().present }}
  * ```
  */
 @Pipe({ name: 'dateRange' })
 export class DateRangePipe implements PipeTransform {
-  transform(start: YearMonth, end: YearMonth | null, presentText: string = 'Present'): string {
+  transform(start: YearMonth, end: YearMonth | null, presentText: string): string {
     return formatDateRange(start, end, presentText);
   }
 }

@@ -1,0 +1,45 @@
+// A two-segment pill: the active language filled with the accent, the other
+// muted. Sized to fit the collapsed 4.5rem sidebar rail side by side (about
+// 3.25rem wide). A host on a fixed dark surface can override the muted colour
+// through `--lang-toggle-muted`.
+
+:host {
+  display: inline-flex;
+}
+
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem;
+  border-radius: 2rem;
+  background-color: color-mix(
+    in srgb,
+    var(--lang-toggle-muted, var(--c-text-muted)) 15%,
+    transparent
+  );
+}
+
+.lang-option {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.25rem;
+  border-radius: 2rem;
+  color: var(--lang-toggle-muted, var(--c-text-muted));
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+
+  &:hover {
+    color: var(--c-secondary);
+  }
+
+  &.active {
+    background-color: var(--c-secondary);
+    color: var(--c-on-accent);
+  }
+}

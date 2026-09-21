@@ -33,7 +33,10 @@
         @case ('about') {
           <div class="print-about">
             <p class="print-about-lead">
-              {{ profile().headline }} with {{ experienceYears() }} {{ ui().yearsOfExperience }}.
+              {{
+                ui().printLead
+                  | interpolate: { headline: profile().headline, years: experienceYears() }
+              }}
             </p>
             <ul class="print-summary">
               @for (line of profile().summary; track line) {
@@ -53,7 +56,7 @@
               <p class="print-entry-meta">
                 <span>{{ entry.startDate | dateRange: entry.endDate : ui().present }}</span>
                 @if (entry.employmentType; as employmentType) {
-                  <span>{{ employmentType }}</span>
+                  <span>{{ ui().employmentTypes[employmentType] }}</span>
                 }
                 @if (entry.location; as location) {
                   <span>{{ location }}</span>
@@ -71,7 +74,7 @@
               }
               @if (entry.tech) {
                 <p class="print-tech">
-                  <span class="print-tech-label">Tech stack:</span> {{ entry.tech }}
+                  <span class="print-tech-label">{{ ui().techStack }}:</span> {{ entry.tech }}
                 </p>
               }
               @if (entry.projects.length) {
@@ -82,13 +85,14 @@
                       <p class="print-entry-meta">
                         <span class="print-project-role">{{ project.role }}</span>
                         @if (project.teamSize; as teamSize) {
-                          <span>Team of {{ teamSize }}</span>
+                          <span>{{ ui().teamSize | interpolate: { count: teamSize } }}</span>
                         }
                       </p>
                       <p class="print-project-description">{{ project.description }}</p>
                       @if (project.tech) {
                         <p class="print-tech">
-                          <span class="print-tech-label">Tech stack:</span> {{ project.tech }}
+                          <span class="print-tech-label">{{ ui().techStack }}:</span>
+                          {{ project.tech }}
                         </p>
                       }
                     </li>
@@ -112,7 +116,7 @@
                   <span>{{ field }}</span>
                 }
                 @if (entry.gpa; as gpa) {
-                  <span>GPA: {{ gpa }}</span>
+                  <span>{{ ui().gpa }}: {{ gpa }}</span>
                 }
               </p>
               @if (entry.highlights?.length) {

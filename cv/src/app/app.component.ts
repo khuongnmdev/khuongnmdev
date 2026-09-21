@@ -1,13 +1,15 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
-import { RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter, map, take } from 'rxjs';
 import { CvDataService } from '@core/services/cv-data.service';
-import { buildMetaTags, buildPageTitle } from '@data/meta';
+import { PageMetaService } from '@core/services/page-meta.service';
 
 /**
- * Root shell: sets the document title and meta tags from the profile and
- * hands the page over to the router — the web theme on the default route,
- * the A4 print preview on `/print`.
+ * Root shell: keeps the document language, title, and meta tags in step with
+ * the active dataset, and hands the page over to the router — the web theme
+ * on the default route, the A4 print preview on `print`, each under its
+ * language prefix.
  */
 @Component({
   selector: 'app-root',
@@ -16,16 +18,31 @@ import { buildMetaTags, buildPageTitle } from '@data/meta';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  private readonly title = inject(Title);
-  private readonly meta = inject(Meta);
   private readonly cvData = inject(CvDataService);
+  private readonly pageMeta = inject(PageMetaService);
+
+  /**
+   * Becomes true once the first navigation has resolved the page's language.
+   * Until then the store holds the eagerly bundled default dataset, which
+   * would briefly stamp English onto a Vietnamese page while its dataset
+   * loads.
+   */
+  private readonly navigated = toSignal(
+    inject(Router).events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      take(1),
+      map(() => true),
+    ),
+    { initialValue: false },
+  );
 
   constructor() {
-    // One-shot on purpose: the dataset is fixed for the lifetime of the app
-    // today. Revisit with an effect if loading user-supplied data ever needs
-    // the tags to follow a store swap.
-    const profile = this.cvData.profile();
-    this.title.setTitle(buildPageTitle(profile));
-    this.meta.addTags(buildMetaTags(profile));
+    // Reactive on purpose: it follows every language switch, on the server
+    // while prerendering each language's page and in the browser alike.
+    effect(() => {
+      if (this.navigated()) {
+        this.pageMeta.apply(this.cvData.language(), this.cvData.profile(), this.cvData.ui());
+      }
+    });
   }
 }
