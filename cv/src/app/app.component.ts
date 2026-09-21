@@ -41,7 +41,7 @@ export class AppComponent {
     // while prerendering each language's page and in the browser alike.
     effect(() => {
       if (this.navigated()) {
-        this.pageMeta.apply(this.cvData.language(), this.cvData.profile(), this.cvData.ui());
+        this.pageMeta.apply(this.cvData.language(), this.cvData.data());
       }
     });
   }

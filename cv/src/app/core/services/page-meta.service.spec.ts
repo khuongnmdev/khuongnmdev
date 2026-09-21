@@ -3,6 +3,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import type { CvData, Locale } from '@core/models/cv-data.model';
 import { CV_DATA } from '@data/cv-data';
 import { CV_DATA_VI } from '@data/cv-data.vi';
+import { buildPersonJsonLd, serializeJsonLd } from '@data/meta';
 import { PageMetaService } from './page-meta.service';
 
 const SITE = 'https://khuongnmdev.github.io/khuongnmdev/';
@@ -14,7 +15,13 @@ describe('PageMetaService', () => {
   const datasets: Record<Locale, CvData> = { en: CV_DATA, vi: CV_DATA_VI };
 
   function apply(locale: Locale): void {
-    service.apply(locale, datasets[locale].profile, datasets[locale].ui);
+    service.apply(locale, datasets[locale]);
+  }
+
+  function jsonLdScripts(): HTMLScriptElement[] {
+    return Array.from(
+      document.head.querySelectorAll<HTMLScriptElement>('script[type="application/ld+json"]'),
+    );
   }
 
   function hrefOf(selector: string): string | null | undefined {
@@ -25,7 +32,9 @@ describe('PageMetaService', () => {
     // The jsdom document outlives a single test; start every test from a
     // bare head so counts below measure only what `apply` wrote.
     document.head
-      .querySelectorAll('meta[name], meta[property], link[rel="canonical"], link[rel="alternate"]')
+      .querySelectorAll(
+        'meta[name], meta[property], link[rel="canonical"], link[rel="alternate"], script',
+      )
       .forEach((element) => element.remove());
     document.documentElement.removeAttribute('lang');
     service = TestBed.inject(PageMetaService);
@@ -146,6 +155,87 @@ describe('PageMetaService', () => {
     expect(count('link[rel="alternate"]')).toBe(3);
     expect(document.documentElement.getAttribute('lang')).toBe('en');
     expect(hrefOf('link[rel="canonical"]')).toBe(SITE);
+  });
+
+  it('publishes one Person script per page, describing the active language', () => {
+    apply('en');
+    let person = JSON.parse(jsonLdScripts()[0].textContent!);
+    expect(person).toMatchObject({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      '@id': `${SITE}#person`,
+      name: 'Nguyen Manh Khuong',
+      jobTitle: CV_DATA.profile.headline,
+      url: SITE,
+      image: `${SITE}avatar.jpg`,
+      sameAs: ['https://www.linkedin.com/in/khuongnmdev', 'https://github.com/khuongnmdev'],
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Ho Chi Minh City',
+        addressCountry: 'Vietnam',
+      },
+      worksFor: { '@type': 'Organization', name: 'PAL TECH' },
+    });
+    // The other script of the name, so both spellings resolve to one person.
+    expect(person.alternateName).toContain('Nguyễn Mạnh Khương');
+
+    for (const locale of ['vi', 'en', 'vi'] as const) {
+      apply(locale);
+    }
+    expect(jsonLdScripts()).toHaveLength(1);
+    person = JSON.parse(jsonLdScripts()[0].textContent!);
+    expect(person.name).toBe('Nguyễn Mạnh Khương');
+    expect(person.alternateName).toContain('Nguyen Manh Khuong');
+    expect(person.url).toBe(`${SITE}vi/`);
+    expect(person['@id']).toBe(`${SITE}#person`);
+    expect(person.address.addressLocality).toBe('TP. Hồ Chí Minh');
+  });
+
+  it('derives a short expertise list from the strongest skills', () => {
+    const person = buildPersonJsonLd(CV_DATA, 'en');
+    const skills = CV_DATA.skills.flatMap((group) => group.items);
+    const knowsAbout = person['knowsAbout'] as string[];
+    expect(knowsAbout.length).toBeGreaterThan(0);
+    expect(knowsAbout.length).toBeLessThanOrEqual(10);
+    const levelOf = (name: string) => skills.find((item) => item.name === name)!.level ?? 0;
+    const weakestListed = Math.min(...knowsAbout.map(levelOf));
+    // Nothing left out is stronger than anything listed.
+    for (const item of skills.filter((skill) => !knowsAbout.includes(skill.name))) {
+      expect(item.level ?? 0).toBeLessThanOrEqual(weakestListed);
+    }
+  });
+
+  it('never publishes the phone, the postal address, or the birthday', () => {
+    for (const data of [CV_DATA, CV_DATA_VI]) {
+      const json = serializeJsonLd(buildPersonJsonLd(data, data === CV_DATA ? 'en' : 'vi'));
+      const hidden = data.contacts.filter((contact) =>
+        ['phone', 'address', 'birthday'].includes(contact.type),
+      );
+      expect(hidden.length).toBe(3);
+      for (const contact of hidden) {
+        expect(json).not.toContain(contact.value);
+        if (contact.href) {
+          expect(json).not.toContain(contact.href);
+        }
+      }
+      expect(json).not.toContain('telephone');
+      expect(json).not.toContain('birthDate');
+      expect(json).not.toContain('streetAddress');
+    }
+  });
+
+  it('leaves a profile link out once it is hidden from the web', () => {
+    const data = structuredClone(CV_DATA);
+    data.contacts.find((contact) => contact.type === 'github')!.showInWeb = false;
+    expect(buildPersonJsonLd(data, 'en')['sameAs']).toEqual([
+      'https://www.linkedin.com/in/khuongnmdev',
+    ]);
+  });
+
+  it('serializes so that no value can close the script element', () => {
+    const json = serializeJsonLd({ name: '</script><script>alert(1)</script>' });
+    expect(json).not.toContain('<');
+    expect(JSON.parse(json)).toEqual({ name: '</script><script>alert(1)</script>' });
   });
 
   it('leaves a route-level robots policy alone', () => {
