@@ -87,11 +87,21 @@ export interface Profile {
   fullName: string;
   /** Shorter name for tight layouts. */
   displayName?: string;
+  /**
+   * The full name as written in the other language's script, for example
+   * without diacritics. Published only in structured data, so search engines
+   * know both spellings name the same person.
+   */
+  alternateName?: string;
   headline: string;
   avatar: string;
   /** One bullet point per entry. */
   summary: string[];
-  /** Coarse location, safe to publish. The full address lives in `contacts`. */
+  /**
+   * Coarse location, safe to publish, written `"City, Country"`: structured
+   * data and the social card read the part before the last comma as the
+   * city. The full address lives in `contacts`.
+   */
   location?: string;
   /**
    * Career start. Themes derive years of experience from this instead of
@@ -231,6 +241,8 @@ export const UI_STRING_KEYS = [
   'collapseMenu',
   'openMenu',
   'closeMenu',
+  'sectionNavigation',
+  'sectionMenu',
   'switchLight',
   'switchDark',
   'exportPdf',
@@ -241,9 +253,11 @@ export const UI_STRING_KEYS = [
   'printTemplateCompact',
   'printExport',
   'printPreviewNote',
+  'pageTitle',
   'metaDescription',
   'metaDescriptionNoLocation',
   'metaKeywords',
+  'socialImageAlt',
 ] as const;
 export type UiStringKey = (typeof UI_STRING_KEYS)[number];
 
@@ -257,8 +271,10 @@ export const UI_STRING_PLACEHOLDERS = {
   printLead: ['headline', 'years'],
   teamSize: ['count'],
   skillLevel: ['level', 'max'],
+  pageTitle: ['name', 'headline'],
   metaDescription: ['name', 'headline', 'location'],
   metaDescriptionNoLocation: ['name', 'headline'],
+  socialImageAlt: ['name', 'headline'],
 } as const satisfies Partial<Record<UiStringKey, readonly string[]>>;
 
 /**

@@ -48,6 +48,15 @@ describe('AboutComponent', () => {
     return fixture.nativeElement as HTMLElement;
   }
 
+  it('should head the section with the profile name as the only h1, above any other heading', async () => {
+    const compiled = await render();
+    const headings = Array.from(compiled.querySelectorAll('h1, h2, h3, h4, h5, h6'));
+    expect(headings.map((heading) => heading.tagName)).toEqual(['H1']);
+    expect(headings[0].textContent?.trim()).toBe(cloneCvData().profile.fullName);
+    // The section title stays visible, as a label rather than an h2.
+    expect(compiled.querySelector('.section-title')?.textContent?.trim()).toBe('About');
+  });
+
   it('should render headline, location, and derived years of experience', async () => {
     const compiled = await render();
     expect(compiled.querySelector('.about-headline')?.textContent).toContain('Test Headline');

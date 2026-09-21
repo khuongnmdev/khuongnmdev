@@ -1,4 +1,4 @@
-<div class="nav-bar" [ngClass]="{ collapsed: isCollapsed() }">
+<div class="nav-bar" [ngClass]="{ collapsed: isCollapsed(), animating: isAnimating() }">
   <!-- Desktop only: shrinks the sidebar to an icon rail. Sits on the panel's
        right edge, so it must live inside the panel for the absolute offset. -->
   <button
@@ -20,11 +20,17 @@
     <img class="img-fluid" [src]="profile().avatar" [alt]="profile().fullName" />
   </div>
 
-  <nav class="nav-list">
+  <!-- Real links to each section of the page in the current language, so
+       they are crawlable, focusable, and work without scripts; the click
+       handler adds the smooth scroll. -->
+  <nav class="nav-list" [attr.aria-label]="ui().sectionNavigation">
     @for (menuItem of menuList(); track menuItem.id) {
     <a
       class="nav-item"
       [ngClass]="{ activated: menuItem.id === activatedItem() }"
+      [routerLink]="homeLink()"
+      [fragment]="menuItem.id"
+      [replaceUrl]="true"
       [title]="menuItem.title"
       [attr.aria-label]="menuItem.title"
       (click)="navigateTo(menuItem)"
@@ -55,11 +61,11 @@
     <a
       class="btn btn-icon btn-export"
       [routerLink]="printLink()"
-      [attr.aria-label]="ui().exportPdf"
       [title]="ui().exportPdf"
       (click)="closeMenu()"
     >
       <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+      <span class="visually-hidden">{{ ui().exportPdf }}</span>
     </a>
   </div>
 
@@ -79,11 +85,18 @@
   </button>
 </div>
 
-<nav class="nav-list-mobile" [ngClass]="{ 'is-show': isShowMenu() }">
+<nav
+  class="nav-list-mobile"
+  [ngClass]="{ 'is-show': isShowMenu() }"
+  [attr.aria-label]="ui().sectionMenu"
+>
   @for (menuItem of menuList(); track menuItem.id) {
   <a
     class="nav-item"
     [ngClass]="{ activated: menuItem.id === activatedItem() }"
+    [routerLink]="homeLink()"
+    [fragment]="menuItem.id"
+    [replaceUrl]="true"
     (click)="navigateTo(menuItem)"
   >
     <span class="nav-icon"><i [class]="iconFor(menuItem)" aria-hidden="true"></i></span>

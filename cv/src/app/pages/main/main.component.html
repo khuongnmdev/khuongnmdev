@@ -1,4 +1,9 @@
-<div class="app-container" [class.sidebar-collapsed]="sidebarCollapsed()">
+<div
+  class="app-container"
+  [class.sidebar-collapsed]="sidebarCollapsed()"
+  [class.sidebar-animating]="sidebarAnimating()"
+  (transitionend)="onTransitionEnd($event)"
+>
   <app-nav-bar [activeSection]="currentActiveSection()" class="app-nav-bar"></app-nav-bar>
   <main class="main-container">
     <!--

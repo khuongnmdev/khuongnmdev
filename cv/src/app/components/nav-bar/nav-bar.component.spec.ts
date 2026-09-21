@@ -42,9 +42,12 @@ describe('NavBarComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NavBarComponent],
       providers: [
-        // The export link needs a matching route so a test click navigates
-        // instead of erroring.
-        provideRouter([{ path: 'print', children: [] }]),
+        // The export and section links need matching routes so a test
+        // click navigates instead of erroring.
+        provideRouter([
+          { path: '', children: [] },
+          { path: 'print', children: [] },
+        ]),
         { provide: CvDataService, useValue: cvDataServiceWith(data) },
       ],
     }).compileComponents();
@@ -119,10 +122,44 @@ describe('NavBarComponent', () => {
       '.btn-export',
     )!;
     expect(link.getAttribute('href')).toBe('/print');
-    // Icon-only by design, so the name must come from the label attributes.
-    expect(link.getAttribute('aria-label')).toBe('Export CV as PDF');
+    // Icon-only on screen, so the name comes from visually hidden text —
+    // real link text, which link checkers read too — plus the tooltip.
+    expect(link.querySelector('.visually-hidden')?.textContent?.trim()).toBe('Export CV as PDF');
+    expect(link.textContent?.trim()).toBe('Export CV as PDF');
     expect(link.getAttribute('title')).toBe('Export CV as PDF');
     expect(link.querySelector('i.fa-file-pdf')).toBeTruthy();
+  });
+
+  it('should link every menu item to its section of the current page', async () => {
+    const fixture = TestBed.createComponent(NavBarComponent);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    for (const list of ['.nav-list', '.nav-list-mobile']) {
+      const hrefs = Array.from(compiled.querySelectorAll(`${list} .nav-item`)).map((item) =>
+        item.getAttribute('href'),
+      );
+      expect(hrefs).toEqual(['/#about', '/#experience', '/#skills']);
+    }
+  });
+
+  it('should point the section links at the page of the active language', async () => {
+    const vietnamese = cloneCvData();
+    vietnamese.meta.locale = 'vi';
+    TestBed.inject(CvDataService).loadFrom(vietnamese);
+    const fixture = TestBed.createComponent(NavBarComponent);
+    await fixture.whenStable();
+    const first = (fixture.nativeElement as HTMLElement).querySelector('.nav-list .nav-item')!;
+    expect(first.getAttribute('href')).toBe('/vi#about');
+  });
+
+  it('should give the two section menus distinct accessible names', async () => {
+    const fixture = TestBed.createComponent(NavBarComponent);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const names = Array.from(compiled.querySelectorAll('nav')).map((nav) =>
+      nav.getAttribute('aria-label'),
+    );
+    expect(names).toEqual(['Sections', 'Section menu']);
   });
 
   it('should point the export action at the print route of the active language', async () => {

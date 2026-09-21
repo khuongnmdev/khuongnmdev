@@ -100,6 +100,13 @@
       max-width: 200px;
       max-height: 200px;
       border: 10px solid var(--bg-secondary);
+    }
+  }
+
+  // Like the panel width, the avatar only animates during a toggle, never
+  // when the desktop values re-apply after a viewport change.
+  &.animating .avatar-block {
+    @media only screen and (min-width: 768px) {
       transition: max-width 0.3s ease-in-out, max-height 0.3s ease-in-out;
     }
   }

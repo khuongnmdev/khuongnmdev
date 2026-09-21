@@ -83,6 +83,22 @@ describe('ExperienceComponent', () => {
     );
   });
 
+  it('should keep a space between adjacent inline parts in the raw text', async () => {
+    // Parsers that read the HTML rather than render it see textContent, so
+    // the company and role must not run together into one word.
+    const compiled = await render();
+    const first = compiled.querySelector('.experience-item')!;
+    expect(first.querySelector('.experience-heading')?.textContent?.trim()).toBe(
+      'New Corp Senior Developer',
+    );
+    expect(first.querySelector('.experience-meta')?.textContent?.trim()).toBe(
+      '03/2022 – Present Freelance',
+    );
+    expect(first.querySelector('.project-meta')?.textContent?.trim()).toBe(
+      'Front-end developer Team of 7',
+    );
+  });
+
   it('should render tech stack chips for an entry', async () => {
     const compiled = await render();
     const first = compiled.querySelector('.experience-item')!;

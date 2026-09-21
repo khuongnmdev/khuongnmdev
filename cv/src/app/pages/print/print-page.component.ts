@@ -9,14 +9,13 @@ import {
   viewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Meta } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { LanguageToggleComponent } from '@app/components/language-toggle/language-toggle.component';
 import { localizedCommands } from '@core/i18n/localized-url';
 import { CvDataService } from '@core/services/cv-data.service';
+import { PageMetaService } from '@core/services/page-meta.service';
 import { PrintService } from '@core/services/print.service';
-import { ROBOTS_INDEXABLE } from '@data/meta';
 import {
   normalizePrintTemplate,
   PRINT_TEMPLATES,
@@ -49,7 +48,7 @@ export class PrintPageComponent {
   private readonly router = inject(Router);
   private readonly cvData = inject(CvDataService);
   private readonly printService = inject(PrintService);
-  private readonly meta = inject(Meta);
+  private readonly pageMeta = inject(PageMetaService);
   private readonly destroyRef = inject(DestroyRef);
 
   /** The sheet wrapper — the scope whose images must decode before printing. */
@@ -78,13 +77,9 @@ export class PrintPageComponent {
   protected readonly exporting = signal(false);
 
   constructor() {
-    // The root shell already registers the robots tag, so update it in place
-    // rather than adding a second one, and put the site default back once
-    // the visitor leaves for an indexable route.
-    this.meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
-    this.destroyRef.onDestroy(() => {
-      this.meta.updateTag({ name: 'robots', content: ROBOTS_INDEXABLE });
-    });
+    // Out of search indexes while active — robots noindex, no canonical —
+    // and back to the site defaults once the visitor leaves.
+    this.destroyRef.onDestroy(this.pageMeta.excludeFromIndex());
   }
 
   protected onTemplateChange(event: Event): void {

@@ -39,6 +39,14 @@ export class NavBarComponent {
   protected readonly profile = this.cvData.profile;
   protected readonly ui = this.cvData.ui;
 
+  /**
+   * The page the section links point into: this language's CV page. The
+   * section id travels as the fragment, so each link resolves to the right
+   * language even though `<base href>` sits at the site root. Replacing the
+   * history entry keeps Back from stepping through every section visited.
+   */
+  protected readonly homeLink = computed(() => localizedCommands(this.cvData.language()));
+
   /** The export opens the print preview in the language being viewed. */
   protected readonly printLink = computed(() =>
     localizedCommands(this.cvData.language(), ['print']),
@@ -53,6 +61,9 @@ export class NavBarComponent {
 
   /** Desktop-only icon-rail state; shared so the page margin can follow. */
   protected readonly isCollapsed = this.sidebar.collapsed;
+
+  /** True only while a toggle resizes the panel; the avatar animates along. */
+  protected readonly isAnimating = this.sidebar.animating;
 
   protected readonly theme = this.themeService.theme;
 

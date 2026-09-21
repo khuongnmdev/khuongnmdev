@@ -42,6 +42,20 @@ describe('SidebarService', () => {
     storage.set('cv-sidebar-collapsed', 'true');
     const service = createService();
     expect(service.collapsed()).toBe(true);
+    // Restored silently: the panel must not animate on load.
+    expect(service.animating()).toBe(false);
+  });
+
+  it('should animate only from a toggle until the page reports the end', () => {
+    const service = createService();
+    expect(service.animating()).toBe(false);
+
+    service.toggle();
+    expect(service.animating()).toBe(true);
+
+    service.endAnimation();
+    expect(service.animating()).toBe(false);
+    expect(service.collapsed()).toBe(true);
   });
 
   it('should survive without any storage at all', () => {
@@ -62,7 +76,9 @@ describe('SidebarService', () => {
 
     expect(service.collapsed()).toBe(false);
     service.toggle();
-    // The in-memory state may flip, but the server never writes storage.
+    // The in-memory state may flip, but the server never writes storage
+    // and never renders the animating state into the markup.
     expect(storage.get('cv-sidebar-collapsed')).toBe('true');
+    expect(service.animating()).toBe(false);
   });
 });

@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { CvDataService } from '@core/services/cv-data.service';
+import { SidebarService } from '@core/services/sidebar.service';
 import type { CvData } from '@core/models/cv-data.model';
 import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
 import { MainComponent } from './main.component';
@@ -57,6 +58,46 @@ describe('MainComponent', () => {
     expect(compiled.querySelector('app-education')).toBeNull();
   });
 
+  it('should give every id in the page to exactly one element', async () => {
+    const fixture = TestBed.createComponent(MainComponent);
+    await fixture.whenStable();
+    const ids = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('[id]')).map(
+      (element) => element.id,
+    );
+    expect(ids).toEqual(expect.arrayContaining(['about', 'skills', 'experience']));
+    expect(ids.filter((id, index) => ids.indexOf(id) !== index)).toEqual([]);
+  });
+
+  it('should animate the sidebar only from a toggle until the content margin settles', async () => {
+    const fixture = TestBed.createComponent(MainComponent);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const container = compiled.querySelector('.app-container')!;
+    const main = compiled.querySelector('.main-container')!;
+    const transitionEnd = (target: Element, propertyName: string) => {
+      const event = new Event('transitionend', { bubbles: true });
+      Object.defineProperty(event, 'propertyName', { value: propertyName });
+      target.dispatchEvent(event);
+    };
+    expect(container.classList).not.toContain('sidebar-animating');
+
+    TestBed.inject(SidebarService).toggle();
+    await fixture.whenStable();
+    expect(container.classList).toContain('sidebar-animating');
+    expect(compiled.querySelector('.nav-bar')?.classList).toContain('animating');
+
+    // Other transitions bubbling up — the avatar, a hover — do not end it.
+    transitionEnd(compiled.querySelector('.avatar-block')!, 'max-width');
+    transitionEnd(main, 'opacity');
+    await fixture.whenStable();
+    expect(container.classList).toContain('sidebar-animating');
+
+    transitionEnd(main, 'margin-left');
+    await fixture.whenStable();
+    expect(container.classList).not.toContain('sidebar-animating');
+    expect(container.classList).toContain('sidebar-collapsed');
+  });
+
   it('should attach the scroll-spy directive to every rendered section host', async () => {
     const fixture = TestBed.createComponent(MainComponent);
     await fixture.whenStable();
@@ -65,5 +106,41 @@ describe('MainComponent', () => {
     for (const host of Array.from(hosts)) {
       expect(host.hasAttribute('appActiveSection')).toBe(true);
     }
+  });
+});
+
+describe('MainComponent with the bundled dataset', () => {
+  const data = cloneCvData();
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [MainComponent],
+      providers: [provideRouter([]), { provide: CvDataService, useValue: cvDataServiceWith(data) }],
+    }).compileComponents();
+  });
+
+  async function render(): Promise<HTMLElement> {
+    const fixture = TestBed.createComponent(MainComponent);
+    await fixture.whenStable();
+    return fixture.nativeElement as HTMLElement;
+  }
+
+  it('should carry each enabled section id on exactly one element', async () => {
+    const compiled = await render();
+    const enabled = data.sections.filter((section) => section.enabled);
+    expect(enabled.length).toBeGreaterThan(0);
+    for (const section of enabled) {
+      expect(compiled.querySelectorAll(`[id="${section.id}"]`).length).toBe(1);
+    }
+    const ids = Array.from(compiled.querySelectorAll('[id]')).map((element) => element.id);
+    expect(ids.filter((id, index) => ids.indexOf(id) !== index)).toEqual([]);
+  });
+
+  it('should have exactly one h1, the profile name, ahead of every other heading', async () => {
+    const compiled = await render();
+    const h1 = compiled.querySelectorAll('h1');
+    expect(h1.length).toBe(1);
+    expect(h1[0].textContent?.trim()).toBe(data.profile.fullName);
+    expect(compiled.querySelector('h1, h2, h3, h4, h5, h6')).toBe(h1[0]);
   });
 });

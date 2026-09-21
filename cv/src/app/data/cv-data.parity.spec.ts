@@ -13,6 +13,7 @@ import { CV_DATA_VI } from './cv-data.vi';
 const TRANSLATABLE = new Set([
   'profile.fullName',
   'profile.displayName',
+  'profile.alternateName',
   'profile.headline',
   'profile.location',
   'profile.summary[]',

@@ -42,9 +42,6 @@
               "src/styles.scss",
               "src/styles/print.scss"
             ],
-            "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
@@ -94,7 +91,10 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "include": ["**/*.spec.ts", "../scripts/**/*.spec.ts"]
+          }
         }
       }
     }

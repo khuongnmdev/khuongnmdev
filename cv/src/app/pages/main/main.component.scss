@@ -15,15 +15,29 @@
 
     @media only screen and (min-width: 768px) {
       width: 17rem;
-      transition: width 0.3s ease-in-out;
     }
   }
 
   .main-container {
-
     @media only screen and (min-width: 768px) {
       margin-left: 17rem;
-      transition: margin-left 0.3s ease-in-out;
+    }
+  }
+
+  // Only while a visitor's toggle resizes the panel. Declared on the base
+  // rules, the transitions also ran whenever the desktop values re-applied:
+  // after crossing the breakpoint, or during a full-page screenshot, which
+  // resizes the viewport — the capture caught the panel half-collapsed with
+  // its labels painted over the content.
+  &.sidebar-animating {
+    @media only screen and (min-width: 768px) {
+      .app-nav-bar {
+        transition: width 0.3s ease-in-out;
+      }
+
+      .main-container {
+        transition: margin-left 0.3s ease-in-out;
+      }
     }
   }
 
