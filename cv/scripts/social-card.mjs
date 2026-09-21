@@ -16,11 +16,9 @@
  * such as years of experience — goes on the card, because the committed
  * image would go stale.
  */
-import { execFileSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { homedir, tmpdir } from 'node:os';
-import { delimiter, extname, join } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { readdirSync, readFileSync } from 'node:fs';
+import { extname, join } from 'node:path';
+import { screenshots } from './chrome.mjs';
 
 const WIDTH = 1200;
 const HEIGHT = 630;
@@ -28,38 +26,6 @@ const HEIGHT = 630;
 const root = join(import.meta.dirname, '..');
 const dataDir = join(root, 'src', 'app', 'data');
 const publicDir = join(root, 'public');
-
-/** The installed Chrome, looked up where each platform installs it. */
-function findChrome() {
-  if (process.env.CHROME_PATH) {
-    return process.env.CHROME_PATH;
-  }
-  const candidates = [];
-  if (process.platform === 'win32') {
-    for (const base of [
-      process.env['PROGRAMFILES'],
-      process.env['PROGRAMFILES(X86)'],
-      process.env['LOCALAPPDATA'],
-    ]) {
-      if (base) {
-        candidates.push(join(base, 'Google', 'Chrome', 'Application', 'chrome.exe'));
-      }
-    }
-  } else if (process.platform === 'darwin') {
-    const app = join('Google Chrome.app', 'Contents', 'MacOS', 'Google Chrome');
-    candidates.push(join('/Applications', app), join(homedir(), 'Applications', app));
-  } else {
-    const names = ['google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser'];
-    for (const dir of (process.env.PATH ?? '').split(delimiter).filter(Boolean)) {
-      candidates.push(...names.map((name) => join(dir, name)));
-    }
-  }
-  const found = candidates.find((candidate) => existsSync(candidate));
-  if (!found) {
-    throw new Error('Chrome not found. Set CHROME_PATH to the Chrome or Chromium executable.');
-  }
-  return found;
-}
 
 /** Escapes text for HTML content and double-quoted attributes. */
 function escapeHtml(text) {
@@ -195,38 +161,14 @@ function datasets() {
     .map((name) => JSON.parse(readFileSync(join(dataDir, name), 'utf8')));
 }
 
-const chrome = findChrome();
 const siteUrl = JSON.parse(readFileSync(join(dataDir, 'site.json'), 'utf8')).url;
-const work = mkdtempSync(join(tmpdir(), 'social-card-'));
-try {
-  for (const data of datasets()) {
-    const page = join(work, `${data.meta.locale}.html`);
-    const out = join(publicDir, `social-card-${data.meta.locale}.png`);
-    writeFileSync(page, cardHtml(data, siteUrl));
-    // Removed first, so a Chrome that fails silently cannot leave the old
-    // card in place looking like a fresh one.
-    rmSync(out, { force: true });
-    execFileSync(
-      chrome,
-      [
-        '--headless',
-        '--disable-gpu',
-        '--hide-scrollbars',
-        '--no-first-run',
-        '--no-default-browser-check',
-        '--force-device-scale-factor=1',
-        `--user-data-dir=${join(work, 'profile')}`,
-        `--window-size=${WIDTH},${HEIGHT}`,
-        `--screenshot=${out}`,
-        pathToFileURL(page).href,
-      ],
-      { stdio: 'ignore' },
-    );
-    if (!existsSync(out)) {
-      throw new Error(`Chrome wrote no screenshot for ${data.meta.locale}`);
-    }
-    console.log(`Wrote ${out}`);
-  }
-} finally {
-  rmSync(work, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
+const cards = datasets().map((data) => ({
+  html: cardHtml(data, siteUrl),
+  out: join(publicDir, `social-card-${data.meta.locale}.png`),
+  width: WIDTH,
+  height: HEIGHT,
+}));
+screenshots(cards);
+for (const { out } of cards) {
+  console.log(`Wrote ${out}`);
 }
