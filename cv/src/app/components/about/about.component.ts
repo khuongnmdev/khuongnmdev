@@ -14,6 +14,7 @@ export class AboutComponent {
   private readonly cvData = inject(CvDataService);
 
   protected readonly profile = this.cvData.profile;
+  protected readonly ui = this.cvData.ui;
 
   /** Section heading from the data, so a JSON edit renames it everywhere. */
   protected readonly title = computed(

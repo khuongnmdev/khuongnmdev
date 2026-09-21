@@ -34,6 +34,7 @@ export class NavBarComponent {
   private readonly themeService = inject(ThemeService);
 
   protected readonly profile = this.cvData.profile;
+  protected readonly ui = this.cvData.ui;
 
   /**
    * The menu is the enabled sections in `order` — the data's `sections[]` is
@@ -69,6 +70,10 @@ export class NavBarComponent {
 
   protected toggleMenu(): void {
     this.isShowMenu.update((isShown) => !isShown);
+  }
+
+  protected switchLanguage(): void {
+    this.cvData.switchLanguage();
   }
 
   protected navigateTo(item: SectionConfig): void {

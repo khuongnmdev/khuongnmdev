@@ -8,7 +8,7 @@
             <span class="experience-role">{{ entry.role }}</span>
           </h3>
           <p class="experience-meta">
-            <span>{{ entry.startDate | dateRange: entry.endDate }}</span>
+            <span>{{ entry.startDate | dateRange: entry.endDate : ui().present }}</span>
             @if (entry.employmentType; as employmentType) {
               <span>{{ employmentType }}</span>
             }

@@ -33,7 +33,7 @@
         @case ('about') {
           <div class="print-about">
             <p class="print-about-lead">
-              {{ profile().headline }} with {{ experienceYears() }} years of experience.
+              {{ profile().headline }} with {{ experienceYears() }} {{ ui().yearsOfExperience }}.
             </p>
             <ul class="print-summary">
               @for (line of profile().summary; track line) {
@@ -51,7 +51,7 @@
                 <span class="print-entry-role">{{ entry.role }}</span>
               </h3>
               <p class="print-entry-meta">
-                <span>{{ entry.startDate | dateRange: entry.endDate }}</span>
+                <span>{{ entry.startDate | dateRange: entry.endDate : ui().present }}</span>
                 @if (entry.employmentType; as employmentType) {
                   <span>{{ employmentType }}</span>
                 }
@@ -107,7 +107,7 @@
                 <span class="print-entry-role">{{ entry.degree }}</span>
               </h3>
               <p class="print-entry-meta">
-                <span>{{ entry.startDate | dateRange: entry.endDate }}</span>
+                <span>{{ entry.startDate | dateRange: entry.endDate : ui().present }}</span>
                 @if (entry.field; as field) {
                   <span>{{ field }}</span>
                 }

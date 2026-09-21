@@ -6,8 +6,8 @@
     class="btn btn-collapse"
     (click)="toggleCollapse()"
     [attr.aria-expanded]="!isCollapsed()"
-    [attr.aria-label]="isCollapsed() ? 'Expand menu' : 'Collapse menu'"
-    [title]="isCollapsed() ? 'Expand menu' : 'Collapse menu'"
+    [attr.aria-label]="isCollapsed() ? ui().expandMenu : ui().collapseMenu"
+    [title]="isCollapsed() ? ui().expandMenu : ui().collapseMenu"
   >
     @if (isCollapsed()) {
     <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
@@ -42,8 +42,8 @@
       type="button"
       class="btn btn-icon btn-theme"
       (click)="toggleTheme()"
-      [attr.aria-label]="theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
-      [title]="theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+      [attr.aria-label]="theme() === 'dark' ? ui().switchLight : ui().switchDark"
+      [title]="theme() === 'dark' ? ui().switchLight : ui().switchDark"
     >
       @if (theme() === 'dark') {
       <i class="fa-solid fa-sun" aria-hidden="true"></i>
@@ -51,11 +51,20 @@
       <i class="fa-solid fa-moon" aria-hidden="true"></i>
       }
     </button>
+    <button
+      type="button"
+      class="btn btn-icon btn-lang"
+      (click)="switchLanguage()"
+      [attr.aria-label]="ui().switchLanguage"
+      [title]="ui().switchLanguage"
+    >
+      <i class="fa-solid fa-language" aria-hidden="true"></i>
+    </button>
     <a
       class="btn btn-icon btn-export"
       routerLink="/print"
-      aria-label="Export CV as PDF"
-      title="Export CV as PDF"
+      [attr.aria-label]="ui().exportPdf"
+      [title]="ui().exportPdf"
       (click)="closeMenu()"
     >
       <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>

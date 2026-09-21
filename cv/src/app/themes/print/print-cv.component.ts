@@ -55,6 +55,7 @@ export class PrintCvComponent {
   protected readonly isCompact = computed(() => this.template() === 'compact');
 
   protected readonly profile = this.cvData.profile;
+  protected readonly ui = this.cvData.ui;
 
   /** Derived from `careerStartDate`, so the figure never goes stale. */
   protected readonly experienceYears = computed(() =>

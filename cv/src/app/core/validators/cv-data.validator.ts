@@ -47,6 +47,7 @@ export function validateCvData(json: unknown): CvDataValidationResult {
   const errors: string[] = [];
 
   validateMeta(json['meta'], errors);
+  validateUi(json['ui'], errors);
   validateProfile(json['profile'], errors);
 
   for (const key of REQUIRED_ARRAYS) {
@@ -129,6 +130,28 @@ function validateMeta(meta: unknown, errors: string[]): void {
   const version = meta['version'];
   if (typeof version !== 'string' || version.length === 0) {
     errors.push('meta.version: expected a non-empty string');
+  }
+}
+
+function validateUi(ui: unknown, errors: string[]): void {
+  if (!isRecord(ui)) {
+    errors.push('ui: expected an object');
+    return;
+  }
+  const requiredStrings = [
+    'present',
+    'yearsOfExperience',
+    'expandMenu',
+    'collapseMenu',
+    'switchLight',
+    'switchDark',
+    'exportPdf',
+    'switchLanguage',
+  ];
+  for (const key of requiredStrings) {
+    if (typeof ui[key] !== 'string') {
+      errors.push(`ui.${key}: expected a string`);
+    }
   }
 }
 

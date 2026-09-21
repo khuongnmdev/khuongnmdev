@@ -201,8 +201,20 @@ export interface SectionConfig {
   icon?: string;
 }
 
+export interface UiStrings {
+  present: string;
+  yearsOfExperience: string;
+  expandMenu: string;
+  collapseMenu: string;
+  switchLight: string;
+  switchDark: string;
+  exportPdf: string;
+  switchLanguage: string;
+}
+
 export interface CvData {
   meta: CvMeta;
+  ui: UiStrings;
   profile: Profile;
   contacts: ContactItem[];
   experience: ExperienceItem[];

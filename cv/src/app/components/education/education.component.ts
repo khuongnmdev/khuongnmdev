@@ -13,6 +13,8 @@ import { SectionComponent } from '../section/section.component';
 export class EducationComponent {
   private readonly cvData = inject(CvDataService);
 
+  protected readonly ui = this.cvData.ui;
+
   /** Section heading from the data, so a JSON edit renames it everywhere. */
   protected readonly title = computed(
     () =>

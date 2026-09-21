@@ -13,8 +13,12 @@ export function formatYearMonth(date: YearMonth): string {
  *
  * The separator is an en dash (U+2013), the typographic convention for ranges.
  */
-export function formatDateRange(start: YearMonth, end: YearMonth | null): string {
-  return `${formatYearMonth(start)} – ${end === null ? 'Present' : formatYearMonth(end)}`;
+export function formatDateRange(
+  start: YearMonth,
+  end: YearMonth | null,
+  presentText: string = 'Present',
+): string {
+  return `${formatYearMonth(start)} – ${end === null ? presentText : formatYearMonth(end)}`;
 }
 
 /**
@@ -39,7 +43,7 @@ export function yearsOfExperience(start: YearMonth, now: Date = new Date()): str
  */
 @Pipe({ name: 'dateRange' })
 export class DateRangePipe implements PipeTransform {
-  transform(start: YearMonth, end: YearMonth | null): string {
-    return formatDateRange(start, end);
+  transform(start: YearMonth, end: YearMonth | null, presentText: string = 'Present'): string {
+    return formatDateRange(start, end, presentText);
   }
 }

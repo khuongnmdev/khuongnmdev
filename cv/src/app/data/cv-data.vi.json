@@ -1,18 +1,18 @@
 {
   "meta": {
     "version": "1.0.0",
-    "locale": "en",
+    "locale": "vi",
     "updatedAt": "2026-09-15"
   },
   "ui": {
-    "present": "Present",
-    "yearsOfExperience": "years of experience",
-    "expandMenu": "Expand menu",
-    "collapseMenu": "Collapse menu",
-    "switchLight": "Switch to light theme",
-    "switchDark": "Switch to dark theme",
-    "exportPdf": "Export CV as PDF",
-    "switchLanguage": "Switch to Vietnamese"
+    "present": "Hiện tại",
+    "yearsOfExperience": "năm kinh nghiệm",
+    "expandMenu": "Mở rộng menu",
+    "collapseMenu": "Thu gọn menu",
+    "switchLight": "Chuyển sang giao diện sáng",
+    "switchDark": "Chuyển sang giao diện tối",
+    "exportPdf": "Xuất CV dạng PDF",
+    "switchLanguage": "Switch to English"
   },
   "profile": {
     "fullName": "Nguyen Manh Khuong",
