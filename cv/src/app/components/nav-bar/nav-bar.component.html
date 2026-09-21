@@ -51,9 +51,10 @@
       <i class="fa-solid fa-moon" aria-hidden="true"></i>
       }
     </button>
+    <app-language-toggle />
     <a
       class="btn btn-icon btn-export"
-      routerLink="/print"
+      [routerLink]="printLink()"
       [attr.aria-label]="ui().exportPdf"
       [title]="ui().exportPdf"
       (click)="closeMenu()"

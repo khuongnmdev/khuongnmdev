@@ -12,6 +12,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { Meta } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
+import { LanguageToggleComponent } from '@app/components/language-toggle/language-toggle.component';
+import { localizedCommands } from '@core/i18n/localized-url';
 import { CvDataService } from '@core/services/cv-data.service';
 import { PrintService } from '@core/services/print.service';
 import { ROBOTS_INDEXABLE } from '@data/meta';
@@ -38,7 +40,7 @@ import {
  */
 @Component({
   selector: 'app-print-page',
-  imports: [PrintCvComponent, RouterLink],
+  imports: [PrintCvComponent, RouterLink, LanguageToggleComponent],
   templateUrl: './print-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -62,6 +64,9 @@ export class PrintPageComponent {
     classic: this.ui().printTemplateClassic,
     compact: this.ui().printTemplateCompact,
   }));
+
+  /** Back to the CV page in the language being viewed. */
+  protected readonly homeLink = computed(() => localizedCommands(this.cvData.language()));
 
   /** Query parameter mapped straight onto a signal, junk values normalized. */
   protected readonly template = toSignal(

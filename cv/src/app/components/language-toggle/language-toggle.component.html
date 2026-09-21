@@ -1,0 +1,22 @@
+<!--
+  `lang` and `hreflang` name the language each link leads to. The accessible
+  name is the tooltip text, which is written in the language of the current
+  page — so the hidden label carries that language explicitly, and the
+  visible code stays out of the name.
+-->
+<div class="lang-toggle" role="group" [attr.aria-label]="ui().language">
+  @for (option of options(); track option.locale) {
+    <a
+      class="lang-option"
+      [class.active]="option.active"
+      [routerLink]="option.target"
+      [attr.hreflang]="option.locale"
+      [attr.lang]="option.locale"
+      [attr.aria-current]="option.active ? 'page' : null"
+      [title]="option.title"
+    >
+      <span class="lang-code" aria-hidden="true">{{ option.code }}</span>
+      <span class="visually-hidden" [attr.lang]="language()">{{ option.title }}</span>
+    </a>
+  }
+</div>

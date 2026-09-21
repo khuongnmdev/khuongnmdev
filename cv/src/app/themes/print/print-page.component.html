@@ -1,6 +1,6 @@
 <div class="print-page">
   <header class="print-toolbar screen-only">
-    <a class="toolbar-back" routerLink="/">{{ ui().printBack }}</a>
+    <a class="toolbar-back" [routerLink]="homeLink()">{{ ui().printBack }}</a>
     <label class="toolbar-field">
       {{ ui().printTemplate }}
       <select
@@ -15,6 +15,7 @@
         }
       </select>
     </label>
+    <app-language-toggle />
     <button type="button" class="toolbar-export" [disabled]="exporting()" (click)="exportPdf()">
       {{ ui().printExport }}
     </button>

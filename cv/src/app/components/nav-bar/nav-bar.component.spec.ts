@@ -125,6 +125,25 @@ describe('NavBarComponent', () => {
     expect(link.querySelector('i.fa-file-pdf')).toBeTruthy();
   });
 
+  it('should point the export action at the print route of the active language', async () => {
+    const vietnamese = cloneCvData();
+    vietnamese.meta.locale = 'vi';
+    TestBed.inject(CvDataService).loadFrom(vietnamese);
+    const fixture = TestBed.createComponent(NavBarComponent);
+    await fixture.whenStable();
+    const link = (fixture.nativeElement as HTMLElement).querySelector('.btn-export')!;
+    expect(link.getAttribute('href')).toBe('/vi/print');
+  });
+
+  it('should carry the language toggle among the top actions', async () => {
+    const fixture = TestBed.createComponent(NavBarComponent);
+    await fixture.whenStable();
+    const actions = (fixture.nativeElement as HTMLElement).querySelector('.top-actions')!;
+    expect(actions.querySelector('app-language-toggle .lang-toggle')).toBeTruthy();
+    // The old icon-only language button is gone.
+    expect(actions.querySelector('.fa-language')).toBeNull();
+  });
+
   it('should give the mobile menu button an accessible name that follows its state', async () => {
     const fixture = TestBed.createComponent(NavBarComponent);
     await fixture.whenStable();

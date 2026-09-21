@@ -6,5 +6,8 @@ import type { Loosen } from './loosen';
 const _structureCheck: Loosen<CvData> = cvDataViJson;
 void _structureCheck;
 
-/** The Vietnamese dataset. */
+/**
+ * The Vietnamese dataset. Only ever reached through a dynamic `import()`, so
+ * it ships in its own lazy chunk rather than in the initial bundle.
+ */
 export const CV_DATA_VI = cvDataViJson as CvData;
