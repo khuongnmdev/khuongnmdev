@@ -8,12 +8,14 @@ import {
   type UiStrings,
 } from '@core/models/cv-data.model';
 import { interpolate } from '@core/pipes/interpolate.pipe';
+import site from './site.json';
 
 /**
- * Canonical URL of the deployed site. Deployment configuration, not CV
- * content, so it stays a constant rather than living in the data file.
+ * Canonical URL of the deployed site, with its trailing slash. Deployment
+ * configuration, not CV content, so it lives in `site.json` rather than in
+ * the CV data — a file the build scripts read as well.
  */
-const SITE_URL = 'https://khuongnmdev.github.io/khuongnmdev/';
+const SITE_URL = site.url;
 
 /** Social preview image, produced by the deployment — not part of the data. */
 const PREVIEW_IMAGE_URL = `${SITE_URL}preview.jpg`;
