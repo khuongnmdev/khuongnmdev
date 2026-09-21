@@ -10,8 +10,8 @@
 //   `vh`/`vw`, which map onto the printed page and break pagination.
 // - No flexbox or grid anywhere inside `.print-cv`: `break-inside: avoid` is
 //   silently ignored on flex and grid items, so the sheet uses only block
-//   flow, inline-block, and floats. The only flex container is the
-//   screen-only toolbar, which never prints.
+//   flow, inline-block, and floats. The only flex and grid containers are
+//   in the screen-only toolbar, which never prints.
 // - No real content in `::before`/`::after` — pseudo-element text lands
 //   unpredictably in the extracted text stream. The single pseudo-element
 //   below is an empty clearfix.
@@ -337,6 +337,13 @@ app-print-cv {
       gap: 0.5rem;
       margin-left: auto;
       font-size: 0.875rem;
+
+      // Bootstrap gives the select `width: 100%`, which lets a crowded row
+      // squeeze it until only the chevron shows. It never gets narrower
+      // than its longest option.
+      select {
+        min-width: max-content;
+      }
     }
 
     .toolbar-export {
@@ -350,6 +357,25 @@ app-print-cv {
 
       &:disabled {
         opacity: 0.6;
+      }
+    }
+
+    // One row needs about 36rem. Below Bootstrap's `sm` breakpoint the
+    // toolbar becomes two rows of two — back link and template, then
+    // language and export — laid out by a grid rather than wrapping flex, so
+    // the split is the same in both languages at every phone width.
+    @media (max-width: 575.98px) {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.5rem 0.75rem;
+      padding: 0.625rem 1rem;
+
+      app-language-toggle {
+        justify-self: start;
+      }
+
+      .toolbar-export {
+        justify-self: end;
       }
     }
   }
