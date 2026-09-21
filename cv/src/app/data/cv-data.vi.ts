@@ -1,19 +1,10 @@
 import type { CvData } from '@core/models/cv-data.model';
 import cvDataViJson from './cv-data.vi.json';
+import type { Loosen } from './loosen';
 
-type Loosen<T> = T extends string
-  ? string
-  : T extends number
-    ? number
-    : T extends boolean
-      ? boolean
-      : T extends readonly (infer U)[]
-        ? Loosen<U>[]
-        : T extends object
-          ? { [K in keyof T]: Loosen<T[K]> }
-          : T;
-
+/** The same build-time structure check the English entry point applies. */
 const _structureCheck: Loosen<CvData> = cvDataViJson;
 void _structureCheck;
 
+/** The Vietnamese dataset. */
 export const CV_DATA_VI = cvDataViJson as CvData;
