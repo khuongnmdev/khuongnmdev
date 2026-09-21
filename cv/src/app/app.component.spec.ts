@@ -21,6 +21,7 @@ describe('AppComponent', () => {
     data.profile.fullName = 'Test Person';
     data.profile.displayName = 'Testy';
     data.profile.headline = 'Test Engineer';
+    data.ui.pageTitle = '{name} | {headline}';
     cvData = cvDataServiceWith(data);
 
     await TestBed.configureTestingModule({
@@ -59,7 +60,7 @@ describe('AppComponent', () => {
 
   it('should derive the document title from the profile', async () => {
     await boot();
-    expect(TestBed.inject(Title).getTitle()).toBe('Testy — Test Engineer');
+    expect(TestBed.inject(Title).getTitle()).toBe('Testy | Test Engineer');
   });
 
   it('should derive description and author meta tags from the profile', async () => {
@@ -68,7 +69,7 @@ describe('AppComponent', () => {
     expect(meta.getTag('name="author"')?.content).toBe('Test Person');
     expect(meta.getTag('name="description"')?.content).toContain('Test Person');
     expect(meta.getTag('name="description"')?.content).toContain('Test Engineer');
-    expect(meta.getTag('property="og:title"')?.content).toBe('Testy — Test Engineer');
+    expect(meta.getTag('property="og:title"')?.content).toBe('Testy | Test Engineer');
     // Static by design: policy and deployment values, not CV content.
     expect(meta.getTag('name="robots"')?.content).toBe('index, follow');
     expect(meta.getTag('property="og:type"')?.content).toBe('website');

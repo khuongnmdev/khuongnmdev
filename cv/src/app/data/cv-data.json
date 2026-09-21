@@ -29,8 +29,9 @@
     "printTemplateCompact": "Compact",
     "printExport": "Export PDF",
     "printPreviewNote": "The preview is one continuous sheet at A4 width — page boundaries appear in the browser's print preview.",
-    "metaDescription": "Resume of {name} — {headline}, based in {location}.",
-    "metaDescriptionNoLocation": "Resume of {name} — {headline}.",
+    "pageTitle": "{name} — {headline} (Angular, React) | CV",
+    "metaDescription": "Resume of {name}, {headline} in {location}: Angular and React web apps, work experience, projects, education, and skills.",
+    "metaDescriptionNoLocation": "Resume of {name}, {headline}: Angular and React web apps, work experience, projects, education, and skills.",
     "metaKeywords": "resume, CV",
     "socialImageAlt": "Profile card: photo of {name}, {headline}",
     "employmentTypes": {

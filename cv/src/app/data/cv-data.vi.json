@@ -29,8 +29,9 @@
     "printTemplateCompact": "Gọn",
     "printExport": "Xuất PDF",
     "printPreviewNote": "Bản xem trước là một trang liền mạch khổ A4 — ranh giới giữa các trang chỉ hiện ra trong bản xem trước khi in của trình duyệt.",
-    "metaDescription": "CV của {name} — {headline} tại {location}.",
-    "metaDescriptionNoLocation": "CV của {name} — {headline}.",
+    "pageTitle": "CV {name} — {headline} (Angular, React)",
+    "metaDescription": "CV của {name}, {headline} tại {location}: ứng dụng web Angular và React, kinh nghiệm, dự án, học vấn và kỹ năng.",
+    "metaDescriptionNoLocation": "CV của {name}, {headline}: ứng dụng web Angular và React, kinh nghiệm, dự án, học vấn và kỹ năng.",
     "metaKeywords": "hồ sơ xin việc, CV",
     "socialImageAlt": "Thẻ hồ sơ: ảnh của {name}, {headline}",
     "employmentTypes": {

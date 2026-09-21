@@ -49,9 +49,15 @@ export function siteUrlFor(locale: Locale): string {
   return `${SITE_URL}${localeHomePath(locale)}`;
 }
 
-/** Document title: `"<name> — <headline>"`. */
-export function buildPageTitle(profile: Profile): string {
-  return `${profile.displayName ?? profile.fullName} — ${profile.headline}`;
+/**
+ * Document title from the language's `pageTitle` template, filled with the
+ * short name and the headline. Also the Open Graph and Twitter title.
+ */
+export function buildPageTitle(profile: Profile, ui: UiStrings): string {
+  return interpolate(ui.pageTitle, {
+    name: profile.displayName ?? profile.fullName,
+    headline: profile.headline,
+  });
 }
 
 /**
@@ -62,7 +68,7 @@ export function buildPageTitle(profile: Profile): string {
  * deliberately absent: it belongs to the route, not to the language.
  */
 export function buildMetaTags(profile: Profile, ui: UiStrings, locale: Locale): MetaDefinition[] {
-  const title = buildPageTitle(profile);
+  const title = buildPageTitle(profile, ui);
   const description = profile.location
     ? interpolate(ui.metaDescription, {
         name: profile.fullName,

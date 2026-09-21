@@ -36,14 +36,37 @@ describe('PageMetaService', () => {
     apply('en');
     expect(document.documentElement.getAttribute('lang')).toBe('en');
     expect(TestBed.inject(Title).getTitle()).toBe(
-      `${CV_DATA.profile.displayName} — ${CV_DATA.profile.headline}`,
+      `${CV_DATA.profile.displayName} — ${CV_DATA.profile.headline} (Angular, React) | CV`,
     );
     expect(meta.getTag('name="description"')?.content).toBe(
-      `Resume of ${CV_DATA.profile.fullName} — ${CV_DATA.profile.headline}, based in ${CV_DATA.profile.location}.`,
+      `Resume of ${CV_DATA.profile.fullName}, ${CV_DATA.profile.headline} in ${CV_DATA.profile.location}: ` +
+        'Angular and React web apps, work experience, projects, education, and skills.',
     );
     expect(meta.getTag('property="og:locale"')?.content).toBe('en_US');
     expect(meta.getTag('property="og:url"')?.content).toBe(SITE);
     expect(meta.getTag('name="robots"')?.content).toBe('index, follow');
+  });
+
+  it('keeps the title of each language within 60 and its description within 160 characters', () => {
+    // Roughly what a search result shows before cutting the text off.
+    for (const locale of ['en', 'vi'] as const) {
+      apply(locale);
+      const title = TestBed.inject(Title).getTitle();
+      const description = meta.getTag('name="description"')!.content;
+      expect([...title].length).toBeGreaterThan(40);
+      expect([...title].length).toBeLessThanOrEqual(60);
+      expect([...description].length).toBeGreaterThan(120);
+      expect([...description].length).toBeLessThanOrEqual(160);
+    }
+  });
+
+  it('gives each language its own title and description', () => {
+    apply('en');
+    const english = [TestBed.inject(Title).getTitle(), meta.getTag('name="description"')?.content];
+    apply('vi');
+    const vietnamese = [TestBed.inject(Title).getTitle(), meta.getTag('name="description"')?.content];
+    expect(vietnamese[0]).not.toBe(english[0]);
+    expect(vietnamese[1]).not.toBe(english[1]);
   });
 
   it('switches every language signal to Vietnamese', () => {

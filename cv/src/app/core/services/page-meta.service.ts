@@ -29,7 +29,7 @@ export class PageMetaService {
    */
   apply(locale: Locale, profile: Profile, ui: UiStrings): void {
     this.document.documentElement.setAttribute('lang', locale);
-    this.title.setTitle(buildPageTitle(profile));
+    this.title.setTitle(buildPageTitle(profile, ui));
     for (const tag of buildMetaTags(profile, ui, locale)) {
       this.meta.updateTag(tag);
     }
