@@ -1,19 +1,22 @@
+<!-- `&ngsp;` keeps one real space between inline siblings. Angular strips template
+     whitespace, which glued their words together for anything reading the raw HTML
+     ("PAL TECHFront End Developer"); inside these flex rows the space never renders. -->
 <app-section [title]="title()" id="experience">
   <div class="experience-list">
     @for (entry of entries(); track entry.company + entry.startDate) {
       <article class="experience-item">
         <header>
           <h3 class="experience-heading">
-            <span class="experience-company">{{ entry.company }}</span>
+            <span class="experience-company">{{ entry.company }}</span>&ngsp;
             <span class="experience-role">{{ entry.role }}</span>
           </h3>
           <p class="experience-meta">
             <span>{{ entry.startDate | dateRange: entry.endDate : ui().present }}</span>
             @if (entry.employmentType; as employmentType) {
-              <span>{{ ui().employmentTypes[employmentType] }}</span>
+              &ngsp;<span>{{ ui().employmentTypes[employmentType] }}</span>
             }
             @if (entry.location; as location) {
-              <span>{{ location }}</span>
+              &ngsp;<span>{{ location }}</span>
             }
           </p>
         </header>
@@ -47,7 +50,7 @@
                 <p class="project-meta">
                   <span class="project-role">{{ project.role }}</span>
                   @if (project.teamSize; as teamSize) {
-                    <span>{{ ui().teamSize | interpolate: { count: teamSize } }}</span>
+                    &ngsp;<span>{{ ui().teamSize | interpolate: { count: teamSize } }}</span>
                   }
                 </p>
                 <p class="project-description">{{ project.description }}</p>

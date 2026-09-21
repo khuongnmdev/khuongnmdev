@@ -1,3 +1,6 @@
+<!-- `&ngsp;` keeps one real space between inline siblings. Angular strips template
+     whitespace, which glued their words together for anything reading the raw HTML;
+     inside these flex rows the space never renders. -->
 <app-section [title]="title()" id="education">
   <div class="education-list">
     @for (entry of entries(); track entry.school + entry.startDate) {
@@ -6,13 +9,13 @@
         <p class="education-degree">
           <span>{{ entry.degree }}</span>
           @if (entry.field; as field) {
-            <span class="education-field">{{ field }}</span>
+            &ngsp;<span class="education-field">{{ field }}</span>
           }
         </p>
         <p class="education-meta">
           <span>{{ entry.startDate | dateRange: entry.endDate : ui().present }}</span>
           @if (entry.gpa; as gpa) {
-            <span>{{ ui().gpa }}: {{ gpa }}</span>
+            &ngsp;<span>{{ ui().gpa }}: {{ gpa }}</span>
           }
         </p>
         @if (entry.highlights?.length) {

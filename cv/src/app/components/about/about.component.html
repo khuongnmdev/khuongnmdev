@@ -1,3 +1,6 @@
+<!-- `&ngsp;` keeps one real space between inline siblings. Angular strips template
+     whitespace, which glued their words together for anything reading the raw HTML;
+     inside these flex rows the space never renders. -->
 <!-- The profile name is the page's only h1, so the section title above it
      stays a label: an h2 before the h1 would start the outline at level two. -->
 <app-section [title]="title()" [titleIsHeading]="false" id="about">
@@ -7,7 +10,7 @@
 
     <p class="about-facts">
       @if (profile().location; as location) {
-        <span class="about-fact">{{ location }}</span>
+        <span class="about-fact">{{ location }}</span>&ngsp;
       }
       <span class="about-fact">{{
         ui().yearsOfExperience | interpolate: { years: experienceYears() }
@@ -26,7 +29,7 @@
           @if (contact.icon; as icon) {
             <span class="contact-icon" aria-hidden="true"><i [class]="icon"></i></span>
           }
-          <span class="visually-hidden">{{ contact.label }}:</span>
+          <span class="visually-hidden">{{ contact.label }}:</span>&ngsp;
           @if (contact.href; as href) {
             <a [href]="href" [attr.target]="targetFor(href)" rel="noopener">{{ contact.value }}</a>
           } @else {

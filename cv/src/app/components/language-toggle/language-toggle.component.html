@@ -4,7 +4,10 @@
   in the language of the current page, so the link carries no `lang` and
   inherits the page's. Only the visible code is in the target language: it
   alone carries `lang`, and it is hidden from assistive technology so it
-  stays out of the name.
+  stays out of the name. `&ngsp;` keeps a real space between the code and
+  the label, which Angular's whitespace stripping would otherwise glue into
+  "VIView in Vietnamese" for anything reading the raw HTML; inside the
+  inline-flex link it never renders.
 -->
 <div class="lang-toggle" role="group" [attr.aria-label]="ui().language">
   @for (option of options(); track option.locale) {
@@ -18,7 +21,7 @@
     >
       <span class="lang-code" aria-hidden="true" [attr.lang]="option.locale">{{
         option.code
-      }}</span>
+      }}</span>&ngsp;
       <span class="visually-hidden">{{ option.title }}</span>
     </a>
   }
