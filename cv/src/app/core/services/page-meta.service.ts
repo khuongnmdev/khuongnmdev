@@ -7,6 +7,7 @@ import {
   buildOgLocaleAlternates,
   buildPageTitle,
   buildPersonJsonLd,
+  ROBOTS_EXCLUDED,
   ROBOTS_INDEXABLE,
   serializeJsonLd,
   siteUrlFor,
@@ -28,6 +29,12 @@ export class PageMetaService {
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
 
+  /** False while the active route is kept out of search indexes. */
+  private indexable = true;
+
+  /** Language of the last `apply`, to restore the index links for. */
+  private locale?: Locale;
+
   /**
    * Points the document at `locale`. Idempotent: every tag and link is
    * updated in place, so switching languages back and forth never leaves a
@@ -35,6 +42,7 @@ export class PageMetaService {
    */
   apply(locale: Locale, data: CvData): void {
     const { profile, ui } = data;
+    this.locale = locale;
     this.document.documentElement.setAttribute('lang', locale);
     this.title.setTitle(buildPageTitle(profile, ui));
     for (const tag of buildMetaTags(profile, ui, locale)) {
@@ -56,6 +64,36 @@ export class PageMetaService {
     if (!this.meta.getTag('name="robots"')) {
       this.meta.addTag({ name: 'robots', content: ROBOTS_INDEXABLE });
     }
+    if (this.indexable) {
+      this.writeIndexLinks(locale);
+    }
+    this.upsertJsonLd(PERSON_JSON_LD_ID, serializeJsonLd(buildPersonJsonLd(data, locale)));
+  }
+
+  /**
+   * Keeps the active route out of search indexes: robots `noindex`, and no
+   * canonical or `hreflang` links, which would contradict it by naming an
+   * indexable page as this one's. Language switches while excluded keep it
+   * that way. Returns the function that puts the indexable defaults back
+   * once the route is left.
+   */
+  excludeFromIndex(): () => void {
+    this.indexable = false;
+    this.meta.updateTag({ name: 'robots', content: ROBOTS_EXCLUDED });
+    this.document.head
+      .querySelectorAll('link[rel="canonical"], link[rel="alternate"][hreflang]')
+      .forEach((link) => link.remove());
+    return () => {
+      this.indexable = true;
+      this.meta.updateTag({ name: 'robots', content: ROBOTS_INDEXABLE });
+      if (this.locale) {
+        this.writeIndexLinks(this.locale);
+      }
+    };
+  }
+
+  /** The canonical link and the `hreflang` alternates of `locale`'s page. */
+  private writeIndexLinks(locale: Locale): void {
     this.upsertLink('link[rel="canonical"]', { rel: 'canonical' }, siteUrlFor(locale));
     for (const { hreflang, href } of buildAlternateLinks()) {
       this.upsertLink(
@@ -64,7 +102,6 @@ export class PageMetaService {
         href,
       );
     }
-    this.upsertJsonLd(PERSON_JSON_LD_ID, serializeJsonLd(buildPersonJsonLd(data, locale)));
   }
 
   /** Updates the JSON-LD script with `id`, creating it on first use. */

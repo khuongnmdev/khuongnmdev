@@ -43,6 +43,9 @@ const OG_LOCALES: Readonly<Record<Locale, string>> = {
  */
 export const ROBOTS_INDEXABLE = 'index, follow';
 
+/** Robots policy of a route kept out of search indexes. */
+export const ROBOTS_EXCLUDED = 'noindex, nofollow';
+
 /**
  * Absolute URL of a language's CV page: the site root for the default
  * language, its prefix below the root for every other one.

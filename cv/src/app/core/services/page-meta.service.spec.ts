@@ -238,6 +238,25 @@ describe('PageMetaService', () => {
     expect(JSON.parse(json)).toEqual({ name: '</script><script>alert(1)</script>' });
   });
 
+  it('drops the canonical and hreflang links while a route is kept out of indexes', () => {
+    const count = (selector: string) => document.head.querySelectorAll(selector).length;
+    apply('en');
+    const restore = service.excludeFromIndex();
+    expect(meta.getTags('name="robots"').map((tag) => tag.content)).toEqual(['noindex, nofollow']);
+    expect(count('link[rel="canonical"]')).toBe(0);
+    expect(count('link[rel="alternate"]')).toBe(0);
+
+    // A language switch on the excluded route must not bring them back.
+    apply('vi');
+    expect(count('link[rel="canonical"]')).toBe(0);
+    expect(meta.getTag('name="robots"')?.content).toBe('noindex, nofollow');
+
+    restore();
+    expect(meta.getTags('name="robots"').map((tag) => tag.content)).toEqual(['index, follow']);
+    expect(hrefOf('link[rel="canonical"]')).toBe(`${SITE}vi/`);
+    expect(count('link[rel="alternate"]')).toBe(3);
+  });
+
   it('leaves a route-level robots policy alone', () => {
     meta.addTag({ name: 'robots', content: 'noindex, nofollow' });
     apply('vi');

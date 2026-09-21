@@ -133,10 +133,18 @@ describe('PrintPageComponent', () => {
     meta.getTags('name="robots"').forEach((tag) => meta.removeTagElement(tag));
     meta.addTag({ name: 'robots', content: 'index, follow' });
 
+    document.head.querySelectorAll('link[rel="canonical"]').forEach((link) => link.remove());
+    const canonical = document.createElement('link');
+    canonical.setAttribute('rel', 'canonical');
+    canonical.setAttribute('href', 'https://example.com/');
+    document.head.appendChild(canonical);
+
     const harness = await RouterTestingHarness.create('/print');
     expect(meta.getTag('name="robots"')?.content).toBe('noindex, nofollow');
     // Updated in place — a second robots tag would leave the policy ambiguous.
     expect(meta.getTags('name="robots"').length).toBe(1);
+    // A canonical naming an indexable page would contradict the noindex.
+    expect(document.head.querySelector('link[rel="canonical"]')).toBeNull();
 
     await harness.navigateByUrl('/');
     expect(meta.getTag('name="robots"')?.content).toBe('index, follow');
