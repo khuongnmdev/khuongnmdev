@@ -7,7 +7,8 @@
  *   the export link on every page is no broken link for crawlers, and the
  *   injected `noindex` keeps it out of search indexes before the app boots
  *   (the app then keeps it that way). The shell carries no CV data, so the
- *   print-only contacts still reach no static file.
+ *   print-only contacts still reach no static HTML page, where crawlers
+ *   would read them; they stay in the dataset the scripts load.
  * - `404.html`: what Pages serves, with a 404 status, for any unknown path;
  *   the app boots there and routes the visitor to the CV. Also `noindex`.
  *
