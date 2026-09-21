@@ -32,6 +32,7 @@
     "metaDescription": "Resume of {name} — {headline}, based in {location}.",
     "metaDescriptionNoLocation": "Resume of {name} — {headline}.",
     "metaKeywords": "resume, CV",
+    "socialImageAlt": "Profile card: photo of {name}, {headline}",
     "employmentTypes": {
       "full-time": "Full-time",
       "part-time": "Part-time",

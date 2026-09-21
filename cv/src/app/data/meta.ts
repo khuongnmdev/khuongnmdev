@@ -17,8 +17,17 @@ import site from './site.json';
  */
 const SITE_URL = site.url;
 
-/** Social preview image, produced by the deployment — not part of the data. */
-const PREVIEW_IMAGE_URL = `${SITE_URL}preview.jpg`;
+/**
+ * The social preview card of each language: generated from the CV data by
+ * `scripts/social-card.mjs` into `public/social-card-<locale>.png` and
+ * committed, so the image itself is not part of the data. Its size is fixed
+ * by the generator at the 1.91:1 large-card ratio.
+ */
+const SOCIAL_CARD = { width: 1200, height: 630, type: 'image/png' } as const;
+
+function socialCardUrl(locale: Locale): string {
+  return `${SITE_URL}social-card-${locale}.png`;
+}
 
 /** Open Graph locale per language, in its `language_TERRITORY` form. */
 const OG_LOCALES: Readonly<Record<Locale, string>> = {
@@ -67,6 +76,11 @@ export function buildMetaTags(profile: Profile, ui: UiStrings, locale: Locale): 
   const keywords = [profile.fullName, profile.displayName, ui.metaKeywords, profile.headline]
     .filter((part): part is string => !!part)
     .join(', ');
+  const image = socialCardUrl(locale);
+  const imageAlt = interpolate(ui.socialImageAlt, {
+    name: profile.fullName,
+    headline: profile.headline,
+  });
 
   return [
     { name: 'description', content: description },
@@ -76,13 +90,29 @@ export function buildMetaTags(profile: Profile, ui: UiStrings, locale: Locale): 
     { property: 'og:description', content: description },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: siteUrlFor(locale) },
+    { property: 'og:site_name', content: profile.displayName ?? profile.fullName },
     { property: 'og:locale', content: OG_LOCALES[locale] },
-    { property: 'og:image', content: PREVIEW_IMAGE_URL },
+    // The image's own properties follow it, as Open Graph structures them.
+    { property: 'og:image', content: image },
+    { property: 'og:image:width', content: String(SOCIAL_CARD.width) },
+    { property: 'og:image:height', content: String(SOCIAL_CARD.height) },
+    { property: 'og:image:type', content: SOCIAL_CARD.type },
+    { property: 'og:image:alt', content: imageAlt },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
-    { name: 'twitter:image', content: PREVIEW_IMAGE_URL },
+    { name: 'twitter:image', content: image },
+    { name: 'twitter:image:alt', content: imageAlt },
   ];
+}
+
+/**
+ * `og:locale:alternate` values: the Open Graph locale of every other
+ * language the page exists in. A repeatable property, so the caller replaces
+ * the whole set rather than updating one tag in place.
+ */
+export function buildOgLocaleAlternates(locale: Locale): string[] {
+  return SUPPORTED_LOCALES.filter((other) => other !== locale).map((other) => OG_LOCALES[other]);
 }
 
 /**

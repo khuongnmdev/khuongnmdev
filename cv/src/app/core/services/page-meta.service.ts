@@ -4,6 +4,7 @@ import type { Locale, Profile, UiStrings } from '@core/models/cv-data.model';
 import {
   buildAlternateLinks,
   buildMetaTags,
+  buildOgLocaleAlternates,
   buildPageTitle,
   ROBOTS_INDEXABLE,
   siteUrlFor,
@@ -32,6 +33,17 @@ export class PageMetaService {
     for (const tag of buildMetaTags(profile, ui, locale)) {
       this.meta.updateTag(tag);
     }
+    // Repeatable, so `updateTag` — which rewrites the first match — cannot
+    // keep the set right; replace it whole.
+    this.meta
+      .getTags('property="og:locale:alternate"')
+      .forEach((tag) => this.meta.removeTagElement(tag));
+    this.meta.addTags(
+      buildOgLocaleAlternates(locale).map((content) => ({
+        property: 'og:locale:alternate',
+        content,
+      })),
+    );
     // Robots is route policy (the print preview sets noindex), so it is only
     // seeded when missing — a language switch must not re-index that route.
     if (!this.meta.getTag('name="robots"')) {

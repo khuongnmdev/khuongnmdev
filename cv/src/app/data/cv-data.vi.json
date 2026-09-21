@@ -32,6 +32,7 @@
     "metaDescription": "CV của {name} — {headline} tại {location}.",
     "metaDescriptionNoLocation": "CV của {name} — {headline}.",
     "metaKeywords": "hồ sơ xin việc, CV",
+    "socialImageAlt": "Thẻ hồ sơ: ảnh của {name}, {headline}",
     "employmentTypes": {
       "full-time": "Toàn thời gian",
       "part-time": "Bán thời gian",

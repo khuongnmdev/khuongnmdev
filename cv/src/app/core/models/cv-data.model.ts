@@ -246,6 +246,7 @@ export const UI_STRING_KEYS = [
   'metaDescription',
   'metaDescriptionNoLocation',
   'metaKeywords',
+  'socialImageAlt',
 ] as const;
 export type UiStringKey = (typeof UI_STRING_KEYS)[number];
 
@@ -261,6 +262,7 @@ export const UI_STRING_PLACEHOLDERS = {
   skillLevel: ['level', 'max'],
   metaDescription: ['name', 'headline', 'location'],
   metaDescriptionNoLocation: ['name', 'headline'],
+  socialImageAlt: ['name', 'headline'],
 } as const satisfies Partial<Record<UiStringKey, readonly string[]>>;
 
 /**

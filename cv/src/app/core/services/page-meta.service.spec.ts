@@ -57,6 +57,38 @@ describe('PageMetaService', () => {
     expect(meta.getTag('property="og:url"')?.content).toBe(`${SITE}vi/`);
   });
 
+  it('points the social preview at the card of the active language, fully described', () => {
+    const content = (selector: string) => meta.getTag(selector)?.content;
+    apply('en');
+    expect(content('property="og:image"')).toBe(`${SITE}social-card-en.png`);
+    expect(content('name="twitter:image"')).toBe(`${SITE}social-card-en.png`);
+    expect(content('property="og:image:width"')).toBe('1200');
+    expect(content('property="og:image:height"')).toBe('630');
+    expect(content('property="og:image:type"')).toBe('image/png');
+    expect(content('property="og:image:alt"')).toBe(
+      `Profile card: photo of ${CV_DATA.profile.fullName}, ${CV_DATA.profile.headline}`,
+    );
+    expect(content('name="twitter:image:alt"')).toBe(content('property="og:image:alt"'));
+    expect(content('property="og:site_name"')).toBe(CV_DATA.profile.displayName);
+
+    apply('vi');
+    expect(content('property="og:image"')).toBe(`${SITE}social-card-vi.png`);
+    expect(content('name="twitter:image"')).toBe(`${SITE}social-card-vi.png`);
+    expect(content('property="og:image:alt"')).toContain(CV_DATA_VI.profile.fullName);
+    expect(content('property="og:site_name"')).toBe(CV_DATA_VI.profile.displayName);
+  });
+
+  it('names the other language as the only og:locale:alternate, whatever the switches', () => {
+    const alternates = () =>
+      meta.getTags('property="og:locale:alternate"').map((tag) => tag.content);
+    apply('en');
+    expect(alternates()).toEqual(['vi_VN']);
+    apply('vi');
+    apply('en');
+    apply('vi');
+    expect(alternates()).toEqual(['en_US']);
+  });
+
   it('points the canonical link at the page of the active language', () => {
     apply('en');
     expect(hrefOf('link[rel="canonical"]')).toBe(SITE);
