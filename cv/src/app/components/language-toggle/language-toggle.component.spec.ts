@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ErrorHandler } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, Routes } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
@@ -31,6 +31,27 @@ const browserClicks: [string, MouseEventInit][] = [
   ['Alt', { altKey: true }],
   ['middle-button', { button: 1 }],
 ];
+
+/**
+ * Replaces the thumb's running animations with one whose `finished` the test
+ * controls; jsdom has no Web Animations API. Returns the release.
+ */
+function holdSlide(link: HTMLAnchorElement): () => void {
+  let release!: () => void;
+  const finished = new Promise<void>((resolve) => (release = resolve));
+  const thumb = link.querySelector('.lang-thumb') as HTMLElement;
+  thumb.getAnimations = () => [{ finished } as unknown as Animation];
+  return release;
+}
+
+/** A slide whose `finished` never settles: a hidden tab, a paused timeline. */
+function stallSlide(link: HTMLAnchorElement): void {
+  const thumb = link.querySelector('.lang-thumb') as HTMLElement;
+  thumb.getAnimations = () => [{ finished: new Promise<void>(() => {}) } as unknown as Animation];
+}
+
+/** Lets pending promise callbacks and short timers run. */
+const settle = () => new Promise((resolve) => setTimeout(resolve, 20));
 
 describe('LanguageToggleComponent', () => {
   let cvData: CvDataService;
@@ -159,10 +180,7 @@ describe('LanguageToggleComponent', () => {
       const router = TestBed.inject(Router);
       const navigate = vi.spyOn(router, 'navigateByUrl');
       // Hold the slide: the navigation must wait for it to finish.
-      let finishSlide!: () => void;
-      const finished = new Promise<void>((resolve) => (finishSlide = resolve));
-      const thumb = link().querySelector('.lang-thumb') as HTMLElement;
-      thumb.getAnimations = () => [{ finished } as unknown as Animation];
+      const finishSlide = holdSlide(link());
 
       const before = link();
       before.click();
@@ -211,11 +229,7 @@ describe('LanguageToggleComponent', () => {
       const { harness, link } = await open('/');
       const router = TestBed.inject(Router);
       const navigate = vi.spyOn(router, 'navigateByUrl');
-      let finishSlide!: () => void;
-      const finished = new Promise<void>((resolve) => (finishSlide = resolve));
-      (link().querySelector('.lang-thumb') as HTMLElement).getAnimations = () => [
-        { finished } as unknown as Animation,
-      ];
+      const finishSlide = holdSlide(link());
 
       link().click();
       harness.fixture.detectChanges();
@@ -240,6 +254,123 @@ describe('LanguageToggleComponent', () => {
       });
       expect(link().classList).not.toContain('thumb-end');
       expect(router.url).toBe('/');
+    });
+
+    it('should move the thumb back and report the error when the navigation fails', async () => {
+      const { harness, link, onThumb } = await open('/');
+      const router = TestBed.inject(Router);
+      const failure = new Error('the Vietnamese dataset did not load');
+      vi.spyOn(router, 'navigateByUrl').mockRejectedValue(failure);
+      const handleError = vi
+        .spyOn(TestBed.inject(ErrorHandler), 'handleError')
+        .mockImplementation(() => {});
+
+      link().click();
+      harness.fixture.detectChanges();
+      expect(onThumb()).toBe('VI');
+      await vi.waitFor(() => {
+        harness.fixture.detectChanges();
+        expect(onThumb()).toBe('EN');
+      });
+      expect(handleError).toHaveBeenCalledTimes(1);
+      expect(handleError).toHaveBeenCalledWith(failure);
+      expect(link().classList).not.toContain('thumb-end');
+      expect(router.url).toBe('/');
+      expect(cvData.language()).toBe('en');
+    });
+  });
+
+  describe('when the slide is interrupted', () => {
+    it('should not navigate once the switch is destroyed', async () => {
+      const { harness, link } = await open('/');
+      const router = TestBed.inject(Router);
+      const navigate = vi.spyOn(router, 'navigateByUrl');
+      const finishSlide = holdSlide(link());
+      link().click();
+      harness.fixture.detectChanges();
+      await harness.fixture.whenStable();
+
+      harness.fixture.destroy();
+      finishSlide();
+      await settle();
+
+      expect(navigate).not.toHaveBeenCalled();
+      expect(router.url).toBe('/');
+      expect(cvData.language()).toBe('en');
+    });
+
+    it('should not pull the visitor back after they navigated away mid-slide', async () => {
+      const { harness, link } = await open('/print?template=compact');
+      const router = TestBed.inject(Router);
+      const navigate = vi.spyOn(router, 'navigateByUrl');
+      const finishSlide = holdSlide(link());
+      const before = link();
+      link().click();
+      harness.fixture.detectChanges();
+
+      // The print toolbar's Back link, followed during the slide.
+      await router.navigateByUrl('/');
+      await harness.fixture.whenStable();
+      expect(link()).not.toBe(before);
+      finishSlide();
+      await settle();
+      await harness.fixture.whenStable();
+
+      expect(router.url).toBe('/');
+      expect(cvData.language()).toBe('en');
+      // The visitor's own navigation, and nothing from the switch.
+      expect(navigate).toHaveBeenCalledTimes(1);
+    });
+
+    it('should give way to a navigation started mid-slide while the page stays', async () => {
+      const { harness, link, onThumb } = await open('/print');
+      const router = TestBed.inject(Router);
+      const finishSlide = holdSlide(link());
+      const before = link();
+      link().click();
+      harness.fixture.detectChanges();
+
+      // A template change: same page, new query, and the switch survives it.
+      await router.navigateByUrl('/print?template=compact');
+      await harness.fixture.whenStable();
+      expect(link()).toBe(before);
+      expect(onThumb()).toBe('VI');
+      finishSlide();
+      await settle();
+      harness.fixture.detectChanges();
+      await harness.fixture.whenStable();
+
+      expect(router.url).toBe('/print?template=compact');
+      expect(cvData.language()).toBe('en');
+      expect(onThumb()).toBe('EN');
+      expect(link().classList).not.toContain('thumb-end');
+      // The switch works again afterwards, now with the query kept.
+      link().click();
+      await vi.waitFor(() => expect(router.url).toBe('/vi/print?template=compact'));
+      await harness.fixture.whenStable();
+    });
+
+    it('should stop waiting for a slide that never ends and navigate once', async () => {
+      const { harness, link } = await open('/');
+      const router = TestBed.inject(Router);
+      const navigate = vi.spyOn(router, 'navigateByUrl');
+      stallSlide(link());
+      vi.useFakeTimers();
+      try {
+        link().click();
+        harness.fixture.detectChanges();
+        await vi.advanceTimersByTimeAsync(300);
+        expect(navigate).not.toHaveBeenCalled();
+        await vi.advanceTimersByTimeAsync(100);
+        expect(navigate).toHaveBeenCalledTimes(1);
+      } finally {
+        vi.useRealTimers();
+      }
+      await vi.waitFor(() => expect(router.url).toBe('/vi'));
+      await harness.fixture.whenStable();
+      await settle();
+      expect(navigate).toHaveBeenCalledTimes(1);
+      expect(cvData.language()).toBe('vi');
     });
   });
 

@@ -15,7 +15,14 @@ import {
   signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { NavigationEnd, PRIMARY_OUTLET, Router, RouterLink, UrlTree } from '@angular/router';
+import {
+  NavigationEnd,
+  NavigationStart,
+  PRIMARY_OUTLET,
+  Router,
+  RouterLink,
+  UrlTree,
+} from '@angular/router';
 import { filter, map } from 'rxjs';
 import { localizedCommands, splitLocalePrefix } from '@core/i18n/localized-url';
 import { SUPPORTED_LOCALES, type Locale } from '@core/models/cv-data.model';
@@ -23,6 +30,13 @@ import { CvDataService } from '@core/services/cv-data.service';
 
 /** A switch has two sides: the first language on the left, the second on the right. */
 const [START, END] = SUPPORTED_LOCALES;
+
+/**
+ * The longest a click waits for the slide before navigating anyway: a little
+ * over the stylesheet's 0.2s transition, which a hidden tab or a paused
+ * timeline would otherwise hold back indefinitely.
+ */
+const SLIDE_TIMEOUT_MS = 350;
 
 /**
  * EN / VI slide switch. It is one real link to the page being viewed in the
@@ -49,6 +63,7 @@ export class LanguageToggleComponent {
   private readonly cvData = inject(CvDataService);
   private readonly errorHandler = inject(ErrorHandler);
   private readonly injector = inject(Injector);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly host: HTMLElement = inject(ElementRef).nativeElement;
 
   protected readonly ui = this.cvData.ui;
@@ -80,6 +95,15 @@ export class LanguageToggleComponent {
 
   /** Guards against a second click starting a second navigation mid-slide. */
   private switching = false;
+
+  /** Id of the latest navigation to start, so a switch can tell if another began. */
+  private readonly lastNavigationStart = toSignal(
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationStart),
+      map((event) => event.id),
+    ),
+    { initialValue: 0 },
+  );
 
   /** The current URL, refreshed after every navigation (query changes included). */
   private readonly url = toSignal(
@@ -116,7 +140,7 @@ export class LanguageToggleComponent {
         (event: MouseEvent) => this.onClick(event),
         { capture: true },
       );
-      inject(DestroyRef).onDestroy(unlisten);
+      this.destroyRef.onDestroy(unlisten);
     }
   }
 
@@ -128,6 +152,8 @@ export class LanguageToggleComponent {
     }
     // This listener navigates instead of the router directive, so the click
     // stops here; otherwise the page would change before the thumb moves.
+    // Ancestors never see a plain click on the switch: a listener on the
+    // document will not hear it.
     event.preventDefault();
     event.stopPropagation();
     if (this.switching) {
@@ -135,21 +161,30 @@ export class LanguageToggleComponent {
     }
     this.switching = true;
     const target = this.target();
+    const navigationAtClick = this.lastNavigationStart();
     this.sliding.set(true);
     this.thumb.set(this.other());
     afterNextRender(
-      { read: () => void this.navigateAfterSlide(target) },
+      { read: () => void this.navigateAfterSlide(target, navigationAtClick) },
       { injector: this.injector },
     );
   }
 
-  private async navigateAfterSlide(target: UrlTree): Promise<void> {
-    // Read after the render that moved the thumb, so its transition has
-    // started. There is none under `prefers-reduced-motion: reduce`, and no
-    // Web Animations API in some environments; the switch then navigates at
-    // once.
-    const slide = this.host.querySelector('.lang-thumb')?.getAnimations?.() ?? [];
-    await Promise.allSettled(slide.map((animation) => animation.finished));
+  private async navigateAfterSlide(target: UrlTree, navigationAtClick: number): Promise<void> {
+    await this.slideEnd();
+    // Gone with its page (a Back link, the browser's Back button): the
+    // visitor went elsewhere, and a late switch must not pull them back.
+    if (this.destroyRef.destroyed) {
+      return;
+    }
+    // Another navigation began during the slide while this page stayed: a
+    // query change here, or a lazily loaded page still on its way. The later
+    // choice wins, as it does between any two links, and the thumb goes back.
+    if (this.lastNavigationStart() !== navigationAtClick) {
+      this.thumb.set(this.cvData.language());
+      this.switching = false;
+      return;
+    }
     try {
       if (!(await this.router.navigateByUrl(target))) {
         this.thumb.set(this.cvData.language());
@@ -161,5 +196,26 @@ export class LanguageToggleComponent {
     } finally {
       this.switching = false;
     }
+  }
+
+  /**
+   * Settles when the thumb's transition ends or is cancelled, or after
+   * `SLIDE_TIMEOUT_MS`, whichever comes first. Read after the render that
+   * moved the thumb, so the transition has started. There is none under
+   * `prefers-reduced-motion: reduce`, and no Web Animations API in some
+   * environments; it then settles at once.
+   */
+  private slideEnd(): Promise<void> {
+    const slide = this.host.querySelector('.lang-thumb')?.getAnimations?.() ?? [];
+    if (slide.length === 0) {
+      return Promise.resolve();
+    }
+    return new Promise((resolve) => {
+      const timeout = setTimeout(resolve, SLIDE_TIMEOUT_MS);
+      void Promise.allSettled(slide.map((animation) => animation.finished)).then(() => {
+        clearTimeout(timeout);
+        resolve();
+      });
+    });
   }
 }

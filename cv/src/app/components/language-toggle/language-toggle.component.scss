@@ -68,7 +68,8 @@
 // thumb's position is never animated on first render or on hydration, and a
 // declared transition cannot catch anything else changing (a theme switch,
 // a viewport resize). Under `prefers-reduced-motion: reduce` the thumb just
-// moves.
+// moves. The component navigates 350 ms after a click at the latest, so the
+// slide must stay shorter than that.
 @media (prefers-reduced-motion: no-preference) {
   .sliding {
     .lang-thumb {
