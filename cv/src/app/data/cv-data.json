@@ -176,7 +176,7 @@
           "description": "Customer-facing Angular sites for several brands: migrated the codebase from Angular 14 to 18, rebuilt the UI with mobile support and render optimization, implemented brand layout and template switching shared across sites, multi-bank-account management on strongly typed FormArray.",
           "role": "Front-end developer",
           "techStack": [
-            "Angular 14-21+",
+            "Angular 14–21+",
             "Angular Signals",
             "Zoneless",
             "RxJS",
@@ -203,7 +203,7 @@
         },
         {
           "name": "Agent portal",
-          "description": "Greenfield agent-facing site built from scratch on Angular 18 standalone components and Signals with a shared design system; delivered the Account Statement module.",
+          "description": "Greenfield agent-facing site built from scratch on Angular 14 standalone components and Signals with a shared design system; delivered the Account Statement module.",
           "role": "Front-end developer",
           "techStack": [
             "Angular 14+",
@@ -325,7 +325,7 @@
           "teamSize": 10,
           "techStack": [
             "Nuxt.js",
-            "Vue",
+            "VueJS (2.0)",
             "Vuex",
             "Docker"
           ],
@@ -402,7 +402,7 @@
         "PWA",
         "Google Cloud Platform",
         "FeathersJS",
-        "VueJS",
+        "VueJS (2.0)",
         "AngularJS",
         "Fabric.js"
       ],
