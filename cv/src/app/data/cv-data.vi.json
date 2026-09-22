@@ -176,7 +176,7 @@
           "description": "Các website Angular dành cho khách hàng của nhiều thương hiệu: nâng cấp codebase từ Angular 14 lên 18, xây dựng lại giao diện với hỗ trợ thiết bị di động và tối ưu hóa render, triển khai cơ chế chuyển đổi layout và template theo thương hiệu dùng chung giữa các website, cùng tính năng quản lý nhiều tài khoản ngân hàng dựa trên FormArray được định kiểu chặt chẽ.",
           "role": "Lập trình viên Front-end",
           "techStack": [
-            "Angular 14-21+",
+            "Angular 14–21+",
             "Angular Signals",
             "Zoneless",
             "RxJS",
@@ -203,7 +203,7 @@
         },
         {
           "name": "Cổng thông tin đại lý",
-          "description": "Website mới dành cho đại lý, xây dựng từ đầu trên standalone component và Signals của Angular 18 cùng một design system dùng chung; triển khai module Sao kê tài khoản (Account Statement).",
+          "description": "Website mới dành cho đại lý, xây dựng từ đầu trên standalone component và Signals của Angular 14 cùng một design system dùng chung; triển khai module Sao kê tài khoản (Account Statement).",
           "role": "Lập trình viên Front-end",
           "techStack": [
             "Angular 14+",
@@ -325,7 +325,7 @@
           "teamSize": 10,
           "techStack": [
             "Nuxt.js",
-            "Vue",
+            "VueJS (2.0)",
             "Vuex",
             "Docker"
           ],
@@ -402,7 +402,7 @@
         "PWA",
         "Google Cloud Platform",
         "FeathersJS",
-        "VueJS",
+        "VueJS (2.0)",
         "AngularJS",
         "Fabric.js"
       ],
