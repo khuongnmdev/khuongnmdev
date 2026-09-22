@@ -319,4 +319,17 @@ describe('NavBarComponent', () => {
     );
     expect(avatar?.getAttribute('src')).toBe('test-avatar.jpg');
   });
+
+  it('should size the avatar and fetch it early, since it can be the largest paint', async () => {
+    const fixture = TestBed.createComponent(NavBarComponent);
+    await fixture.whenStable();
+    const avatar = (fixture.nativeElement as HTMLElement).querySelector<HTMLImageElement>(
+      '.avatar-block img',
+    )!;
+    // A square ratio before the file arrives, so the panel does not shift.
+    expect(avatar.getAttribute('width')).toBe('460');
+    expect(avatar.getAttribute('height')).toBe('460');
+    expect(avatar.getAttribute('fetchpriority')).toBe('high');
+    expect(avatar.getAttribute('loading')).not.toBe('lazy');
+  });
 });
