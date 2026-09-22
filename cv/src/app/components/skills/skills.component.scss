@@ -48,13 +48,15 @@
   flex-shrink: 0;
 }
 
+// The dots are the level itself, not decoration, so they take the text
+// accent: the plain one is under 3:1 on the card's surface.
 .level-dot {
   width: 0.75rem;
   height: 0.75rem;
   border-radius: 50%;
-  border: 1px solid var(--c-secondary);
+  border: 1px solid var(--c-accent);
 
   &.filled {
-    background-color: var(--c-secondary);
+    background-color: var(--c-accent);
   }
 }

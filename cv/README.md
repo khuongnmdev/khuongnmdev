@@ -43,7 +43,7 @@ The dev server listens on <http://localhost:4200/> and reloads on every change.
 |---|---|
 | `npm start` | `ng serve`: dev server with the development configuration |
 | `npm run build` | `ng build`: production build with prerendering into `dist/cv/` (`browser/` static files, `server/` Node bundle), base href `/` |
-| `npm run build-gh` | The GitHub Pages build: `ng build --base-href /khuongnmdev/`, then `scripts/spa-fallback.mjs` copies the client shell to `print/index.html` (one per published language) and `404.html`, all `noindex`, and removes `index.csr.html`, then `scripts/sitemap.mjs` writes `sitemap.xml` from the prerendered pages |
+| `npm run build-gh` | The GitHub Pages build: `ng build --base-href /khuongnmdev/`, then `scripts/spa-fallback.mjs` copies the client shell to `print/index.html` (one per published language) and `404.html`, all `noindex`, and removes `index.csr.html`, then `scripts/font-preload.mjs` adds preload links for the two hashed Font Awesome woff2 files to the prerendered pages and their print previews (it fails the build unless it finds exactly those two fonts), then `scripts/sitemap.mjs` writes `sitemap.xml` from the prerendered pages |
 | `npm run watch` | Development build that rebuilds on every change |
 | `npm test` | `ng test`: the Vitest unit tests, specs under `src/` and `scripts/` |
 | `npm run serve:ssr:cv` | Runs the built Node SSR server, `dist/cv/server/server.mjs`, on <http://localhost:4000/> (`PORT` overrides it). Run `npm run build` first. Local only: Pages serves the static files |

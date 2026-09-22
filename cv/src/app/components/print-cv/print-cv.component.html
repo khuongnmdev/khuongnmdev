@@ -6,7 +6,15 @@
 -->
 <article class="print-cv" [class.print-cv--compact]="isCompact()">
   <header class="print-header">
-    <img class="print-avatar" [src]="profile().avatar" [alt]="profile().fullName" />
+    <!-- The size attributes only give the ratio of the square file; the
+         sheet's stylesheet sets the printed size. -->
+    <img
+      class="print-avatar"
+      [src]="profile().avatar"
+      [alt]="profile().fullName"
+      width="460"
+      height="460"
+    />
     <h1 class="print-name">{{ profile().fullName }}</h1>
     <p class="print-headline">{{ profile().headline }}</p>
     <ul class="print-contacts">

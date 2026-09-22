@@ -36,9 +36,11 @@ app-print-cv {
 .print-cv {
   // The sheet is always the light palette: the tokens are pinned locally so
   // the web theme's `data-theme` switch can never reach the paper — nor the
-  // on-screen preview of it.
+  // on-screen preview of it. As on the web: `--c-secondary` for the rules
+  // and rings, `--c-accent` (4.5:1 or more on white) for text.
   --c-primary: #060504;
   --c-secondary: #f0690b;
+  --c-accent: #b64a00;
 
   width: 182mm;
   margin: 0 auto;
@@ -93,7 +95,7 @@ app-print-cv {
 }
 
 .print-headline {
-  color: var(--c-secondary);
+  color: var(--c-accent);
   font-size: 12.5pt;
   font-weight: 600;
   margin-bottom: 5pt;
@@ -121,7 +123,7 @@ app-print-cv {
 }
 
 .print-section-title {
-  color: var(--c-secondary);
+  color: var(--c-accent);
   font-size: 13.5pt;
   font-weight: 700;
   border-bottom: 1pt solid var(--c-secondary);
@@ -153,7 +155,7 @@ app-print-cv {
 }
 
 .print-entry-role {
-  color: var(--c-secondary);
+  color: var(--c-accent);
   font-weight: 600;
 }
 
@@ -181,7 +183,7 @@ app-print-cv {
 }
 
 .print-tech-label {
-  color: var(--c-secondary);
+  color: var(--c-accent);
   font-weight: 600;
 }
 
@@ -204,7 +206,7 @@ app-print-cv {
 }
 
 .print-project-role {
-  color: var(--c-secondary);
+  color: var(--c-accent);
 }
 
 .print-project-description {
@@ -344,8 +346,10 @@ app-print-cv {
     }
 
     .toolbar-export {
-      // Literal for the same reason as the toolbar background above.
-      background-color: #f0690b;
+      // Literal for the same reason as the toolbar background above: the
+      // light palette's `--bg-accent`, which keeps white text at 4.5:1 or
+      // more (the plain accent gives 3.1:1).
+      background-color: #b64a00;
       color: #ffffff;
       font-weight: 700;
       border: 0;

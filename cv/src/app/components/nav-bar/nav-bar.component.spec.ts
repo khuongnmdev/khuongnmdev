@@ -294,6 +294,23 @@ describe('NavBarComponent', () => {
     expect(activated?.textContent).toContain('Skills');
   });
 
+  // The global palettes are not loaded here, so the computed values stay the
+  // token references the component's rules declare.
+  it('should fill the active item with the accent fill made for text', async () => {
+    const fixture = TestBed.createComponent(NavBarComponent);
+    fixture.componentRef.setInput('activeSection', 'skills');
+    await fixture.whenStable();
+    const pills = (fixture.nativeElement as HTMLElement).querySelectorAll('.nav-item.activated');
+    // The sidebar and the mobile menu each highlight it.
+    expect(pills.length).toBe(2);
+    for (const pill of Array.from(pills)) {
+      const style = getComputedStyle(pill);
+      // Not the plain brand accent: white on it is only 3.1:1.
+      expect(style.backgroundColor).toBe('var(--bg-accent)');
+      expect(style.color).toBe('var(--c-on-accent)');
+    }
+  });
+
   it('should show the avatar from the profile data', async () => {
     const fixture = TestBed.createComponent(NavBarComponent);
     await fixture.whenStable();
@@ -301,5 +318,18 @@ describe('NavBarComponent', () => {
       '.avatar-block img',
     );
     expect(avatar?.getAttribute('src')).toBe('test-avatar.jpg');
+  });
+
+  it('should size the avatar and fetch it early, since it can be the largest paint', async () => {
+    const fixture = TestBed.createComponent(NavBarComponent);
+    await fixture.whenStable();
+    const avatar = (fixture.nativeElement as HTMLElement).querySelector<HTMLImageElement>(
+      '.avatar-block img',
+    )!;
+    // A square ratio before the file arrives, so the panel does not shift.
+    expect(avatar.getAttribute('width')).toBe('460');
+    expect(avatar.getAttribute('height')).toBe('460');
+    expect(avatar.getAttribute('fetchpriority')).toBe('high');
+    expect(avatar.getAttribute('loading')).not.toBe('lazy');
   });
 });

@@ -35,6 +35,12 @@ describe('PrintCvComponent', () => {
     expect(compiled.querySelectorAll('h1').length).toBe(1);
   });
 
+  it('should give the avatar its square ratio as size attributes', async () => {
+    const avatar = (await render(cloneCvData())).querySelector('img.print-avatar')!;
+    expect(avatar.getAttribute('width')).toBe('460');
+    expect(avatar.getAttribute('height')).toBe('460');
+  });
+
   it('should render the print sections as h2 headings in data order', async () => {
     const data = cloneCvData();
     // Scrambled: order disagrees with array position, and one enabled

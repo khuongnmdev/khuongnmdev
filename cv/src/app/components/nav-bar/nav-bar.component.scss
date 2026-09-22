@@ -83,9 +83,11 @@
     font-size: 1rem;
     cursor: pointer;
 
+    // The same light tint as a hovered menu item; the icon takes the text
+    // accent, since the plain one drops below 3:1 on the tint.
     &:hover {
-      background-color: color-mix(in srgb, var(--c-secondary) 15%, transparent);
-      color: var(--c-secondary);
+      background-color: color-mix(in srgb, var(--c-secondary) 10%, transparent);
+      color: var(--c-accent);
     }
   }
 
@@ -230,13 +232,15 @@
     flex-shrink: 0;
   }
 
+  // 10% and no more: the light palette's accent label keeps 4.5:1 on this
+  // tint over both the white panel and the mobile menu's grey surface.
   &:hover {
-    background-color: color-mix(in srgb, var(--c-secondary) 15%, transparent);
+    background-color: color-mix(in srgb, var(--c-secondary) 10%, transparent);
   }
 
   &.activated {
     display: flex;
-    background-color: var(--c-secondary);
+    background-color: var(--bg-accent);
     color: var(--c-on-accent);
   }
 }

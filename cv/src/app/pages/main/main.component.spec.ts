@@ -139,6 +139,41 @@ describe('MainComponent with the bundled dataset', () => {
     const ids = Array.from(compiled.querySelectorAll('[id]')).map((element) => element.id);
     expect(ids.filter((id, index) => ids.indexOf(id) !== index)).toEqual([]);
   });
+
+  // The palettes live in the global stylesheet, which the tests do not load,
+  // so the computed colours stay the token references each rule declares.
+  it('should colour accent text with the text accent, never the decorative brand accent', async () => {
+    const compiled = await render();
+    // The plain brand accent is about 3:1 on the light surfaces: enough for
+    // a dot or a rule, not for text.
+    const texts = Array.from(compiled.querySelectorAll('*')).filter((element) =>
+      Array.from(element.childNodes).some(
+        (node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+      ),
+    );
+    expect(texts.length).toBeGreaterThan(50);
+    const plain = texts.filter((element) =>
+      getComputedStyle(element).color.includes('--c-secondary'),
+    );
+    expect(plain.map((element) => element.className)).toEqual([]);
+
+    for (const selector of [
+      '.section-title',
+      '.about-headline',
+      '.experience-role',
+      '.experience-type',
+      '.chip-list .chip',
+      '.project-role',
+      '.education-degree > span',
+    ]) {
+      const element = compiled.querySelector(selector);
+      expect(element, selector).not.toBeNull();
+      expect(getComputedStyle(element!).color, selector).toBe('var(--c-accent)');
+    }
+    // The skill dots carry the level, so they need the contrast too.
+    const dot = compiled.querySelector('.level-dot.filled')!;
+    expect(getComputedStyle(dot).backgroundColor).toBe('var(--c-accent)');
+  });
 });
 
 /**

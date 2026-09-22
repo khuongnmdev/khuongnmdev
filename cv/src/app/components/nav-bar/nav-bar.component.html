@@ -16,8 +16,20 @@
     }
   </button>
 
+  <!-- The avatar is square by design (the file is 460px): the size attributes
+       give the browser its ratio before the file arrives, so the panel does
+       not shift, while CSS sets the size it shows at. On wide screens it is
+       the largest element of the first view, hence the high fetch priority;
+       it must never be lazy. -->
   <div class="avatar-block d-flex">
-    <img class="img-fluid" [src]="profile().avatar" [alt]="profile().fullName" />
+    <img
+      class="img-fluid"
+      [src]="profile().avatar"
+      [alt]="profile().fullName"
+      width="460"
+      height="460"
+      fetchpriority="high"
+    />
   </div>
 
   <!-- Real links to each section of the page in the current language, so

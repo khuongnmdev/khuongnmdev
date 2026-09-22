@@ -3,7 +3,17 @@
 //
 // Semantics:
 //   --c-primary     ink: headings and strong text
-//   --c-secondary   the brand accent (identical in both palettes)
+//   --c-secondary   the brand accent (identical in both palettes), for
+//                   decoration only: dots, rails, borders, rings, and icons.
+//                   White on it, or it on the light surfaces, is about
+//                   3:1 — enough for a graphic, never for text
+//   --c-accent      the accent wherever contrast is required: text, and
+//                   graphics that carry meaning (the skill-level dots). At
+//                   least 4.5:1 on every surface of its palette, the hover
+//                   tint included. Light: the brand hue, darker; dark: the
+//                   brand itself
+//   --bg-accent     an accent fill with text on it (the active menu pill);
+//                   at least 4.5:1 under --c-on-accent
 //   --bg-primary    panel surfaces: the sidebar and the mobile top bar
 //   --bg-secondary  accent fill for buttons and borders
 //   --bg-body       the page background behind the sections
@@ -12,7 +22,8 @@
 //   --c-text-muted  secondary text: dates, meta lines
 //   --c-border      hairline separators
 //   --c-nav-item    sidebar labels and icons in their resting state
-//   --c-on-accent   text and icons sitting on an accent fill
+//   --c-on-accent   text and icons sitting on an accent fill: text only on
+//                   --bg-accent, icons on the plain accent too
 //   --c-switch-*    the language switch: its track, the code on the track,
 //                   the thumb, and the code on the thumb. Every pair clears
 //                   4.5:1, which white on the plain accent (3.1:1) cannot:
@@ -28,6 +39,8 @@
   color-scheme: light;
   --c-primary: #060504;
   --c-secondary: #f0690b;
+  --c-accent: #b64a00;
+  --bg-accent: #b64a00;
   --bg-primary: #ffffff;
   --bg-secondary: #f0690b;
   --bg-body: #ffffff;
@@ -35,7 +48,7 @@
   --c-text: #212529;
   --c-text-muted: #6c757d;
   --c-border: #dee2e6;
-  --c-nav-item: #f0690b;
+  --c-nav-item: #b64a00;
   --c-on-accent: #ffffff;
   --c-switch-track: #e9ecef;
   --c-switch-label: #495057;
@@ -47,6 +60,8 @@
   color-scheme: dark;
   --c-primary: #f3efe9;
   --c-secondary: #f0690b;
+  --c-accent: #f0690b;
+  --bg-accent: #f0690b;
   --bg-primary: #060504;
   --bg-secondary: #f0690b;
   --bg-body: #141210;
@@ -55,7 +70,9 @@
   --c-text-muted: #a49e96;
   --c-border: #3a3733;
   --c-nav-item: #d9d4cd;
-  --c-on-accent: #ffffff;
+  // Dark ink, like the language switch's dark thumb: white on the brand
+  // fill is only 3.1:1.
+  --c-on-accent: #060504;
   --c-switch-track: #211e1b;
   --c-switch-label: #a49e96;
   --c-switch-thumb: #f0690b;
