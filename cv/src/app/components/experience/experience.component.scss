@@ -134,9 +134,14 @@
   background-color: var(--bg-body);
 }
 
+// A paragraph, not a heading: the entry's h3 already heads its projects, and
+// a heading per project crowded the outline out of proportion to the page's
+// text. The heading colour and line height keep the look it had as an h4.
 .project-name {
+  color: var(--c-primary);
   font-size: 1.0625rem;
   font-weight: 700;
+  line-height: 1.2;
   margin-bottom: 0.25rem;
 }
 

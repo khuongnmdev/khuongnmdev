@@ -175,5 +175,14 @@ for (const [language, data] of [
       expect(compiled.querySelector('h1, h2, h3, h4, h5, h6')).toBe(h1[0]);
     });
 
+    it('should head sections and entries only, never a project', async () => {
+      const compiled = await render();
+      expect(compiled.querySelectorAll('.project-name').length).toBeGreaterThan(0);
+      expect(compiled.querySelectorAll('h4, h5, h6').length).toBe(0);
+      for (const name of Array.from(compiled.querySelectorAll('.project-name'))) {
+        expect(name.tagName).toBe('P');
+      }
+    });
+
   });
 }
