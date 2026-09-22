@@ -7,4 +7,5 @@
 - 🌱 **I’m currently learning:** Flutter to expand my skill set into cross-platform mobile development.
 - 🎯 **Recent Focus:** Delivering high-performance web applications and exploring modern state management solutions.
 - ⚡ **Fun fact:** Away from the keyboard, I enjoy tinkering with vehicles (especially Japanese imports and off-road motorcycles), lure fishing, or analyzing the latest Teamfight Tactics meta.
+- 🌐 **Online CV:** [khuongnmdev.github.io/khuongnmdev](https://khuongnmdev.github.io/khuongnmdev/)
 - 📫 **How to reach me:** [LinkedIn](https://www.linkedin.com/in/khuongnmdev/) | ✉️ khuongnm.dev@gmail.com
