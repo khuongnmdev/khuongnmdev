@@ -18,7 +18,7 @@
 
 .about-headline {
   display: block;
-  color: var(--c-secondary);
+  color: var(--c-accent);
   font-size: 1.25rem;
   font-weight: 600;
   // Body text line height, not the heading's tighter one.
@@ -66,7 +66,7 @@
     text-decoration-color: var(--c-secondary);
 
     &:hover {
-      color: var(--c-secondary);
+      color: var(--c-accent);
     }
   }
 }
