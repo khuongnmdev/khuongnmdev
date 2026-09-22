@@ -57,7 +57,9 @@
       <i class="fa-solid fa-moon" aria-hidden="true"></i>
       }
     </button>
+    @if (hasLanguageChoice) {
     <app-language-toggle />
+    }
     <a
       class="btn btn-icon btn-export"
       [routerLink]="printLink()"

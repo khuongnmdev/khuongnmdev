@@ -4,6 +4,7 @@ import { Meta } from '@angular/platform-browser';
 import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { languageResolver } from '@core/i18n/language.resolver';
+import { PUBLISHED_LOCALES_TOKEN } from '@core/i18n/published-locales';
 import { CvDataService } from '@core/services/cv-data.service';
 import { PrintService } from '@core/services/print.service';
 import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
@@ -57,7 +58,21 @@ describe('PrintPageComponent', () => {
     expect(compiled.querySelector('.print-hint')?.textContent).toContain('A4');
   });
 
+  it('should leave the language toggle out of the toolbar when only English is published', async () => {
+    TestBed.overrideProvider(PUBLISHED_LOCALES_TOKEN, { useValue: ['en'] });
+    const harness = await RouterTestingHarness.create('/print?template=compact');
+    const toolbar = harness.routeNativeElement!.querySelector('.print-toolbar')!;
+    expect(toolbar.querySelector('app-language-toggle, .lang-toggle, [hreflang]')).toBeNull();
+    // Nothing left in its place: back, template, export.
+    expect(Array.from(toolbar.children).map((child) => child.className)).toEqual([
+      'toolbar-back',
+      'toolbar-field',
+      'toolbar-export',
+    ]);
+  });
+
   it('should render the toolbar in Vietnamese and stay in Vietnamese on the way back', async () => {
+    TestBed.overrideProvider(PUBLISHED_LOCALES_TOKEN, { useValue: ['en', 'vi'] });
     const harness = await RouterTestingHarness.create('/vi/print?template=compact');
     const compiled = harness.routeNativeElement!;
     const back = compiled.querySelector('.toolbar-back')!;

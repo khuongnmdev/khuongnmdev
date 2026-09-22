@@ -2,7 +2,6 @@ import { MetaDefinition } from '@angular/platform-browser';
 import { localeHomePath } from '@core/i18n/localized-url';
 import {
   DEFAULT_LOCALE,
-  SUPPORTED_LOCALES,
   type ContactType,
   type CvData,
   type Locale,
@@ -119,11 +118,12 @@ export function buildMetaTags(profile: Profile, ui: UiStrings, locale: Locale): 
 
 /**
  * `og:locale:alternate` values: the Open Graph locale of every other
- * language the page exists in. A repeatable property, so the caller replaces
- * the whole set rather than updating one tag in place.
+ * published language, none when `locale` is the only one. A repeatable
+ * property, so the caller replaces the whole set rather than updating one
+ * tag in place.
  */
-export function buildOgLocaleAlternates(locale: Locale): string[] {
-  return SUPPORTED_LOCALES.filter((other) => other !== locale).map((other) => OG_LOCALES[other]);
+export function buildOgLocaleAlternates(locale: Locale, published: readonly Locale[]): string[] {
+  return published.filter((other) => other !== locale).map((other) => OG_LOCALES[other]);
 }
 
 /** Contact types whose link is the same person's profile on another site. */
@@ -220,12 +220,19 @@ export function serializeJsonLd(value: unknown): string {
 }
 
 /**
- * `<link rel="alternate" hreflang>` targets: one absolute URL per language,
- * plus `x-default` pointing at the default language for everyone else.
+ * `<link rel="alternate" hreflang>` targets: one absolute URL per published
+ * language, plus `x-default` pointing at the default language for everyone
+ * else. None while only one language is published: such a page has no other
+ * language to name, and its canonical link says the rest.
  */
-export function buildAlternateLinks(): { hreflang: string; href: string }[] {
+export function buildAlternateLinks(
+  published: readonly Locale[],
+): { hreflang: string; href: string }[] {
+  if (published.length < 2) {
+    return [];
+  }
   return [
-    ...SUPPORTED_LOCALES.map((locale) => ({ hreflang: locale, href: siteUrlFor(locale) })),
+    ...published.map((locale) => ({ hreflang: locale, href: siteUrlFor(locale) })),
     { hreflang: 'x-default', href: siteUrlFor(DEFAULT_LOCALE) },
   ];
 }

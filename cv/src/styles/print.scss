@@ -358,9 +358,11 @@ app-print-cv {
     }
 
     // One row needs about 36rem. Below Bootstrap's `sm` breakpoint the
-    // toolbar becomes two rows of two — back link and template, then
-    // language and export — laid out by a grid rather than wrapping flex, so
-    // the split is the same in both languages at every phone width.
+    // toolbar becomes two rows — back link and template, then language and
+    // export — laid out by a grid rather than wrapping flex, so the split is
+    // the same in both languages at every phone width. Export keeps the
+    // right-hand column, under the template, so the second row reads the
+    // same when there is no language switch in front of it.
     @media (max-width: 575.98px) {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
@@ -372,6 +374,7 @@ app-print-cv {
       }
 
       .toolbar-export {
+        grid-column: 2;
         justify-self: end;
       }
     }

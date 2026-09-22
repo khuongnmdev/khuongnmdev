@@ -12,6 +12,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { LanguageToggleComponent } from '@app/components/language-toggle/language-toggle.component';
 import { localizedCommands } from '@core/i18n/localized-url';
+import { PUBLISHED_LOCALES_TOKEN } from '@core/i18n/published-locales';
 import type { SectionConfig } from '@core/models/cv-data.model';
 import { CvDataService } from '@core/services/cv-data.service';
 import { SidebarService } from '@core/services/sidebar.service';
@@ -66,6 +67,13 @@ export class NavBarComponent {
   protected readonly isAnimating = this.sidebar.animating;
 
   protected readonly theme = this.themeService.theme;
+
+  /**
+   * The language switch shows only while there is another published
+   * language to switch to. Left out entirely rather than hidden, so the
+   * actions close up where it was, in the sidebar and the phone bar alike.
+   */
+  protected readonly hasLanguageChoice = inject(PUBLISHED_LOCALES_TOKEN).length > 1;
 
   /**
    * Follows `activeSection`, but is also set locally on click so the highlight

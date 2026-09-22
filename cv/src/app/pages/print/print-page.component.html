@@ -15,7 +15,9 @@
         }
       </select>
     </label>
-    <app-language-toggle />
+    @if (hasLanguageChoice) {
+      <app-language-toggle />
+    }
     <button type="button" class="toolbar-export" [disabled]="exporting()" (click)="exportPdf()">
       {{ ui().printExport }}
     </button>

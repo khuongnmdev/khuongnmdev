@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Meta, Title } from '@angular/platform-browser';
+import { PUBLISHED_LOCALES_TOKEN } from '@core/i18n/published-locales';
 import type { CvData, Locale } from '@core/models/cv-data.model';
 import { CV_DATA } from '@data/cv-data';
 import { CV_DATA_VI } from '@data/cv-data.vi';
@@ -37,6 +38,11 @@ describe('PageMetaService', () => {
       )
       .forEach((element) => element.remove());
     document.documentElement.removeAttribute('lang');
+    // Both languages published, whatever the site publishes today: the
+    // English-only behaviour has its own block at the end.
+    TestBed.configureTestingModule({
+      providers: [{ provide: PUBLISHED_LOCALES_TOKEN, useValue: ['en', 'vi'] }],
+    });
     service = TestBed.inject(PageMetaService);
     meta = TestBed.inject(Meta);
   });
@@ -264,5 +270,41 @@ describe('PageMetaService', () => {
     meta.addTag({ name: 'robots', content: 'noindex, nofollow' });
     apply('vi');
     expect(meta.getTags('name="robots"').map((tag) => tag.content)).toEqual(['noindex, nofollow']);
+  });
+
+  describe('with English only', () => {
+    beforeEach(() => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [{ provide: PUBLISHED_LOCALES_TOKEN, useValue: ['en'] }],
+      });
+      service = TestBed.inject(PageMetaService);
+      meta = TestBed.inject(Meta);
+    });
+
+    const count = (selector: string) => document.head.querySelectorAll(selector).length;
+
+    it('names no hreflang alternate and no og:locale:alternate', () => {
+      apply('en');
+      expect(count('link[rel="alternate"]')).toBe(0);
+      expect(meta.getTags('property="og:locale:alternate"')).toEqual([]);
+      expect(meta.getTag('property="og:locale"')?.content).toBe('en_US');
+    });
+
+    it('keeps the page its own canonical', () => {
+      apply('en');
+      expect(count('link[rel="canonical"]')).toBe(1);
+      expect(hrefOf('link[rel="canonical"]')).toBe(SITE);
+      expect(meta.getTag('property="og:url"')?.content).toBe(SITE);
+    });
+
+    it('brings back the canonical but no alternate when a route stops excluding itself', () => {
+      apply('en');
+      const restore = service.excludeFromIndex();
+      expect(count('link[rel="canonical"]')).toBe(0);
+      restore();
+      expect(hrefOf('link[rel="canonical"]')).toBe(SITE);
+      expect(count('link[rel="alternate"]')).toBe(0);
+    });
   });
 });
