@@ -2,7 +2,7 @@
   "meta": {
     "version": "1.0.0",
     "locale": "vi",
-    "updatedAt": "2026-09-15"
+    "updatedAt": "2026-09-22"
   },
   "ui": {
     "present": "Hiện tại",
@@ -137,7 +137,7 @@
       "startDate": "2024-01",
       "endDate": null,
       "current": true,
-      "summary": "Lập trình viên Front-end cho một loạt sản phẩm web về dữ liệu thể thao thời gian thực — các website thành viên dành cho khách hàng, cổng thông tin đại lý và back-office, cùng một bảng điều khiển quản lý đám mây trên AWS — trên các codebase Angular (từ v14 đến v20+, Signals) và React/Redux.",
+      "summary": "Lập trình viên Front-end cho một loạt sản phẩm web về dữ liệu thể thao thời gian thực — các website thành viên dành cho khách hàng, cổng thông tin đại lý và back-office, cùng một bảng điều khiển quản lý đám mây trên AWS — trên các codebase Angular (từ v14 đến v21+, Signals) và React/Redux.",
       "highlights": [
         "Nâng cấp các website thành viên đang chạy production từ Angular 14 lên 21+ bằng cách chuyển dần từng phần sang standalone component, sau đó chuyển phần quản lý state của một package giao diện cốt lõi từ RxJS Subject sang Angular Signals (signal, computed, toSignal) kết hợp change detection OnPush.",
         "Chủ trì việc chuyển sang Bootstrap 5 cho một package trò chơi legacy, viết lại HTML/SCSS theo layout flex và grid, đồng thời khắc phục các lỗi giao diện tồn đọng lâu nay.",
@@ -173,7 +173,7 @@
         },
         {
           "name": "Website thành viên đa thương hiệu",
-          "description": "Các website Angular dành cho khách hàng của nhiều thương hiệu: nâng cấp codebase từ Angular 14 lên 18, xây dựng lại giao diện với hỗ trợ thiết bị di động và tối ưu hóa render, triển khai cơ chế chuyển đổi layout và template theo thương hiệu dùng chung giữa các website, cùng tính năng quản lý nhiều tài khoản ngân hàng dựa trên FormArray được định kiểu chặt chẽ.",
+          "description": "Các website Angular dành cho khách hàng của nhiều thương hiệu: nâng cấp codebase từ Angular 14 lên 21+, xây dựng lại giao diện với hỗ trợ thiết bị di động và tối ưu hóa render, triển khai cơ chế chuyển đổi layout và template theo thương hiệu dùng chung giữa các website, cùng tính năng quản lý nhiều tài khoản ngân hàng dựa trên FormArray được định kiểu chặt chẽ.",
           "role": "Lập trình viên Front-end",
           "techStack": [
             "Angular 14–21+",
@@ -203,7 +203,7 @@
         },
         {
           "name": "Cổng thông tin đại lý",
-          "description": "Website mới dành cho đại lý, xây dựng từ đầu trên standalone component và Signals của Angular 14 cùng một design system dùng chung; triển khai module Sao kê tài khoản (Account Statement).",
+          "description": "Website mới dành cho đại lý, xây dựng từ đầu trên standalone component của Angular 14 cùng một design system dùng chung; triển khai module Sao kê tài khoản (Account Statement).",
           "role": "Lập trình viên Front-end",
           "techStack": [
             "Angular 14+",

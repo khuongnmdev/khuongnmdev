@@ -2,7 +2,7 @@
   "meta": {
     "version": "1.0.0",
     "locale": "en",
-    "updatedAt": "2026-09-15"
+    "updatedAt": "2026-09-22"
   },
   "ui": {
     "present": "Present",
@@ -137,7 +137,7 @@
       "startDate": "2024-01",
       "endDate": null,
       "current": true,
-      "summary": "Front-end developer across a portfolio of real-time sports-data web products — customer-facing member sites, agent and back-office portals, and an AWS cloud-management console — spanning Angular (v14 to v20+, Signals) and React/Redux codebases.",
+      "summary": "Front-end developer across a portfolio of real-time sports-data web products — customer-facing member sites, agent and back-office portals, and an AWS cloud-management console — spanning Angular (v14 to v21+, Signals) and React/Redux codebases.",
       "highlights": [
         "Migrated production member sites from Angular 14 to 21+ through an incremental standalone-component migration, then moved a core UI package from RxJS-subject state to Angular Signals (signal, computed, toSignal) with OnPush change detection.",
         "Led the Bootstrap 5 migration of a legacy games package, rewriting its HTML/SCSS on flex and grid layouts and fixing long-standing UI defects along the way.",
@@ -173,7 +173,7 @@
         },
         {
           "name": "Multi-brand member sites",
-          "description": "Customer-facing Angular sites for several brands: migrated the codebase from Angular 14 to 18, rebuilt the UI with mobile support and render optimization, implemented brand layout and template switching shared across sites, multi-bank-account management on strongly typed FormArray.",
+          "description": "Customer-facing Angular sites for several brands: migrated the codebase from Angular 14 to 21+, rebuilt the UI with mobile support and render optimization, implemented brand layout and template switching shared across sites, multi-bank-account management on strongly typed FormArray.",
           "role": "Front-end developer",
           "techStack": [
             "Angular 14–21+",
@@ -203,7 +203,7 @@
         },
         {
           "name": "Agent portal",
-          "description": "Greenfield agent-facing site built from scratch on Angular 14 standalone components and Signals with a shared design system; delivered the Account Statement module.",
+          "description": "Greenfield agent-facing site built from scratch on Angular 14 standalone components with a shared design system; delivered the Account Statement module.",
           "role": "Front-end developer",
           "techStack": [
             "Angular 14+",
