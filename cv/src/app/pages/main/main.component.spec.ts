@@ -3,6 +3,8 @@ import { provideRouter } from '@angular/router';
 import { CvDataService } from '@core/services/cv-data.service';
 import { SidebarService } from '@core/services/sidebar.service';
 import type { CvData } from '@core/models/cv-data.model';
+import { CV_DATA } from '@data/cv-data';
+import { CV_DATA_VI } from '@data/cv-data.vi';
 import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
 import { MainComponent } from './main.component';
 
@@ -135,12 +137,43 @@ describe('MainComponent with the bundled dataset', () => {
     const ids = Array.from(compiled.querySelectorAll('[id]')).map((element) => element.id);
     expect(ids.filter((id, index) => ids.indexOf(id) !== index)).toEqual([]);
   });
-
-  it('should have exactly one h1, the profile name, ahead of every other heading', async () => {
-    const compiled = await render();
-    const h1 = compiled.querySelectorAll('h1');
-    expect(h1.length).toBe(1);
-    expect(h1[0].textContent?.trim()).toBe(data.profile.fullName);
-    expect(compiled.querySelector('h1, h2, h3, h4, h5, h6')).toBe(h1[0]);
-  });
 });
+
+/**
+ * Both bundled languages, rendered whole: the heading structure search
+ * engines read from the prerendered page.
+ */
+for (const [language, data] of [
+  ['English', CV_DATA],
+  ['Vietnamese', CV_DATA_VI],
+] as const) {
+  describe(`MainComponent with the ${language} dataset`, () => {
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        imports: [MainComponent],
+        providers: [
+          provideRouter([]),
+          { provide: CvDataService, useValue: cvDataServiceWith(structuredClone(data)) },
+        ],
+      }).compileComponents();
+    });
+
+    async function render(): Promise<HTMLElement> {
+      const fixture = TestBed.createComponent(MainComponent);
+      await fixture.whenStable();
+      return fixture.nativeElement as HTMLElement;
+    }
+
+    it('should have exactly one h1, the name and headline, ahead of every other heading', async () => {
+      const compiled = await render();
+      const h1 = compiled.querySelectorAll('h1');
+      expect(h1.length).toBe(1);
+      const text = h1[0].textContent?.trim() ?? '';
+      expect(text).toBe(`${data.profile.fullName} ${data.profile.headline}`);
+      // Search engines flag an h1 shorter than this.
+      expect(text.length).toBeGreaterThanOrEqual(20);
+      expect(compiled.querySelector('h1, h2, h3, h4, h5, h6')).toBe(h1[0]);
+    });
+
+  });
+}

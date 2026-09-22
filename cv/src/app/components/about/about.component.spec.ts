@@ -48,18 +48,29 @@ describe('AboutComponent', () => {
     return fixture.nativeElement as HTMLElement;
   }
 
-  it('should head the section with the profile name as the only h1, above any other heading', async () => {
+  it('should head the section with the name and headline as the only h1, above any other heading', async () => {
     const compiled = await render();
     const headings = Array.from(compiled.querySelectorAll('h1, h2, h3, h4, h5, h6'));
     expect(headings.map((heading) => heading.tagName)).toEqual(['H1']);
-    expect(headings[0].textContent?.trim()).toBe(cloneCvData().profile.fullName);
+    // One phrase with a real space between the parts, for anything that
+    // reads the heading's text rather than its rendering.
+    const { fullName } = cloneCvData().profile;
+    expect(headings[0].textContent?.trim()).toBe(`${fullName} Test Headline`);
+    expect(headings[0].querySelector('.about-name')?.textContent).toBe(fullName);
+    expect(headings[0].querySelector('.about-headline')?.textContent).toBe('Test Headline');
     // The section title stays visible, as a label rather than an h2.
     expect(compiled.querySelector('.section-title')?.textContent?.trim()).toBe('About');
   });
 
-  it('should render headline, location, and derived years of experience', async () => {
+  it('should render the headline once, inside the h1', async () => {
     const compiled = await render();
-    expect(compiled.querySelector('.about-headline')?.textContent).toContain('Test Headline');
+    const text = compiled.textContent ?? '';
+    expect(text.split('Test Headline').length - 1).toBe(1);
+    expect(compiled.querySelectorAll('.about-headline').length).toBe(1);
+  });
+
+  it('should render location and derived years of experience', async () => {
+    const compiled = await render();
     expect(compiled.textContent).toContain('Test City');
     // The figure is derived from careerStartDate at runtime, so only its
     // shape is pinned — a hardcoded number here would rot within a year.
@@ -74,6 +85,13 @@ describe('AboutComponent', () => {
     const compiled = await render();
     expect(compiled.textContent).toMatch(/\d+\+ năm kinh nghiệm/);
     expect(compiled.textContent).not.toContain('years of experience');
+  });
+
+  it('should head the Vietnamese dataset with its own name and headline', async () => {
+    TestBed.inject(CvDataService).loadFrom(structuredClone(CV_DATA_VI));
+    const compiled = await render();
+    const { fullName, headline } = CV_DATA_VI.profile;
+    expect(compiled.querySelector('h1')?.textContent?.trim()).toBe(`${fullName} ${headline}`);
   });
 
   it('should render every summary bullet as a list item', async () => {
