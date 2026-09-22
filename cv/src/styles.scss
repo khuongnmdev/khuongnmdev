@@ -13,6 +13,11 @@
 //   --c-border      hairline separators
 //   --c-nav-item    sidebar labels and icons in their resting state
 //   --c-on-accent   text and icons sitting on an accent fill
+//   --c-switch-*    the language switch: its track, the code on the track,
+//                   the thumb, and the code on the thumb. Every pair clears
+//                   4.5:1, which white on the plain accent (3.1:1) cannot:
+//                   the light thumb is the accent darkened, the dark thumb
+//                   keeps the accent under dark ink
 //
 // Switching: light is the default; `data-theme` on <html> pins a palette
 // explicitly, and with no attribute the system `prefers-color-scheme` decides.
@@ -32,6 +37,10 @@
   --c-border: #dee2e6;
   --c-nav-item: #f0690b;
   --c-on-accent: #ffffff;
+  --c-switch-track: #e9ecef;
+  --c-switch-label: #495057;
+  --c-switch-thumb: #a84a08;
+  --c-on-switch-thumb: #ffffff;
 }
 
 @mixin dark-tokens {
@@ -47,6 +56,10 @@
   --c-border: #3a3733;
   --c-nav-item: #d9d4cd;
   --c-on-accent: #ffffff;
+  --c-switch-track: #211e1b;
+  --c-switch-label: #a49e96;
+  --c-switch-thumb: #f0690b;
+  --c-on-switch-thumb: #060504;
 }
 
 :root {

@@ -1,45 +1,83 @@
-// A two-segment pill: the active language filled with the accent, the other
-// muted. Sized to fit the collapsed 4.5rem sidebar rail side by side (about
-// 3.25rem wide). A host on a fixed dark surface can override the muted colour
-// through `--lang-toggle-muted`.
+// A slide switch: a pill track with the two codes side by side and a thumb
+// over the language being viewed. 54 × 28px, so it fits the collapsed 4.5rem
+// sidebar rail (56px of content width) and its width clears a 44px tap
+// target. The colours are the `--c-switch-*` palette tokens: the switch
+// paints its own track, so it reads the same on any surface around it.
 
 :host {
   display: inline-flex;
 }
 
 .lang-toggle {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.125rem;
-  border-radius: 2rem;
-  background-color: color-mix(
-    in srgb,
-    var(--lang-toggle-muted, var(--c-text-muted)) 15%,
-    transparent
-  );
-}
-
-.lang-option {
   position: relative;
-  display: inline-flex;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  justify-content: center;
-  min-width: 1.5rem;
-  height: 1.5rem;
-  padding: 0 0.25rem;
+  width: 3.375rem;
+  height: 1.75rem;
+  // The thumb's inset; the two columns line up with its two positions.
+  padding: 0.125rem;
+  border: 1px solid var(--c-border);
   border-radius: 2rem;
-  color: var(--lang-toggle-muted, var(--c-text-muted));
-  font-size: 0.6875rem;
+  background-color: var(--c-switch-track);
+  color: var(--c-switch-label);
+  font-size: 0.75rem;
   font-weight: 700;
   line-height: 1;
   text-decoration: none;
 
   &:hover {
-    color: var(--c-secondary);
+    border-color: var(--c-secondary);
   }
 
-  &.active {
-    background-color: var(--c-secondary);
-    color: var(--c-on-accent);
+  // The thumb's colour rather than the plain accent: the plain accent is
+  // only 3.1:1 against the white panels.
+  &:focus-visible {
+    outline: 2px solid var(--c-switch-thumb);
+    outline-offset: 2px;
+  }
+}
+
+.lang-thumb {
+  position: absolute;
+  top: 0.125rem;
+  bottom: 0.125rem;
+  left: 0.125rem;
+  // Half of the padding box, less the inset: the thumb covers one column.
+  width: calc(50% - 0.125rem);
+  border-radius: 2rem;
+  background-color: var(--c-switch-thumb);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+
+  .thumb-end & {
+    transform: translateX(100%);
+  }
+}
+
+.lang-code {
+  // Positioned so it paints above the thumb, which comes first in the DOM.
+  position: relative;
+  text-align: center;
+
+  &.on-thumb {
+    color: var(--c-on-switch-thumb);
+  }
+}
+
+// Only while a click is switching, and only when motion is welcome: the
+// thumb's position is never animated on first render or on hydration, and a
+// declared transition cannot catch anything else changing (a theme switch,
+// a viewport resize). Under `prefers-reduced-motion: reduce` the thumb just
+// moves. The component navigates 350 ms after a click at the latest, so the
+// slide must stay shorter than that.
+@media (prefers-reduced-motion: no-preference) {
+  .sliding {
+    .lang-thumb {
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .lang-code {
+      transition: color 0.2s ease-in-out;
+    }
   }
 }

@@ -70,7 +70,7 @@ describe('PrintPageComponent', () => {
     expect(compiled.querySelector('.toolbar-export')?.textContent?.trim()).toBe('Xuất PDF');
     expect(compiled.querySelector('.print-hint')?.textContent).not.toContain('The preview');
     // The toggle leads to the same template in English.
-    const english = compiled.querySelector('.print-toolbar .lang-option[hreflang="en"]');
+    const english = compiled.querySelector('.print-toolbar .lang-toggle[hreflang="en"]');
     expect(english?.getAttribute('href')).toBe('/print?template=compact');
   });
 

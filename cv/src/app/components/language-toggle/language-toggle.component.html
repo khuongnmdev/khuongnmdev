@@ -1,27 +1,33 @@
 <!--
-  `hreflang` names the language each link leads to. The link's text — the
-  tooltip and the hidden label that forms its accessible name — is written
-  in the language of the current page, so the link carries no `lang` and
-  inherits the page's. Only the visible code is in the target language: it
-  alone carries `lang`, and it is hidden from assistive technology so it
-  stays out of the name. `&ngsp;` keeps a real space between the code and
-  the label, which Angular's whitespace stripping would otherwise glue into
-  "VIView in Vietnamese" for anything reading the raw HTML; inside the
-  inline-flex link it never renders.
+  A link, not a `role="switch"`: switch semantics promise a state that
+  changes in place, while this control goes to another page, and a link
+  with a clear name says exactly that. `hreflang` names the language it
+  leads to. Its tooltip and the hidden label that forms its accessible name
+  are written in the language of the current page, so the link carries no
+  `lang` and inherits the page's. The visible codes and the thumb are
+  decoration for sighted visitors: hidden from assistive technology, each
+  code carries its own language. `&ngsp;` keeps real spaces between the
+  codes and the label, which Angular's whitespace stripping would otherwise
+  glue into "ENVIView in Vietnamese" for anything reading the raw HTML;
+  inside the grid link they never render.
 -->
-<div class="lang-toggle" role="group" [attr.aria-label]="ui().language">
-  @for (option of options(); track option.locale) {
-    <a
-      class="lang-option"
-      [class.active]="option.active"
-      [routerLink]="option.target"
-      [attr.hreflang]="option.locale"
-      [attr.aria-current]="option.active ? 'page' : null"
-      [title]="option.title"
-    >
-      <span class="lang-code" aria-hidden="true" [attr.lang]="option.locale">{{ option.code }}</span
-      >&ngsp;
-      <span class="visually-hidden">{{ option.title }}</span>
-    </a>
+<a
+  class="lang-toggle"
+  [class.thumb-end]="thumbAtEnd()"
+  [class.sliding]="sliding()"
+  [routerLink]="target()"
+  [attr.hreflang]="other()"
+  [title]="name()"
+>
+  <span class="lang-thumb" aria-hidden="true"></span>
+  @for (code of codes; track code.locale) {
+    <span
+      class="lang-code"
+      [class.on-thumb]="code.locale === thumb()"
+      aria-hidden="true"
+      [attr.lang]="code.locale"
+      >{{ code.label }}</span
+    >&ngsp;
   }
-</div>
+  <span class="visually-hidden">{{ name() }}</span>
+</a>
