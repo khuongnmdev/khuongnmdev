@@ -667,7 +667,7 @@
     {
       "id": "experience",
       "title": "Experience",
-      "order": 2,
+      "order": 3,
       "enabled": true,
       "showInPrint": true,
       "icon": "fa-solid fa-briefcase"
@@ -675,7 +675,7 @@
     {
       "id": "education",
       "title": "Education",
-      "order": 3,
+      "order": 4,
       "enabled": true,
       "showInPrint": true,
       "icon": "fa-solid fa-graduation-cap"
@@ -683,7 +683,7 @@
     {
       "id": "skills",
       "title": "Skills",
-      "order": 4,
+      "order": 2,
       "enabled": true,
       "showInPrint": true,
       "icon": "fa-solid fa-code"

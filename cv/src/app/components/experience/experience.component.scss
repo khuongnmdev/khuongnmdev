@@ -75,6 +75,14 @@
   color: var(--c-text-muted);
   font-size: 0.9375rem;
   margin-bottom: 0.75rem;
+
+  // On phones the wide column gap alone pushed the uppercase employment chip
+  // below the dates at common widths around 360px. The chip keeps the size it
+  // shares with the tech chips, so the gap gives way instead; the row gap
+  // still spaces the chip cleanly on the narrowest screens, where it wraps.
+  @media only screen and (max-width: 575.98px) {
+    column-gap: 0.75rem;
+  }
 }
 
 // A tech-stack chip, capitalised by CSS only: the markup keeps the label as
