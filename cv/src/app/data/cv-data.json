@@ -139,21 +139,35 @@
       "current": true,
       "summary": "Front-end developer across a portfolio of real-time sports-data web products — customer-facing member sites, agent and back-office portals, and an AWS cloud-management console — spanning Angular (v14 to v20+, Signals) and React/Redux codebases.",
       "highlights": [
-        "Migrated production member sites from Angular 14 to 18 through an incremental standalone-component migration, then moved a core UI package from RxJS-subject state to Angular Signals (signal, computed, toSignal) with OnPush change detection.",
+        "Migrated production member sites from Angular 14 to 21+ through an incremental standalone-component migration, then moved a core UI package from RxJS-subject state to Angular Signals (signal, computed, toSignal) with OnPush change detection.",
         "Led the Bootstrap 5 migration of a legacy games package, rewriting its HTML/SCSS on flex and grid layouts and fixing long-standing UI defects along the way.",
         "Delivered React/Redux features for an AWS cloud console, introducing ESLint and Redux-hooks conventions across the admin and customer apps.",
         "Mentored junior colleagues and paired on complex form components to keep deliveries on schedule."
       ],
-      "techStack": ["Angular 14–21", "Angular Signals", "TypeScript", "RxJS", "Bootstrap 5", "SCSS", "Angular Forms", "React", "Redux", "WebSocket", "Git", "SVN"],
+      "techStack": [
+        "Angular 14–21+",
+        "Angular Signals",
+        "TypeScript",
+        "RxJS",
+        "Bootstrap 5",
+        "SCSS",
+        "Angular Forms",
+        "React",
+        "Redux",
+        "WebSocket"
+      ],
       "showInWeb": true,
       "showInPrint": true,
       "projects": [
         {
           "name": "AQS",
-          "description": "Real-time running-market analysis tool: replaced an old-fashioned UI with a cleaner presentation of market data, added HK odds conversion, infinite scrolling and refined scroll handling.",
+          "description": "Real-time running-market analysis tool: replaced an old-fashioned UI with a cleaner presentation of market data, infinite scrolling and refined scroll handling.",
           "role": "Front-end developer",
           "teamSize": 20,
-          "techStack": ["Angular 14", "RxJS"],
+          "techStack": [
+            "Angular 14",
+            "RxJS"
+          ],
           "showInWeb": true,
           "showInPrint": true
         },
@@ -161,7 +175,15 @@
           "name": "Multi-brand member sites",
           "description": "Customer-facing Angular sites for several brands: migrated the codebase from Angular 14 to 18, rebuilt the UI with mobile support and render optimization, implemented brand layout and template switching shared across sites, multi-bank-account management on strongly typed FormArray.",
           "role": "Front-end developer",
-          "techStack": ["Angular 18", "RxJS", "Bootstrap 5", "SCSS", "Directus"],
+          "techStack": [
+            "Angular 14-21+",
+            "Angular Signals",
+            "Zoneless",
+            "RxJS",
+            "Bootstrap 5",
+            "SCSS",
+            "Directus"
+          ],
           "showInWeb": true,
           "showInPrint": true
         },
@@ -169,7 +191,13 @@
           "name": "Live sports and games UI package",
           "description": "Built the Inplay and sport-highlight pages, convert legacy code into strongly typed Angular, create new Games UI on flex/grid with a Bootstrap 5 migration, a Live section, and brand registration forms; migrated the package's state management to Angular Signals.",
           "role": "Front-end developer",
-          "techStack": ["Angular 18+", "Angular Signals", "RxJS", "Bootstrap 5", "SCSS"],
+          "techStack": [
+            "Angular 18+",
+            "Angular Signals",
+            "RxJS",
+            "Bootstrap 5",
+            "SCSS"
+          ],
           "showInWeb": true,
           "showInPrint": true
         },
@@ -177,7 +205,11 @@
           "name": "Agent portal",
           "description": "Greenfield agent-facing site built from scratch on Angular 18 standalone components and Signals with a shared design system; delivered the Account Statement module.",
           "role": "Front-end developer",
-          "techStack": ["Angular 18", "Angular Signals", "SCSS"],
+          "techStack": [
+            "Angular 14+",
+            "RxJS",
+            "SCSS"
+          ],
           "showInWeb": true,
           "showInPrint": true
         },
@@ -185,7 +217,13 @@
           "name": "Cloud management console",
           "description": "React/Redux admin and customer portals for an AWS-based cloud service: responsive layout refactor, Redux-hooks migration, ESLint adoption across both apps, order-management pages, Elastic IP attach/detach, policy pages, provider switching, Axios migration, upload-progress UI, permissions and i18n fixes.",
           "role": "Front-end developer",
-          "techStack": ["React", "Redux", "MUI", "Axios", "ESLint", "AWS"],
+          "techStack": [
+            "React",
+            "Redux",
+            "MUI",
+            "Axios",
+            "AWS"
+          ],
           "showInWeb": true,
           "showInPrint": true
         },
@@ -193,7 +231,10 @@
           "name": "Trading ticket dashboard",
           "description": "Implemented a pending ticket feature, integrating and customizing a third-party charting library around the platform's data models.",
           "role": "Front-end developer",
-          "techStack": ["Angular", "TypeScript"],
+          "techStack": [
+            "Angular",
+            "TypeScript"
+          ],
           "showInWeb": true,
           "showInPrint": false
         }
@@ -207,7 +248,12 @@
       "endDate": "2023-12",
       "current": false,
       "summary": "Maintain Touchwaiter project and another stock-related project.",
-      "techStack": ["Angular 14", "RxJS", "Angular Material"],
+      "techStack": [
+        "StencilJS",
+        "Angular 14",
+        "RxJS",
+        "Angular Material"
+      ],
       "showInWeb": true,
       "showInPrint": true,
       "projects": [
@@ -216,7 +262,11 @@
           "description": "Implement a Dashboard to track the stock trends in real-time, including user assets in the stock exchange and other stock funds. Optimize the process of selling and buying. Analyze the stock market and provide recommended actions.",
           "role": "Front-end developer",
           "teamSize": 8,
-          "techStack": ["Angular 14", "RxJS", "Angular Material"],
+          "techStack": [
+            "Angular 14",
+            "RxJS",
+            "Angular Material"
+          ],
           "showInWeb": true,
           "showInPrint": true
         }
@@ -247,7 +297,11 @@
           "description": "A new startup seeking to build a member-based SaaS (Software as a Service) platform for veterinary practices, helping fill the client communication gap within existing practice management systems. VetTalk is a cloud-based messaging platform that will increase engagement and drastically reduce staff workload and improve customer service, by integrating with existing Vet Practice Information Management Systems (PIMS), to facilitate follow-ups, with automated messaging and chat communications.",
           "role": "Front-end developer",
           "teamSize": 14,
-          "techStack": ["Angular 14", "RxJS", "Angular Material"],
+          "techStack": [
+            "Angular 14",
+            "RxJS",
+            "Angular Material"
+          ],
           "showInWeb": true,
           "showInPrint": true
         },
@@ -256,7 +310,11 @@
           "description": "Develop a home sell/buying platform. Create questionnaires to collect user property information and evaluate prices. Manage tasks for repair/improve the property (from a 3rd-party partner) before selling again.",
           "role": "Front-end developer",
           "teamSize": 10,
-          "techStack": ["Angular 13", "RxJS", "Angular Material"],
+          "techStack": [
+            "Angular 13",
+            "RxJS",
+            "Angular Material"
+          ],
           "showInWeb": true,
           "showInPrint": true
         },
@@ -265,7 +323,12 @@
           "description": "Maintain a project that manages schools and their human resources. Provide a dashboard for admin, schedule shifts, employees, teachers, and mentors in schools.",
           "role": "Front-end developer",
           "teamSize": 10,
-          "techStack": ["Nuxt.js", "Vue", "Vuex", "Docker"],
+          "techStack": [
+            "Nuxt.js",
+            "Vue",
+            "Vuex",
+            "Docker"
+          ],
           "showInWeb": true,
           "showInPrint": true
         },
@@ -274,7 +337,11 @@
           "description": "Maintain and improve a back-office system written in Node.js. They generate Word documents from templates and upload them to cloud storage (Dropbox).",
           "role": "Back-end developer",
           "teamSize": 5,
-          "techStack": ["Node.js", "AWS S3", "Dropbox API"],
+          "techStack": [
+            "Node.js",
+            "AWS S3",
+            "Dropbox API"
+          ],
           "showInWeb": true,
           "showInPrint": true
         }
@@ -287,7 +354,12 @@
       "startDate": "2020-08",
       "endDate": "2021-04",
       "current": false,
-      "techStack": ["StencilJS", "PWA", "React", "Redux"],
+      "techStack": [
+        "StencilJS",
+        "PWA",
+        "React",
+        "Redux"
+      ],
       "showInWeb": true,
       "showInPrint": true,
       "projects": [
@@ -296,7 +368,10 @@
           "description": "Build PWA to order meals/beverages and checkout payment for a Swiss customer. Support offline mode with PWA techniques to cache APIs.",
           "role": "Front-end developer / Lead front-end team",
           "teamSize": 6,
-          "techStack": ["StencilJS", "PWA"],
+          "techStack": [
+            "StencilJS",
+            "PWA"
+          ],
           "showInWeb": true,
           "showInPrint": true
         },
@@ -305,7 +380,10 @@
           "description": "Building file manager system in the cloud, with functions: Multiple Select, Cut/Copy/Paste, Move, Create, Delete, Rename, Search, Share, Send, Create Shortcut, and Bookmark.",
           "role": "Lead front-end team",
           "teamSize": 8,
-          "techStack": ["React", "Redux"],
+          "techStack": [
+            "React",
+            "Redux"
+          ],
           "showInWeb": true,
           "showInPrint": true
         }
@@ -324,6 +402,7 @@
         "PWA",
         "Google Cloud Platform",
         "FeathersJS",
+        "VueJS",
         "AngularJS",
         "Fabric.js"
       ],
@@ -349,7 +428,12 @@
           "description": "Dashboard Management System - A system that receives data from IOT devices (a smart bottle opener) and its Mobile Application. It will analyze and visualize all the data it receives to show info about cheering moments (location, time, quantity, etc.). It also has an AI to detect the beer brand that is opening and a backend that allows the admin to train the AI for more accurate recognition.",
           "role": "Front-end developer",
           "teamSize": 10,
-          "techStack": ["Angular 7", "FeathersJS", "Real-time dashboard"],
+          "techStack": [
+            "Angular 7",
+            "VueJS (2.0)",
+            "FeathersJS",
+            "Real-time dashboard"
+          ],
           "showInWeb": true,
           "showInPrint": true
         },
@@ -358,7 +442,11 @@
           "description": "Building a virtual tour map of the ANZ stadium and precinct area including Stadium Seat View and nearby facilities (bar, pub, cafe, restaurant, etc.). The project also has a CMS that allows users to add, edit, and delete seats and facilities as well as all other content. We provided modules for facilities/seats management and optimized applications to maximize speed and scalability.",
           "role": "Lead front-end team",
           "teamSize": 5,
-          "techStack": ["AngularJS", "Fabric.js", "C# (Umbraco)"],
+          "techStack": [
+            "AngularJS",
+            "Fabric.js",
+            "C# (Umbraco)"
+          ],
           "showInWeb": true,
           "showInPrint": true
         }
@@ -371,7 +459,12 @@
       "startDate": "2017-03",
       "endDate": "2017-09",
       "current": false,
-      "techStack": ["ASP.NET MVC", "SCSS", "jQuery", "Firebase"],
+      "techStack": [
+        "ASP.NET MVC",
+        "SCSS",
+        "jQuery",
+        "Firebase"
+      ],
       "showInWeb": true,
       "showInPrint": true,
       "projects": [
@@ -380,7 +473,11 @@
           "description": "Develop a new website for Hoa Sen Group with a cart, user management, and live chat plugin.",
           "role": "Fullstack developer",
           "teamSize": 5,
-          "techStack": ["ASP.NET MVC 3", "SCSS", "jQuery"],
+          "techStack": [
+            "ASP.NET MVC 3",
+            "SCSS",
+            "jQuery"
+          ],
           "showInWeb": true,
           "showInPrint": true
         },
@@ -389,7 +486,13 @@
           "description": "Manage timeline and delivery of mobile apps for customers from Singapore. Tracking and reporting status by Jira.",
           "role": "Project Manager",
           "teamSize": 4,
-          "techStack": ["Firebase", "Android", "iOS", "Socket.io", "WebRTC"],
+          "techStack": [
+            "Firebase",
+            "Android",
+            "iOS",
+            "Socket.io",
+            "WebRTC"
+          ],
           "showInWeb": true,
           "showInPrint": true
         }
@@ -402,7 +505,13 @@
       "startDate": "2016-01",
       "endDate": "2017-03",
       "current": false,
-      "techStack": ["AngularJS", "Cordova", "Socket.io", "WebRTC", "C# .NET"],
+      "techStack": [
+        "AngularJS",
+        "Cordova",
+        "Socket.io",
+        "WebRTC",
+        "C# .NET"
+      ],
       "showInWeb": true,
       "showInPrint": true,
       "projects": [
@@ -411,7 +520,12 @@
           "description": "Develop a hybrid chat-bot app for Fujitsu Japan. End-users can use it for in-app chatting, video calls (WebRTC), or making questions for robots (as Skype).",
           "role": "Front-end developer",
           "teamSize": 40,
-          "techStack": ["AngularJS", "Cordova", "Socket.io", "WebRTC"],
+          "techStack": [
+            "AngularJS",
+            "Cordova",
+            "Socket.io",
+            "WebRTC"
+          ],
           "showInWeb": true,
           "showInPrint": true
         },
@@ -420,7 +534,12 @@
           "description": "Develop a program for operating CT scan machines, and diagnostic images of abnormalities in bones, lungs, and other internal organs.",
           "role": "Back-end developer",
           "teamSize": 35,
-          "techStack": ["C# .NET", "C++", "MVC .NET", "Jenkins"],
+          "techStack": [
+            "C# .NET",
+            "C++",
+            "MVC .NET",
+            "Jenkins"
+          ],
           "showInWeb": true,
           "showInPrint": true
         }
@@ -444,11 +563,26 @@
       "showInWeb": true,
       "showInPrint": true,
       "items": [
-        { "name": "JavaScript", "level": 5 },
-        { "name": "HTML5", "level": 5 },
-        { "name": "CSS3", "level": 5 },
-        { "name": "SCSS", "level": 5 },
-        { "name": "TypeScript", "level": 4 }
+        {
+          "name": "JavaScript",
+          "level": 5
+        },
+        {
+          "name": "HTML5",
+          "level": 5
+        },
+        {
+          "name": "CSS3",
+          "level": 5
+        },
+        {
+          "name": "SCSS",
+          "level": 5
+        },
+        {
+          "name": "TypeScript",
+          "level": 4
+        }
       ]
     },
     {
@@ -456,13 +590,34 @@
       "showInWeb": true,
       "showInPrint": true,
       "items": [
-        { "name": "Angular Modern", "level": 4 },
-        { "name": "Angular", "level": 5 },
-        { "name": "AngularJS", "level": 3 },
-        { "name": "RxJS", "level": 4 },
-        { "name": "React", "level": 3 },
-        { "name": "Vue", "level": 3 },
-        { "name": "StencilJS", "level": 3 }
+        {
+          "name": "Angular Modern",
+          "level": 4
+        },
+        {
+          "name": "Angular",
+          "level": 5
+        },
+        {
+          "name": "AngularJS",
+          "level": 3
+        },
+        {
+          "name": "RxJS",
+          "level": 4
+        },
+        {
+          "name": "React",
+          "level": 3
+        },
+        {
+          "name": "Vue",
+          "level": 3
+        },
+        {
+          "name": "StencilJS",
+          "level": 3
+        }
       ]
     },
     {
@@ -470,8 +625,14 @@
       "showInWeb": true,
       "showInPrint": true,
       "items": [
-        { "name": "Node.js", "level": 3 },
-        { "name": "Firebase", "level": 3 }
+        {
+          "name": "Node.js",
+          "level": 3
+        },
+        {
+          "name": "Firebase",
+          "level": 3
+        }
       ]
     },
     {
@@ -479,8 +640,14 @@
       "showInWeb": true,
       "showInPrint": true,
       "items": [
-        { "name": "Git", "level": 5 },
-        { "name": "Jira", "level": 4 }
+        {
+          "name": "Git",
+          "level": 5
+        },
+        {
+          "name": "Jira",
+          "level": 4
+        }
       ]
     }
   ],
