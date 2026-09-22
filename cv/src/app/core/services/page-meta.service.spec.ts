@@ -49,7 +49,7 @@ describe('PageMetaService', () => {
     );
     expect(meta.getTag('name="description"')?.content).toBe(
       `Resume of ${CV_DATA.profile.fullName}, ${CV_DATA.profile.headline} in ${CV_DATA.profile.location}: ` +
-        'Angular and React web apps, work experience, projects, education, and skills.',
+        'Contact, work experience, projects, education, and skills.',
     );
     expect(meta.getTag('property="og:locale"')?.content).toBe('en_US');
     expect(meta.getTag('property="og:url"')?.content).toBe(SITE);
