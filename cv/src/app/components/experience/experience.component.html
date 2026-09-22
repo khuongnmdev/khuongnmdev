@@ -14,7 +14,9 @@
           <p class="experience-meta">
             <span>{{ entry.startDate | dateRange: entry.endDate : ui().present }}</span>
             @if (entry.employmentType; as employmentType) {
-              &ngsp;<span>{{ ui().employmentTypes[employmentType] }}</span>
+              &ngsp;<span class="chip experience-type">{{
+                ui().employmentTypes[employmentType]
+              }}</span>
             }
             @if (entry.location; as location) {
               &ngsp;<span>{{ location }}</span>

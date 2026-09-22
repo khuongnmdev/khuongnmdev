@@ -68,10 +68,21 @@
 .experience-meta {
   display: flex;
   flex-wrap: wrap;
+  // The employment chip is taller than the plain text around it; baseline
+  // alignment keeps its label level with the dates and the location.
+  align-items: baseline;
   gap: 0.25rem 1.5rem;
   color: var(--c-text-muted);
   font-size: 0.9375rem;
   margin-bottom: 0.75rem;
+}
+
+// A tech-stack chip, capitalised by CSS only: the markup keeps the label as
+// written ("Full-time"), which is what crawlers and HTML parsers read. The
+// browser applies the transform to what it renders, so a text selection and
+// the accessibility tree get the capitals.
+.experience-type {
+  text-transform: uppercase;
 }
 
 .experience-summary {
