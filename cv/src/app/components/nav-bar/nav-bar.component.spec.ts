@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { PUBLISHED_LOCALES_TOKEN } from '@core/i18n/published-locales';
 import { CvDataService } from '@core/services/cv-data.service';
 import { stubLocalStorage } from '@app/testing/browser-apis.testing';
 import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
@@ -172,13 +173,29 @@ describe('NavBarComponent', () => {
     expect(link.getAttribute('href')).toBe('/vi/print');
   });
 
-  it('should carry the language toggle among the top actions', async () => {
+  it('should carry the language toggle among the top actions when two languages are published', async () => {
+    TestBed.overrideProvider(PUBLISHED_LOCALES_TOKEN, { useValue: ['en', 'vi'] });
     const fixture = TestBed.createComponent(NavBarComponent);
     await fixture.whenStable();
     const actions = (fixture.nativeElement as HTMLElement).querySelector('.top-actions')!;
     expect(actions.querySelector('app-language-toggle .lang-toggle')).toBeTruthy();
     // The old icon-only language button is gone.
     expect(actions.querySelector('.fa-language')).toBeNull();
+  });
+
+  it('should render no language toggle anywhere when only English is published', async () => {
+    TestBed.overrideProvider(PUBLISHED_LOCALES_TOKEN, { useValue: ['en'] });
+    const fixture = TestBed.createComponent(NavBarComponent);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    // One bar serves the sidebar, the collapsed rail, and the phone bar;
+    // the slide-in menu is the only other place a control could sit.
+    expect(compiled.querySelector('app-language-toggle, .lang-toggle, [hreflang]')).toBeNull();
+    // No empty host left behind: the actions close up where it was.
+    const actions = Array.from(compiled.querySelector('.top-actions')!.children);
+    expect(actions).toHaveLength(2);
+    expect(actions[0].classList).toContain('btn-theme');
+    expect(actions[1].classList).toContain('btn-export');
   });
 
   it('should give the mobile menu button an accessible name that follows its state', async () => {

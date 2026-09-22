@@ -1,5 +1,6 @@
 import { DOCUMENT, inject, Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
+import { PUBLISHED_LOCALES_TOKEN } from '@core/i18n/published-locales';
 import type { CvData, Locale } from '@core/models/cv-data.model';
 import {
   buildAlternateLinks,
@@ -28,6 +29,7 @@ export class PageMetaService {
   private readonly document = inject(DOCUMENT);
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
+  private readonly published = inject(PUBLISHED_LOCALES_TOKEN);
 
   /** False while the active route is kept out of search indexes. */
   private indexable = true;
@@ -54,7 +56,7 @@ export class PageMetaService {
       .getTags('property="og:locale:alternate"')
       .forEach((tag) => this.meta.removeTagElement(tag));
     this.meta.addTags(
-      buildOgLocaleAlternates(locale).map((content) => ({
+      buildOgLocaleAlternates(locale, this.published).map((content) => ({
         property: 'og:locale:alternate',
         content,
       })),
@@ -92,10 +94,13 @@ export class PageMetaService {
     };
   }
 
-  /** The canonical link and the `hreflang` alternates of `locale`'s page. */
+  /**
+   * The canonical link of `locale`'s page, and its `hreflang` alternates
+   * while another language is published.
+   */
   private writeIndexLinks(locale: Locale): void {
     this.upsertLink('link[rel="canonical"]', { rel: 'canonical' }, siteUrlFor(locale));
-    for (const { hreflang, href } of buildAlternateLinks()) {
+    for (const { hreflang, href } of buildAlternateLinks(this.published)) {
       this.upsertLink(
         `link[rel="alternate"][hreflang="${hreflang}"]`,
         { rel: 'alternate', hreflang },

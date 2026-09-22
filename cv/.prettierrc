@@ -7,6 +7,12 @@
       "options": {
         "parser": "angular"
       }
+    },
+    {
+      "files": "src/app/data/cv-data*.json",
+      "options": {
+        "parser": "json-stringify"
+      }
     }
   ]
 }

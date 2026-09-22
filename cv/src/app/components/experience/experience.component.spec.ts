@@ -99,6 +99,20 @@ describe('ExperienceComponent', () => {
     );
   });
 
+  it('should render the employment type as a chip in the meta row, uppercase by CSS only', async () => {
+    const compiled = await render();
+    const meta = compiled.querySelector('.experience-item .experience-meta')!;
+    const type = meta.querySelector('.experience-type')!;
+    // The very chip the tech stacks use, not a look-alike.
+    expect(type.classList).toContain('chip');
+    // The markup keeps the label as written; only the rendering capitalises it.
+    expect(type.textContent).toBe('Freelance');
+    expect(getComputedStyle(type).textTransform).toBe('uppercase');
+    // Next to the dates, where it was.
+    expect(meta.children[0].textContent).toBe('03/2022 – Present');
+    expect(meta.children[1]).toBe(type);
+  });
+
   it('should render tech stack chips for an entry', async () => {
     const compiled = await render();
     const first = compiled.querySelector('.experience-item')!;

@@ -42,9 +42,9 @@ describe('appConfig', () => {
   });
 
   it('should keep the slash in the address bar after a navigation', async () => {
-    await TestBed.inject(Router).navigateByUrl('/vi');
+    await TestBed.inject(Router).navigateByUrl('/print');
     // The router still matches the slashless path; only the written URL differs.
-    expect(TestBed.inject(Location).path()).toBe('/vi');
-    expect(TestBed.inject(PlatformLocation).pathname).toBe('/vi/');
+    expect(TestBed.inject(Location).path()).toBe('/print');
+    expect(TestBed.inject(PlatformLocation).pathname).toBe('/print/');
   });
 });

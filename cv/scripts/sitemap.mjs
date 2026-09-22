@@ -3,20 +3,23 @@
  * root (`/khuongnmdev/sitemap.xml`).
  *
  * It lists exactly the prerendered pages, taken from the build's
- * `prerendered-routes.json`, minus any page marked `noindex`. Every URL comes
- * from the page itself — its canonical link and `hreflang` alternates, which
- * the app wrote while prerendering — so the sitemap can never disagree with
- * the pages. `lastmod` is the `meta.updatedAt` of the dataset in the page's
- * language.
+ * `prerendered-routes.json`, minus redirect pages and any page marked
+ * `noindex`. Every URL comes from the page itself — its canonical link and
+ * `hreflang` alternates, which the app wrote while prerendering — so the
+ * sitemap can never disagree with the pages. The languages of those pages
+ * are the published ones: with one, the sitemap names no alternates; with
+ * several, each URL lists them all. `lastmod` is the `meta.updatedAt` of the
+ * dataset in the page's language.
  *
  * Runs after `ng build` as part of the Pages build only. No robots.txt can
  * point at the file: crawlers read robots.txt only at the host root, which
  * this project site does not own, so the sitemap is submitted in the search
  * consoles instead.
  */
-import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { readPageSignals, renderSitemap } from './sitemap-xml.mjs';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { join, relative } from 'node:path';
+import { readPrerenderedPages } from './prerendered-pages.mjs';
+import { publishedLanguages, renderSitemap, sitemapEntries } from './sitemap-xml.mjs';
 
 const root = join(import.meta.dirname, '..');
 const distDir = join(root, 'dist', 'cv');
@@ -28,67 +31,47 @@ function fail(message) {
   process.exit(1);
 }
 
-const routesFile = join(distDir, 'prerendered-routes.json');
-if (!existsSync(routesFile)) {
-  fail(`${routesFile} not found — run the build first.`);
-}
-const routes = Object.keys(JSON.parse(readFileSync(routesFile, 'utf8')).routes ?? {});
 const siteUrl = JSON.parse(readFileSync(join(dataDir, 'site.json'), 'utf8')).url;
 
 /** `meta.updatedAt` of every dataset, by the language it declares. */
-const updatedAt = new Map(
+const updatedAt = Object.fromEntries(
   readdirSync(dataDir)
     .filter((name) => /^cv-data(\.[a-z]+)?\.json$/.test(name))
     .map((name) => JSON.parse(readFileSync(join(dataDir, name), 'utf8')).meta)
     .map((meta) => [meta.locale, meta.updatedAt]),
 );
 
-/**
- * The file of a prerendered route. Routes carry the base href
- * (`/khuongnmdev/vi`), files do not (`vi/index.html`): each shorter suffix
- * of the route is tried, and the one whose own `<base href>` plus its path
- * rebuilds the route is the page.
- */
-function pageFor(route) {
-  const segments = route.split('/').filter(Boolean);
-  for (let start = 0; start <= segments.length; start++) {
-    const path = segments.slice(start).join('/');
-    const file = join(browserDir, path, 'index.html');
-    if (!existsSync(file)) {
-      continue;
-    }
-    const html = readFileSync(file, 'utf8');
-    const signals = readPageSignals(html);
-    const rebuilt = `${signals.baseHref ?? '/'}${path}`.replace(/\/+$/, '');
-    if (rebuilt === route.replace(/\/+$/, '')) {
-      return { file, signals };
-    }
-  }
-  return fail(`no page file matches the prerendered route ${route}`);
+let pages;
+try {
+  pages = readPrerenderedPages(distDir);
+} catch (error) {
+  fail(error.message);
 }
 
-const entries = [];
-for (const route of routes) {
-  const { file, signals } = pageFor(route);
+const indexable = pages.filter(({ file, signals }) => {
+  if (signals.redirect !== undefined) {
+    console.log(`Skipped ${relative(browserDir, file)}: redirects to ${signals.redirect}`);
+    return false;
+  }
   if (/\bnoindex\b/i.test(signals.robots ?? '')) {
-    console.log(`Skipped ${file}: noindex`);
-    continue;
+    console.log(`Skipped ${relative(browserDir, file)}: noindex`);
+    return false;
   }
-  const urls = [signals.canonical, ...signals.alternates.map((alternate) => alternate.href)];
-  if (!signals.canonical || signals.alternates.length === 0) {
-    fail(`${file} carries no canonical link or no hreflang alternates`);
-  }
-  if (!urls.every((url) => url?.startsWith(siteUrl))) {
-    fail(`${file} links outside ${siteUrl}: ${urls.join(', ')}`);
-  }
-  const lastmod = updatedAt.get(signals.lang);
-  if (!lastmod) {
-    fail(`no dataset declares the language "${signals.lang}" of ${file}`);
-  }
-  entries.push({ loc: signals.canonical, lastmod, alternates: signals.alternates });
-}
-if (entries.length === 0) {
+  return true;
+});
+if (indexable.length === 0) {
   fail('no indexable prerendered page');
+}
+
+let entries;
+try {
+  entries = sitemapEntries(indexable, {
+    siteUrl,
+    published: publishedLanguages(indexable),
+    updatedAt,
+  });
+} catch (error) {
+  fail(error.message);
 }
 
 const out = join(browserDir, 'sitemap.xml');

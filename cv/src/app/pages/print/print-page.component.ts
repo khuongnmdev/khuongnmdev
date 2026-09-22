@@ -13,6 +13,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { LanguageToggleComponent } from '@app/components/language-toggle/language-toggle.component';
 import { localizedCommands } from '@core/i18n/localized-url';
+import { PUBLISHED_LOCALES_TOKEN } from '@core/i18n/published-locales';
 import { CvDataService } from '@core/services/cv-data.service';
 import { PageMetaService } from '@core/services/page-meta.service';
 import { PrintService } from '@core/services/print.service';
@@ -63,6 +64,9 @@ export class PrintPageComponent {
     classic: this.ui().printTemplateClassic,
     compact: this.ui().printTemplateCompact,
   }));
+
+  /** The language switch shows only while another language is published. */
+  protected readonly hasLanguageChoice = inject(PUBLISHED_LOCALES_TOKEN).length > 1;
 
   /** Back to the CV page in the language being viewed. */
   protected readonly homeLink = computed(() => localizedCommands(this.cvData.language()));
