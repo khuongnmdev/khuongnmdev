@@ -43,10 +43,10 @@ The dev server listens on <http://localhost:4200/> and reloads on every change.
 |---|---|
 | `npm start` | `ng serve`: dev server with the development configuration |
 | `npm run build` | `ng build`: production build with prerendering into `dist/cv/` (`browser/` static files, `server/` Node bundle), base href `/` |
-| `npm run build-gh` | The GitHub Pages build: `ng build --base-href /khuongnmdev/`, then `scripts/spa-fallback.mjs` copies the client shell to `print/index.html` and `404.html` (both `noindex`) and removes `index.csr.html`, then `scripts/sitemap.mjs` writes `sitemap.xml` from the prerendered pages |
+| `npm run build-gh` | The GitHub Pages build: `ng build --base-href /khuongnmdev/`, then `scripts/spa-fallback.mjs` copies the client shell to `print/index.html` (one per published language) and `404.html`, all `noindex`, and removes `index.csr.html`, then `scripts/sitemap.mjs` writes `sitemap.xml` from the prerendered pages |
 | `npm run watch` | Development build that rebuilds on every change |
 | `npm test` | `ng test`: the Vitest unit tests, specs under `src/` and `scripts/` |
-| `npm run serve:ssr:cv` | Runs the built Node SSR server, `dist/cv/server/server.mjs`, on <http://localhost:4000/> (`PORT` overrides it). Local only, run `npm run build` first: Pages serves the static files |
+| `npm run serve:ssr:cv` | Runs the built Node SSR server, `dist/cv/server/server.mjs`, on <http://localhost:4000/> (`PORT` overrides it). Run `npm run build` first. Local only: Pages serves the static files |
 
 Two scripts are run by hand, never in CI. Commit the images they write.
 
@@ -66,7 +66,7 @@ gets its path argument rewritten by MSYS. Use `npm run build-gh`, or set
 
 ## Project structure
 
-```
+```text
 cv/
 ├── public/                  avatar, site icons, social cards
 ├── scripts/                 post-build steps and the image scripts
@@ -145,10 +145,10 @@ sheet on screen. Its toolbar switches between the `classic` and `compact`
 templates, kept in the URL as `?template=compact`, and **Export PDF** opens the
 browser's print dialog once fonts and images have loaded: choose "Save as PDF".
 
-The sheet has its own markup (`components/print-cv`), styled by the global
-[`src/styles/print.scss`](src/styles/print.scss): Angular's view encapsulation
-breaks `@page` rules inside component styles. The route renders only in the
-browser and is `noindex`, because it shows the print-only contacts.
+The sheet has its own markup (`src/app/components/print-cv`), styled by the
+global [`src/styles/print.scss`](src/styles/print.scss): Angular's view
+encapsulation breaks `@page` rules inside component styles. The route renders
+only in the browser and is `noindex`, because it shows the print-only contacts.
 
 ## Deployment
 
