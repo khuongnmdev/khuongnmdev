@@ -34,6 +34,8 @@
     "metaDescriptionNoLocation": "CV của {name}, {headline}: liên hệ, kinh nghiệm làm việc, dự án, học vấn và kỹ năng.",
     "metaKeywords": "hồ sơ xin việc, CV",
     "socialImageAlt": "Thẻ hồ sơ: ảnh của {name}, {headline}",
+    "footerCopyright": "© {year} {name}",
+    "footerUpdated": "Cập nhật {date}",
     "employmentTypes": {
       "full-time": "Toàn thời gian",
       "part-time": "Bán thời gian",

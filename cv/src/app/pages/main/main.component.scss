@@ -18,7 +18,10 @@
     }
   }
 
-  .main-container {
+  // The footer sits outside <main>, where it is the page's contentinfo
+  // landmark, so it follows the same offset as the content.
+  .main-container,
+  .app-footer {
     @media only screen and (min-width: 768px) {
       margin-left: 17rem;
     }
@@ -35,7 +38,8 @@
         transition: width 0.3s ease-in-out;
       }
 
-      .main-container {
+      .main-container,
+      .app-footer {
         transition: margin-left 0.3s ease-in-out;
       }
     }
@@ -48,7 +52,8 @@
         width: 4.5rem;
       }
 
-      .main-container {
+      .main-container,
+      .app-footer {
         margin-left: 4.5rem;
       }
     }

@@ -34,6 +34,8 @@
     "metaDescriptionNoLocation": "Resume of {name}, {headline}: Contact, work experience, projects, education, and skills.",
     "metaKeywords": "resume, CV",
     "socialImageAlt": "Profile card: photo of {name}, {headline}",
+    "footerCopyright": "© {year} {name}",
+    "footerUpdated": "Last updated {date}",
     "employmentTypes": {
       "full-time": "Full-time",
       "part-time": "Part-time",

@@ -88,9 +88,11 @@ describe('MainComponent', () => {
     expect(container.classList).toContain('sidebar-animating');
     expect(compiled.querySelector('.nav-bar')?.classList).toContain('animating');
 
-    // Other transitions bubbling up — the avatar, a hover — do not end it.
+    // Other transitions bubbling up — the avatar, a hover, the footer's own
+    // margin, which moves with the content — do not end it.
     transitionEnd(compiled.querySelector('.avatar-block')!, 'max-width');
     transitionEnd(main, 'opacity');
+    transitionEnd(compiled.querySelector('app-page-footer')!, 'margin-left');
     await fixture.whenStable();
     expect(container.classList).toContain('sidebar-animating');
 
@@ -140,8 +142,8 @@ describe('MainComponent with the bundled dataset', () => {
 });
 
 /**
- * Both bundled languages, rendered whole: the heading structure search
- * engines read from the prerendered page.
+ * Both bundled languages, rendered whole: the heading structure and the
+ * footer search engines read from the prerendered page.
  */
 for (const [language, data] of [
   ['English', CV_DATA],
@@ -184,5 +186,20 @@ for (const [language, data] of [
       }
     });
 
+    it('should end with a contentinfo footer outside <main>, built from the data', async () => {
+      const compiled = await render();
+      const footers = compiled.querySelectorAll('footer');
+      expect(footers.length).toBe(1);
+      // A footer inside <main> is not the page's contentinfo landmark.
+      expect(footers[0].closest('main')).toBeNull();
+      expect(footers[0].closest('.app-container > app-page-footer')).not.toBeNull();
+      const [year, month] = data.meta.updatedAt.split('-');
+      const copyright = data.ui.footerCopyright
+        .replace('{year}', year)
+        .replace('{name}', data.profile.fullName);
+      const updated = data.ui.footerUpdated.replace('{date}', `${month}/${year}`);
+      expect(footers[0].textContent?.trim()).toBe(`${copyright} · ${updated}`);
+      expect(footers[0].textContent).toContain(data.profile.fullName);
+    });
   });
 }

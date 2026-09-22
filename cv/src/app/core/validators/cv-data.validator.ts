@@ -26,6 +26,9 @@ export type CvDataValidationResult = { ok: true; data: CvData } | { ok: false; e
 /** `YYYY-MM` with a real month, `01`–`12`. */
 const YEAR_MONTH = /^\d{4}-(0[1-9]|1[0-2])$/;
 
+/** `YYYY-MM-DD` with a real month and a day of `01`–`31`. */
+const ISO_DATE = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+
 const REQUIRED_ARRAYS = [
   'contacts',
   'experience',
@@ -134,6 +137,12 @@ function validateMeta(meta: unknown, errors: string[]): void {
   const version = meta['version'];
   if (typeof version !== 'string' || version.length === 0) {
     errors.push('meta.version: expected a non-empty string');
+  }
+  // The page footer prints its year and month, so a malformed date would
+  // reach the published page.
+  const updatedAt = meta['updatedAt'];
+  if (typeof updatedAt !== 'string' || !ISO_DATE.test(updatedAt)) {
+    errors.push(`meta.updatedAt: ${show(updatedAt)} is not a YYYY-MM-DD date`);
   }
 }
 

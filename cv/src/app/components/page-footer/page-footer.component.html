@@ -1,0 +1,11 @@
+<!-- The page places this outside <main>: only a footer there is the page's
+     contentinfo landmark. `&ngsp;` keeps real spaces around the separator,
+     which Angular's whitespace stripping would otherwise glue to both parts
+     for anything reading the raw HTML. -->
+<footer class="page-footer">
+  <p class="page-footer-line">
+    <span class="page-footer-part">{{ copyright() }}</span
+    >&ngsp; <span class="page-footer-separator" aria-hidden="true">·</span>&ngsp;
+    <span class="page-footer-part">{{ lastUpdated() }}</span>
+  </p>
+</footer>

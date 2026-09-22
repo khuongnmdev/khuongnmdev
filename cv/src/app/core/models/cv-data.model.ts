@@ -258,6 +258,8 @@ export const UI_STRING_KEYS = [
   'metaDescriptionNoLocation',
   'metaKeywords',
   'socialImageAlt',
+  'footerCopyright',
+  'footerUpdated',
 ] as const;
 export type UiStringKey = (typeof UI_STRING_KEYS)[number];
 
@@ -275,6 +277,8 @@ export const UI_STRING_PLACEHOLDERS = {
   metaDescription: ['name', 'headline', 'location'],
   metaDescriptionNoLocation: ['name', 'headline'],
   socialImageAlt: ['name', 'headline'],
+  footerCopyright: ['year', 'name'],
+  footerUpdated: ['date'],
 } as const satisfies Partial<Record<UiStringKey, readonly string[]>>;
 
 /**
