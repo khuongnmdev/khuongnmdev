@@ -47,7 +47,7 @@
             @for (project of entry.projects; track project.name) {
               <li class="project-item">
                 <span class="project-dot" aria-hidden="true"></span>
-                <h4 class="project-name">{{ project.name }}</h4>
+                <p class="project-name">{{ project.name }}</p>
                 <p class="project-meta">
                   <span class="project-role">{{ project.role }}</span>
                   @if (project.teamSize; as teamSize) {

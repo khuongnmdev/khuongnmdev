@@ -125,6 +125,17 @@ describe('ExperienceComponent', () => {
     expect(chips).toEqual(['Angular', 'Bootstrap']);
   });
 
+  it('should name each project in a paragraph, leaving the entries as the only headings', async () => {
+    const compiled = await render();
+    const names = Array.from(compiled.querySelectorAll('.project-item .project-name'));
+    expect(names.map((name) => [name.tagName, name.textContent?.trim()])).toEqual([
+      ['P', 'Visible Project'],
+    ]);
+    // One h3 per entry and nothing deeper; the section title is the h2.
+    expect(compiled.querySelectorAll('h4, h5, h6').length).toBe(0);
+    expect(compiled.querySelectorAll('h3').length).toBe(2);
+  });
+
   it('should hide projects flagged showInWeb: false', async () => {
     const compiled = await render();
     expect(compiled.textContent).not.toContain('Hidden Project');

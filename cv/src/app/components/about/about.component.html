@@ -1,12 +1,17 @@
 <!-- `&ngsp;` keeps one real space between inline siblings. Angular strips template
      whitespace, which glued their words together for anything reading the raw HTML;
      inside these flex rows the space never renders. -->
-<!-- The profile name is the page's only h1, so the section title above it
-     stays a label: an h2 before the h1 would start the outline at level two. -->
+<!-- The page's only h1 is the profile name with the headline, so the section
+     title above it stays a label: an h2 before the h1 would start the outline
+     at level two. Both parts are blocks: the name line over the accent
+     headline on screen, one phrase for anything reading the heading's text. -->
 <app-section [title]="title()" [titleIsHeading]="false" id="about">
   <div class="about">
-    <h1 class="about-name">{{ profile().fullName }}</h1>
-    <p class="about-headline">{{ profile().headline }}</p>
+    <h1 class="about-heading">
+      <span class="about-name">{{ profile().fullName }}</span
+      >&ngsp;
+      <span class="about-headline">{{ profile().headline }}</span>
+    </h1>
 
     <p class="about-facts">
       @if (profile().location; as location) {

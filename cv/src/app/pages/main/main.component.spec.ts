@@ -3,6 +3,8 @@ import { provideRouter } from '@angular/router';
 import { CvDataService } from '@core/services/cv-data.service';
 import { SidebarService } from '@core/services/sidebar.service';
 import type { CvData } from '@core/models/cv-data.model';
+import { CV_DATA } from '@data/cv-data';
+import { CV_DATA_VI } from '@data/cv-data.vi';
 import { cloneCvData, cvDataServiceWith } from '@app/testing/cv-data.testing';
 import { MainComponent } from './main.component';
 
@@ -86,9 +88,11 @@ describe('MainComponent', () => {
     expect(container.classList).toContain('sidebar-animating');
     expect(compiled.querySelector('.nav-bar')?.classList).toContain('animating');
 
-    // Other transitions bubbling up — the avatar, a hover — do not end it.
+    // Other transitions bubbling up — the avatar, a hover, the footer's own
+    // margin, which moves with the content — do not end it.
     transitionEnd(compiled.querySelector('.avatar-block')!, 'max-width');
     transitionEnd(main, 'opacity');
+    transitionEnd(compiled.querySelector('app-page-footer')!, 'margin-left');
     await fixture.whenStable();
     expect(container.classList).toContain('sidebar-animating');
 
@@ -135,12 +139,67 @@ describe('MainComponent with the bundled dataset', () => {
     const ids = Array.from(compiled.querySelectorAll('[id]')).map((element) => element.id);
     expect(ids.filter((id, index) => ids.indexOf(id) !== index)).toEqual([]);
   });
-
-  it('should have exactly one h1, the profile name, ahead of every other heading', async () => {
-    const compiled = await render();
-    const h1 = compiled.querySelectorAll('h1');
-    expect(h1.length).toBe(1);
-    expect(h1[0].textContent?.trim()).toBe(data.profile.fullName);
-    expect(compiled.querySelector('h1, h2, h3, h4, h5, h6')).toBe(h1[0]);
-  });
 });
+
+/**
+ * Both bundled languages, rendered whole: the heading structure and the
+ * footer search engines read from the prerendered page.
+ */
+for (const [language, data] of [
+  ['English', CV_DATA],
+  ['Vietnamese', CV_DATA_VI],
+] as const) {
+  describe(`MainComponent with the ${language} dataset`, () => {
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        imports: [MainComponent],
+        providers: [
+          provideRouter([]),
+          { provide: CvDataService, useValue: cvDataServiceWith(structuredClone(data)) },
+        ],
+      }).compileComponents();
+    });
+
+    async function render(): Promise<HTMLElement> {
+      const fixture = TestBed.createComponent(MainComponent);
+      await fixture.whenStable();
+      return fixture.nativeElement as HTMLElement;
+    }
+
+    it('should have exactly one h1, the name and headline, ahead of every other heading', async () => {
+      const compiled = await render();
+      const h1 = compiled.querySelectorAll('h1');
+      expect(h1.length).toBe(1);
+      const text = h1[0].textContent?.trim() ?? '';
+      expect(text).toBe(`${data.profile.fullName} ${data.profile.headline}`);
+      // Search engines flag an h1 shorter than this.
+      expect(text.length).toBeGreaterThanOrEqual(20);
+      expect(compiled.querySelector('h1, h2, h3, h4, h5, h6')).toBe(h1[0]);
+    });
+
+    it('should head sections and entries only, never a project', async () => {
+      const compiled = await render();
+      expect(compiled.querySelectorAll('.project-name').length).toBeGreaterThan(0);
+      expect(compiled.querySelectorAll('h4, h5, h6').length).toBe(0);
+      for (const name of Array.from(compiled.querySelectorAll('.project-name'))) {
+        expect(name.tagName).toBe('P');
+      }
+    });
+
+    it('should end with a contentinfo footer outside <main>, built from the data', async () => {
+      const compiled = await render();
+      const footers = compiled.querySelectorAll('footer');
+      expect(footers.length).toBe(1);
+      // A footer inside <main> is not the page's contentinfo landmark.
+      expect(footers[0].closest('main')).toBeNull();
+      expect(footers[0].closest('.app-container > app-page-footer')).not.toBeNull();
+      const [year, month] = data.meta.updatedAt.split('-');
+      const copyright = data.ui.footerCopyright
+        .replace('{year}', year)
+        .replace('{name}', data.profile.fullName);
+      const updated = data.ui.footerUpdated.replace('{date}', `${month}/${year}`);
+      expect(footers[0].textContent?.trim()).toBe(`${copyright} · ${updated}`);
+      expect(footers[0].textContent).toContain(data.profile.fullName);
+    });
+  });
+}

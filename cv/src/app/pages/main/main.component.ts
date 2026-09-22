@@ -9,6 +9,7 @@ import { ExperienceComponent } from '@app/components/experience/experience.compo
 import { EducationComponent } from '@app/components/education/education.component';
 import { SkillsComponent } from '@app/components/skills/skills.component';
 import { HobbiesComponent } from '@app/components/hobbies/hobbies.component';
+import { PageFooterComponent } from '@app/components/page-footer/page-footer.component';
 import { ActiveSectionDirective } from '@app/directives/active-section.directive';
 
 /**
@@ -32,7 +33,7 @@ const SECTION_COMPONENTS: Partial<Record<SectionId, Type<unknown>>> = {
  */
 @Component({
   selector: 'app-main',
-  imports: [NavBarComponent, ActiveSectionDirective, NgComponentOutlet],
+  imports: [NavBarComponent, ActiveSectionDirective, NgComponentOutlet, PageFooterComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -64,7 +65,8 @@ export class MainComponent {
   /**
    * The content margin follows the panel width with the same transition, so
    * its end marks the end of the resize. Transition events bubble: filter
-   * out everything else — the avatar, hover effects, the mobile menu.
+   * out everything else — the footer's matching margin, the avatar, hover
+   * effects, the mobile menu.
    */
   protected onTransitionEnd(event: TransitionEvent): void {
     const target = event.target as Element | null;

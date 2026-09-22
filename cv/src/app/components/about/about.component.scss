@@ -2,18 +2,27 @@
   max-width: 48rem;
 }
 
-// The page's h1, sized as a name line rather than as a page title.
+// The page's h1: the name line over the headline, each a block with the
+// metrics it had as a heading and a paragraph of its own.
+.about-heading {
+  margin-bottom: 0.5rem;
+}
+
+// Sized as a name line rather than as a page title.
 .about-name {
+  display: block;
   font-size: 1.75rem;
   font-weight: 700;
   margin-bottom: 0.25rem;
 }
 
 .about-headline {
+  display: block;
   color: var(--c-secondary);
   font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  // Body text line height, not the heading's tighter one.
+  line-height: var(--bs-body-line-height);
 }
 
 .about-facts {

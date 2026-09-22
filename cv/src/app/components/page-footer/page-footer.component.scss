@@ -1,0 +1,24 @@
+// A custom element is inline by default; the page offsets this host by the
+// sidebar width, which needs a block box.
+:host {
+  display: block;
+}
+
+// Quiet on purpose: small muted text under a hairline, from the palette
+// tokens, so it follows both themes.
+.page-footer {
+  border-top: 1px solid var(--c-border);
+  color: var(--c-text-muted);
+  font-size: 0.8125rem;
+  padding: 1.5rem 3rem; // the sections' side padding
+}
+
+.page-footer-line {
+  margin: 0;
+}
+
+// Each part stays whole while it fits, so a narrow screen breaks the line
+// at the separator rather than inside the name or the date.
+.page-footer-part {
+  display: inline-block;
+}

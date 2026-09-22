@@ -103,6 +103,18 @@ describe('validateCvData', () => {
     expect(errorsOf(data)).toEqual(['meta.version: expected a non-empty string']);
   });
 
+  it('rejects a missing or malformed meta updatedAt', () => {
+    const missing = clone();
+    delete missing.meta.updatedAt;
+    expect(errorsOf(missing)).toEqual(['meta.updatedAt: undefined is not a YYYY-MM-DD date']);
+
+    for (const date of ['2026-09', '15/09/2026', '2026-13-01', '2026-09-32']) {
+      const malformed = clone();
+      malformed.meta.updatedAt = date;
+      expect(errorsOf(malformed)).toEqual([`meta.updatedAt: "${date}" is not a YYYY-MM-DD date`]);
+    }
+  });
+
   it('rejects a missing meta block', () => {
     const data = clone();
     delete data.meta;
@@ -142,6 +154,17 @@ describe('validateCvData', () => {
       expect(errorsOf(data)).toEqual([
         'ui.printLead: missing the {years} placeholder',
         'ui.teamSize: missing the {count} placeholder',
+      ]);
+    });
+
+    it('rejects footer templates that lost their placeholders', () => {
+      const data = clone();
+      data.ui.footerCopyright = '© Nguyen Manh Khuong';
+      data.ui.footerUpdated = 'Last updated recently';
+      expect(errorsOf(data)).toEqual([
+        'ui.footerCopyright: missing the {year} placeholder',
+        'ui.footerCopyright: missing the {name} placeholder',
+        'ui.footerUpdated: missing the {date} placeholder',
       ]);
     });
 
