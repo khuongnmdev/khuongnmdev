@@ -99,9 +99,16 @@
   </button>
 </div>
 
+<!-- The closed menu only slides out of sight, so without `inert` its links
+     stay in the tab order and in the accessibility tree: at phone widths four
+     Tab stops used to land on links parked off-screen. `inert` takes the whole
+     subtree out of both while it is closed and leaves the slide alone, unlike
+     `display: none`. Bound as an attribute so the prerendered HTML carries it
+     too, before any script runs. -->
 <nav
   class="nav-list-mobile"
   [ngClass]="{ 'is-show': isShowMenu() }"
+  [attr.inert]="isShowMenu() ? null : ''"
   [attr.aria-label]="ui().sectionMenu"
 >
   @for (menuItem of menuList(); track menuItem.id) {
