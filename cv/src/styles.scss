@@ -4,18 +4,22 @@
 // Semantics:
 //   --c-primary     ink: headings and strong text
 //   --c-secondary   the brand accent (identical in both palettes), for
-//                   decoration only: dots, rails, borders, rings, and icons.
-//                   White on it, or it on the light surfaces, is about
-//                   3:1 — enough for a graphic, never for text
+//                   decoration that stands on its own: timeline dots and
+//                   rails, project dots, contact icons, the print sheet's
+//                   rules. It on the light surfaces is about 3:1 — enough for
+//                   a graphic, never for text, and never next to --bg-accent,
+//                   where the light palette would show two shades of orange
 //   --c-accent      the accent wherever contrast is required: text, and
 //                   graphics that carry meaning (the skill-level dots). At
 //                   least 4.5:1 on every surface of its palette, the hover
 //                   tint included. Light: the brand hue, darker; dark: the
 //                   brand itself
-//   --bg-accent     an accent fill with text on it (the active menu pill);
-//                   at least 4.5:1 under --c-on-accent
+//   --bg-accent     the solid accent: fills with text or an icon on them (the
+//                   active menu pill, the collapse button) and the bands that
+//                   sit beside them (the avatar ring), so a panel never shows
+//                   two shades of orange at once. At least 4.5:1 under
+//                   --c-on-accent
 //   --bg-primary    panel surfaces: the sidebar and the mobile top bar
-//   --bg-secondary  accent fill for buttons and borders
 //   --bg-body       the page background behind the sections
 //   --bg-surface    raised cards (for example nested project cards)
 //   --c-text        body text on --bg-body
@@ -42,7 +46,6 @@
   --c-accent: #b64a00;
   --bg-accent: #b64a00;
   --bg-primary: #ffffff;
-  --bg-secondary: #f0690b;
   --bg-body: #ffffff;
   --bg-surface: #f8f9fa;
   --c-text: #212529;
@@ -63,7 +66,6 @@
   --c-accent: #f0690b;
   --bg-accent: #f0690b;
   --bg-primary: #060504;
-  --bg-secondary: #f0690b;
   --bg-body: #141210;
   --bg-surface: #211e1b;
   --c-text: #e8e4de;
