@@ -141,10 +141,12 @@
     }
   }
 
+  // No `outline: none` here or anywhere else in this file: the keyboard ring
+  // every control on the page shares is declared globally, and this button
+  // used to be the one place that threw it away.
   .btn-menu {
     display: flex;
     color: var(--c-nav-item);
-    outline: none;
 
     @media only screen and (min-width: 768px) {
       display: none;

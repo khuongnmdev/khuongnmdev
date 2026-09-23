@@ -361,6 +361,18 @@ app-print-cv {
       }
     }
 
+    // The toolbar keeps its dark chrome in both themes, so its keyboard ring
+    // is a literal too: the brand orange is 6.5:1 against that background,
+    // and the offset leaves a gap of chrome between the ring and the Export
+    // fill. The select is named because Bootstrap clears its outline on
+    // focus and replaces it with a pale blue glow.
+    .toolbar-back:focus-visible,
+    .toolbar-field select:focus-visible,
+    .toolbar-export:focus-visible {
+      outline: 2px solid #f0690b;
+      outline-offset: 2px;
+    }
+
     // One row needs about 36rem. Below Bootstrap's `sm` breakpoint the
     // toolbar becomes two rows — back link and template, then language and
     // export — laid out by a grid rather than wrapping flex, so the split is

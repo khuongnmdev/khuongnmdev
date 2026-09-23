@@ -105,6 +105,32 @@ body {
 }
 
 // ---------------------------------------------------------------------------
+// Keyboard focus — one ring for every control on the page: the sidebar and
+// phone-bar buttons, the section links, the export link, the contact links,
+// and the print toolbar.
+//
+// An outline with an offset, never a border, so focusing never resizes a
+// control or shifts the row around it; the offset also keeps a gap of the
+// surface between the ring and a control that is itself an accent fill. The
+// accent clears 3:1 on every surface of its palette. `:where()` holds the
+// base selector at zero specificity, so a control with a ring of its own (the
+// language switch) keeps it.
+//
+// `.btn` is named separately because Bootstrap's `.btn:focus-visible` clears
+// the outline and replaces it with a shadow built from
+// `--bs-btn-focus-shadow-rgb` — a variable only its colour variants define, so
+// the shadow is invalid and the icon buttons showed nothing at all while
+// focused. A zero-specificity selector loses to that rule; naming the class
+// matches it and wins on source order, this file being registered after
+// Bootstrap.
+// ---------------------------------------------------------------------------
+:where(a, area, button, input, select, textarea, summary, [tabindex]):focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 2px;
+}
+
+// ---------------------------------------------------------------------------
 // Paper is always the light palette, whatever the web theme says. The
 // `:root:not([data-theme='light'])` selector repeats the system-dark rule's
 // specificity (0,2,0) so this later block wins the tie on source order —
