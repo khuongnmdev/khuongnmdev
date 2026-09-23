@@ -111,10 +111,11 @@
 }
 
 // The label takes the text accent, which reads on the page and on the
-// project cards alike; the outline is decoration and keeps the brand.
+// project cards alike, and the outline takes the same token — a chip drawn in
+// two shades of orange reads as two different things.
 .chip {
   padding: 0.125rem 0.625rem;
-  border: 1px solid var(--c-secondary);
+  border: 1px solid var(--c-accent);
   border-radius: 1rem;
   color: var(--c-accent);
   font-size: 0.8125rem;
