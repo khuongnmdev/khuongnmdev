@@ -36,8 +36,9 @@ app-print-cv {
 .print-cv {
   // The sheet is always the light palette: the tokens are pinned locally so
   // the web theme's `data-theme` switch can never reach the paper — nor the
-  // on-screen preview of it. As on the web: `--c-secondary` for the rules
-  // and rings, `--c-accent` (4.5:1 or more on white) for text.
+  // on-screen preview of it. On this sheet `--c-secondary` paints the
+  // decoration — the avatar ring, the contact icons and the section rules —
+  // and `--c-accent` (4.5:1 or more on white) every run of text.
   --c-primary: #060504;
   --c-secondary: #f0690b;
   --c-accent: #b64a00;
@@ -115,6 +116,30 @@ app-print-cv {
 .print-contact-icon {
   color: var(--c-secondary);
   margin-right: 2pt;
+}
+
+// Names the contact ("Email:") for a screen reader without showing it — the
+// icon alone says nothing, and the label must not repeat on the page.
+//
+// Clipped in place rather than with Bootstrap's `.visually-hidden`: that one
+// is absolutely positioned, and with no positioned ancestor its boxes resolve
+// against the initial containing block, so the label furthest right pushed the
+// preview's scroll width to 454px against a 360px phone viewport and cut the
+// sheet off. A 1pt clipped inline-block stays inside its own line box, so it
+// can never widen the page.
+//
+// Chrome drops fully clipped glyphs from a printed PDF's text layer, so these
+// labels reach the accessibility tree but not a text extractor. Measured: that
+// is equally true of the absolutely positioned version, so nothing is lost
+// here — only painted text survives extraction, and every contact value is
+// painted.
+.print-contact-label {
+  display: inline-block;
+  width: 1pt;
+  height: 1pt;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .print-section {
@@ -359,6 +384,18 @@ app-print-cv {
       &:disabled {
         opacity: 0.6;
       }
+    }
+
+    // The toolbar keeps its dark chrome in both themes, so its keyboard ring
+    // is a literal too: the brand orange is 6.5:1 against that background,
+    // and the offset leaves a gap of chrome between the ring and the Export
+    // fill. The select is named because Bootstrap clears its outline on
+    // focus and replaces it with a pale blue glow.
+    .toolbar-back:focus-visible,
+    .toolbar-field select:focus-visible,
+    .toolbar-export:focus-visible {
+      outline: 2px solid #f0690b;
+      outline-offset: 2px;
     }
 
     // One row needs about 36rem. Below Bootstrap's `sm` breakpoint the

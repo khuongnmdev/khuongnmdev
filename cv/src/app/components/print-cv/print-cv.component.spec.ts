@@ -68,6 +68,16 @@ describe('PrintCvComponent', () => {
     expect(text).not.toContain('1991');
   });
 
+  it('should name every contact with a label of its own', async () => {
+    const compiled = await render(cloneCvData());
+    for (const contact of Array.from(compiled.querySelectorAll('.print-contact'))) {
+      // The icon is aria-hidden, so this label is the only thing that says
+      // which contact a value belongs to. The stylesheet clips it out of
+      // sight; it must never be dropped from the markup.
+      expect(contact.querySelector('.print-contact-label')?.textContent?.trim()).toMatch(/.+:$/);
+    }
+  });
+
   it('should pair every contact icon with visible text', async () => {
     const compiled = await render(cloneCvData());
     for (const contact of Array.from(compiled.querySelectorAll('.print-contact'))) {

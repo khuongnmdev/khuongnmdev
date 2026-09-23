@@ -269,6 +269,26 @@ describe('NavBarComponent', () => {
     expect(mobileMenu.classList).not.toContain('is-show');
   });
 
+  it('should make the mobile menu inert while it is closed', async () => {
+    const fixture = TestBed.createComponent(NavBarComponent);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const mobileMenu = compiled.querySelector('.nav-list-mobile')!;
+    const toggle = compiled.querySelector<HTMLButtonElement>('.btn-menu')!;
+
+    // Closed it is only translated off-screen, so without this its links stay
+    // focusable and exposed to assistive technology.
+    expect(mobileMenu.hasAttribute('inert')).toBe(true);
+
+    toggle.click();
+    await fixture.whenStable();
+    expect(mobileMenu.hasAttribute('inert')).toBe(false);
+
+    toggle.click();
+    await fixture.whenStable();
+    expect(mobileMenu.hasAttribute('inert')).toBe(true);
+  });
+
   it('should close the mobile menu when the export action is selected', async () => {
     const fixture = TestBed.createComponent(NavBarComponent);
     await fixture.whenStable();

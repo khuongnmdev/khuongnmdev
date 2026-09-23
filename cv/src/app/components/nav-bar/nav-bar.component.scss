@@ -46,7 +46,9 @@
       padding: 0;
       border: 0;
       border-radius: 50%;
-      background-color: var(--c-secondary);
+      // The solid accent, like the active pill it shares the panel with: the
+      // brand orange would put a second, lighter shade on the same surface.
+      background-color: var(--bg-accent);
       color: var(--c-on-accent);
       font-size: 0.75rem;
       box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.25);
@@ -91,17 +93,20 @@
     }
   }
 
+  // The ring takes the solid accent for the same reason as the collapse
+  // button: it sits on the panel beside the active pill, in the phone bar as
+  // well as the sidebar, so both must be the one orange.
   .avatar-block {
     max-width: 40px;
     max-height: 40px;
     border-radius: 50%;
-    border: 2px solid var(--bg-secondary);
+    border: 2px solid var(--bg-accent);
     overflow: hidden;
 
     @media only screen and (min-width: 768px) {
       max-width: 200px;
       max-height: 200px;
-      border: 10px solid var(--bg-secondary);
+      border: 10px solid var(--bg-accent);
     }
   }
 
@@ -136,10 +141,12 @@
     }
   }
 
+  // No `outline: none` here or anywhere else in this file: the keyboard ring
+  // every control on the page shares is declared globally, and this button
+  // used to be the one place that threw it away.
   .btn-menu {
     display: flex;
     color: var(--c-nav-item);
-    outline: none;
 
     @media only screen and (min-width: 768px) {
       display: none;

@@ -23,7 +23,7 @@
           @if (contact.icon; as icon) {
             <span class="print-contact-icon" aria-hidden="true"><i [class]="icon"></i></span>
           }
-          <span class="visually-hidden">{{ contact.label }}:</span>
+          <span class="print-contact-label">{{ contact.label }}:</span>
           @if (contact.href; as href) {
             <a [href]="href">{{ contact.value }}</a>
           } @else {
