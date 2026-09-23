@@ -36,8 +36,9 @@ app-print-cv {
 .print-cv {
   // The sheet is always the light palette: the tokens are pinned locally so
   // the web theme's `data-theme` switch can never reach the paper — nor the
-  // on-screen preview of it. As on the web: `--c-secondary` for the rules
-  // and rings, `--c-accent` (4.5:1 or more on white) for text.
+  // on-screen preview of it. On this sheet `--c-secondary` paints the
+  // decoration — the avatar ring, the contact icons and the section rules —
+  // and `--c-accent` (4.5:1 or more on white) every run of text.
   --c-primary: #060504;
   --c-secondary: #f0690b;
   --c-accent: #b64a00;
