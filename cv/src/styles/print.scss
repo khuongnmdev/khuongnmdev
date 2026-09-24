@@ -330,7 +330,10 @@ app-print-cv {
       text-decoration: none;
       opacity: 0.8;
 
-      &:hover {
+      // Full opacity while focused as well: opacity fades the outline too,
+      // which would paint the ring a darker orange than the other controls'.
+      &:hover,
+      &:focus-visible {
         opacity: 1;
       }
     }
