@@ -1,0 +1,81 @@
+// ---------------------------------------------------------------------------
+// Design tokens — the two palettes, as mixins. This file emits no CSS of its
+// own: the page root (`styles.scss`), the A4 sheet and the print toolbar
+// (`styles/print.scss`) each include the palette they stand on, so every
+// colour below is written exactly once.
+//
+// Semantics:
+//   --c-primary     ink: headings and strong text
+//   --c-secondary   the palette's one orange, and the only place it is
+//                   written: every accent token below derives from it, so a
+//                   view can never show two shades of orange. Text takes it,
+//                   so it must clear 4.5:1 on every surface of its palette,
+//                   the hover tint included — light is the brand hue
+//                   darkened, dark the brand itself. Used as it is for
+//                   decoration: timeline dots and rails, project dots,
+//                   contact icons, the print sheet's rules
+//   --c-accent      the orange where contrast is required: text, and
+//                   graphics that carry meaning (the skill-level dots)
+//   --bg-accent     the orange as a fill with text or an icon on it (the
+//                   active menu pill, the collapse button, the language
+//                   switch's thumb) and the bands beside them (the avatar
+//                   ring), always under --c-on-accent
+//   --bg-hover      the tint behind a hovered menu item or icon button, mixed
+//                   from the orange and kept light enough that accent text on
+//                   it still clears 4.5:1 over every panel surface
+//   --bg-primary    panel surfaces: the sidebar and the mobile top bar
+//   --bg-body       the page background behind the sections
+//   --bg-surface    raised cards (for example nested project cards)
+//   --c-text        body text on --bg-body
+//   --c-text-muted  secondary text: dates, meta lines
+//   --c-border      hairline separators
+//   --c-nav-item    sidebar labels and icons in their resting state
+//   --c-on-accent   text and icons sitting on an accent fill
+//   --c-switch-*    the language switch's own track and the codes on it
+//
+// --c-accent, --bg-accent and --bg-hover keep their own names so a rule says
+// why it takes the colour, but none of them can hold a value of its own.
+// ---------------------------------------------------------------------------
+
+@mixin light-tokens {
+  color-scheme: light;
+  --c-primary: #060504;
+  // The brand #f0690b darkened along its own hue until it clears 4.5:1 on
+  // every light surface: 5.29:1 on white, 5.02:1 on the #f8f9fa cards.
+  --c-secondary: #b64a00;
+  --c-accent: var(--c-secondary);
+  --bg-accent: var(--c-secondary);
+  // 7% and no more: the label on it keeps 4.79:1 over the white panel and
+  // 4.56:1 over the mobile menu's #f8f9fa.
+  --bg-hover: color-mix(in srgb, var(--c-secondary) 7%, transparent);
+  --bg-primary: #ffffff;
+  --bg-body: #ffffff;
+  --bg-surface: #f8f9fa;
+  --c-text: #212529;
+  --c-text-muted: #687078;
+  --c-border: #dee2e6;
+  --c-nav-item: var(--c-secondary);
+  --c-on-accent: #ffffff;
+  --c-switch-track: #e9ecef;
+  --c-switch-label: #495057;
+}
+
+@mixin dark-tokens {
+  color-scheme: dark;
+  --c-primary: #f3efe9;
+  --c-secondary: #f0690b;
+  --c-accent: var(--c-secondary);
+  --bg-accent: var(--c-secondary);
+  --bg-hover: color-mix(in srgb, var(--c-secondary) 10%, transparent);
+  --bg-primary: #060504;
+  --bg-body: #141210;
+  --bg-surface: #211e1b;
+  --c-text: #e8e4de;
+  --c-text-muted: #a49e96;
+  --c-border: #3a3733;
+  --c-nav-item: #d9d4cd;
+  // Dark ink: white on the brand fill is only 3.1:1.
+  --c-on-accent: #060504;
+  --c-switch-track: #211e1b;
+  --c-switch-label: #a49e96;
+}

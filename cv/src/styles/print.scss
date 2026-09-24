@@ -19,6 +19,8 @@
 //   content, so extracted text matches the data character for character.
 // ---------------------------------------------------------------------------
 
+@use 'palettes';
+
 @page {
   size: A4 portrait;
   margin: 12mm 14mm; // usable width: 210 - 2 x 14 = 182mm
@@ -34,14 +36,12 @@ app-print-cv {
 // ---------------------------------------------------------------------------
 
 .print-cv {
-  // The sheet is always the light palette: the tokens are pinned locally so
-  // the web theme's `data-theme` switch can never reach the paper — nor the
-  // on-screen preview of it. On this sheet `--c-secondary` paints the
-  // decoration — the avatar ring, the contact icons and the section rules —
-  // and `--c-accent` (4.5:1 or more on white) every run of text.
-  --c-primary: #060504;
-  --c-secondary: #f0690b;
-  --c-accent: #b64a00;
+  // The sheet is always the light palette: it is pinned here, on the sheet
+  // itself, so the web theme's `data-theme` switch can never reach the paper
+  // — nor the on-screen preview of it. Its one orange paints the decoration
+  // (the avatar ring, the contact icons, the section rules) and every run of
+  // accent text alike.
+  @include palettes.light-tokens;
 
   width: 182mm;
   margin: 0 auto;

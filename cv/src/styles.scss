@@ -1,93 +1,21 @@
 // ---------------------------------------------------------------------------
-// Design tokens — the two web palettes and the rules that switch them.
-//
-// Semantics:
-//   --c-primary     ink: headings and strong text
-//   --c-secondary   the brand accent (identical in both palettes), for
-//                   decoration that stands on its own: timeline dots and
-//                   rails, project dots, contact icons, the print sheet's
-//                   rules. It on the light surfaces is about 3:1 — enough for
-//                   a graphic, never for text, and never next to --bg-accent,
-//                   where the light palette would show two shades of orange
-//   --c-accent      the accent wherever contrast is required: text, and
-//                   graphics that carry meaning (the skill-level dots). At
-//                   least 4.5:1 on every surface of its palette, the hover
-//                   tint included. Light: the brand hue, darker; dark: the
-//                   brand itself
-//   --bg-accent     the solid accent: fills with text or an icon on them (the
-//                   active menu pill, the collapse button) and the bands that
-//                   sit beside them (the avatar ring), so a panel never shows
-//                   two shades of orange at once. At least 4.5:1 under
-//                   --c-on-accent
-//   --bg-primary    panel surfaces: the sidebar and the mobile top bar
-//   --bg-body       the page background behind the sections
-//   --bg-surface    raised cards (for example nested project cards)
-//   --c-text        body text on --bg-body
-//   --c-text-muted  secondary text: dates, meta lines
-//   --c-border      hairline separators
-//   --c-nav-item    sidebar labels and icons in their resting state
-//   --c-on-accent   text and icons sitting on an accent fill: text only on
-//                   --bg-accent, icons on the plain accent too
-//   --c-switch-*    the language switch: its track, the code on the track,
-//                   the thumb, and the code on the thumb. Every pair clears
-//                   4.5:1, which white on the plain accent (3.1:1) cannot:
-//                   the light thumb is the accent darkened, the dark thumb
-//                   keeps the accent under dark ink
+// The web palettes and the rules that switch them. The tokens themselves,
+// and what each one is for, live in `styles/_palettes.scss`.
 //
 // Switching: light is the default; `data-theme` on <html> pins a palette
 // explicitly, and with no attribute the system `prefers-color-scheme` decides.
 // The print output is always light — see the @media print block at the end.
 // ---------------------------------------------------------------------------
 
-@mixin light-tokens {
-  color-scheme: light;
-  --c-primary: #060504;
-  --c-secondary: #f0690b;
-  --c-accent: #b64a00;
-  --bg-accent: #b64a00;
-  --bg-primary: #ffffff;
-  --bg-body: #ffffff;
-  --bg-surface: #f8f9fa;
-  --c-text: #212529;
-  --c-text-muted: #687078;
-  --c-border: #dee2e6;
-  --c-nav-item: #b64a00;
-  --c-on-accent: #ffffff;
-  --c-switch-track: #e9ecef;
-  --c-switch-label: #495057;
-  --c-switch-thumb: #a84a08;
-  --c-on-switch-thumb: #ffffff;
-}
-
-@mixin dark-tokens {
-  color-scheme: dark;
-  --c-primary: #f3efe9;
-  --c-secondary: #f0690b;
-  --c-accent: #f0690b;
-  --bg-accent: #f0690b;
-  --bg-primary: #060504;
-  --bg-body: #141210;
-  --bg-surface: #211e1b;
-  --c-text: #e8e4de;
-  --c-text-muted: #a49e96;
-  --c-border: #3a3733;
-  --c-nav-item: #d9d4cd;
-  // Dark ink, like the language switch's dark thumb: white on the brand
-  // fill is only 3.1:1.
-  --c-on-accent: #060504;
-  --c-switch-track: #211e1b;
-  --c-switch-label: #a49e96;
-  --c-switch-thumb: #f0690b;
-  --c-on-switch-thumb: #060504;
-}
+@use 'styles/palettes';
 
 :root {
-  @include light-tokens;
+  @include palettes.light-tokens;
   --bs-heading-color: var(--c-primary);
 }
 
 :root[data-theme='dark'] {
-  @include dark-tokens;
+  @include palettes.dark-tokens;
 }
 
 // No explicit choice pinned on <html>: follow the system scheme. Because this
@@ -95,7 +23,7 @@
 // no script in the way.
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    @include dark-tokens;
+    @include palettes.dark-tokens;
   }
 }
 
@@ -114,7 +42,7 @@ body {
 // surface between the ring and a control that is itself an accent fill. The
 // accent clears 3:1 on every surface of its palette. `:where()` holds the
 // base selector at zero specificity, so a control with a ring of its own (the
-// language switch) keeps it.
+// print toolbar's) keeps it.
 //
 // `.btn` is named separately because Bootstrap's `.btn:focus-visible` clears
 // the outline and replaces it with a shadow built from
@@ -140,6 +68,6 @@ body {
   :root,
   :root[data-theme='dark'],
   :root:not([data-theme='light']) {
-    @include light-tokens;
+    @include palettes.light-tokens;
   }
 }

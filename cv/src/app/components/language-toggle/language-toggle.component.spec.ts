@@ -172,6 +172,16 @@ describe('LanguageToggleComponent', () => {
       const { link } = await open('/');
       expect(link().classList).not.toContain('sliding');
     });
+
+    // The global palettes are not loaded here, so the computed values stay the
+    // token references the component's rules declare.
+    it('should be the palette accent fill, with its code in the ink made for it', async () => {
+      const { link } = await open('/');
+      const thumb = link().querySelector('.lang-thumb')!;
+      expect(getComputedStyle(thumb).backgroundColor).toBe('var(--bg-accent)');
+      const code = link().querySelector('.lang-code.on-thumb')!;
+      expect(getComputedStyle(code).color).toBe('var(--c-on-accent)');
+    });
   });
 
   describe('plain click', () => {
