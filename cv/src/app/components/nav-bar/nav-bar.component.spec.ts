@@ -325,7 +325,8 @@ describe('NavBarComponent', () => {
     expect(pills.length).toBe(2);
     for (const pill of Array.from(pills)) {
       const style = getComputedStyle(pill);
-      // Not the plain brand accent: white on it is only 3.1:1.
+      // The fill role, under the ink each palette pairs with it: white
+      // would be only 3.1:1 on the dark palette's orange.
       expect(style.backgroundColor).toBe('var(--bg-accent)');
       expect(style.color).toBe('var(--c-on-accent)');
     }

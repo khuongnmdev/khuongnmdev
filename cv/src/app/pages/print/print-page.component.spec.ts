@@ -120,6 +120,32 @@ describe('PrintPageComponent', () => {
     expect(harness.routeNativeElement!.querySelector('.print-cv--compact')).toBeTruthy();
   });
 
+  // The print stylesheet draws the toolbar's keyboard ring and drops
+  // Bootstrap's own focus styles by these classes. A control outside them, or
+  // one wearing Bootstrap's `.btn`, would get a second focus treatment.
+  it('should give every toolbar control a class the toolbar focus rules name', async () => {
+    TestBed.overrideProvider(PUBLISHED_LOCALES_TOKEN, { useValue: ['en', 'vi'] });
+    const harness = await RouterTestingHarness.create('/print');
+    const toolbar = harness.routeNativeElement!.querySelector('.print-toolbar')!;
+    const controls = Array.from(
+      toolbar.querySelectorAll('a[href], button, select, input, textarea, [tabindex]'),
+    );
+    expect(controls.map((control) => control.tagName.toLowerCase())).toEqual([
+      'a',
+      'select',
+      'a',
+      'button',
+    ]);
+    for (const control of controls) {
+      expect(
+        control.matches('.toolbar-back, .toolbar-field select, .lang-toggle, .toolbar-export'),
+        control.outerHTML,
+      ).toBe(true);
+      expect(control.classList, control.outerHTML).not.toContain('btn');
+    }
+    expect(toolbar.querySelector('.toolbar-export')?.className).toBe('toolbar-export');
+  });
+
   it('should keep the toolbar and hint out of the printed output via screen-only', async () => {
     const harness = await RouterTestingHarness.create('/print');
     const compiled = harness.routeNativeElement!;

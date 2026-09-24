@@ -68,23 +68,35 @@ describe('PrintCvComponent', () => {
     expect(text).not.toContain('1991');
   });
 
-  it('should name every contact with a label of its own', async () => {
-    const compiled = await render(cloneCvData());
+  // A PDF's text layer holds only painted text: a label hidden from sight
+  // never reaches an ATS, and hidden text in a CV reads as keyword stuffing.
+  it('should print every contact as a visible label, a space, and the value', async () => {
+    const data = cloneCvData();
+    const compiled = await render(data);
+    const lines = Array.from(compiled.querySelectorAll('.print-contact')).map(
+      (contact) => contact.textContent,
+    );
+    expect(lines).toEqual(
+      data.contacts
+        .filter((contact) => contact.showInPrint !== false)
+        .map((contact) => `${contact.label}: ${contact.value}`),
+    );
+    expect(lines).toContain('Email: khuongnm.dev@gmail.com');
+    expect(lines).toContain('Phone: 0378334899');
     for (const contact of Array.from(compiled.querySelectorAll('.print-contact'))) {
-      // The icon is aria-hidden, so this label is the only thing that says
-      // which contact a value belongs to. The stylesheet clips it out of
-      // sight; it must never be dropped from the markup.
-      expect(contact.querySelector('.print-contact-label')?.textContent?.trim()).toMatch(/.+:$/);
+      const label = contact.querySelector('.print-contact-label')!;
+      // The label leads, and nothing marks it for hiding.
+      expect(contact.firstElementChild).toBe(label);
+      expect(label.className).toBe('print-contact-label');
+      expect(label.closest('[aria-hidden]')).toBeNull();
+      // The value is a link where the data gives one.
+      expect(contact.querySelector('a, span:not([class])')?.textContent).toBeTruthy();
     }
   });
 
-  it('should pair every contact icon with visible text', async () => {
+  it('should print no contact icons: the visible label already names the contact', async () => {
     const compiled = await render(cloneCvData());
-    for (const contact of Array.from(compiled.querySelectorAll('.print-contact'))) {
-      // Strip the icon; real text must remain, or the PDF loses the value.
-      const value = contact.querySelector('a, span:not([class])');
-      expect(value?.textContent?.trim()).toBeTruthy();
-    }
+    expect(compiled.querySelectorAll('.print-contacts i, .print-contact-icon').length).toBe(0);
   });
 
   it('should format dates with the shared MM/YYYY range pipe', async () => {

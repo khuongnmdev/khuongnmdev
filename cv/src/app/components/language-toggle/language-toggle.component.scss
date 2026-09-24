@@ -1,8 +1,9 @@
 // A slide switch: a pill track with the two codes side by side and a thumb
 // over the language being viewed. 54 × 28px, so it fits the collapsed 4.5rem
 // sidebar rail (56px of content width) and its width clears a 44px tap
-// target. The colours are the `--c-switch-*` palette tokens: the switch
-// paints its own track, so it reads the same on any surface around it.
+// target. The switch paints its own track (the `--c-switch-*` palette
+// tokens), so it reads the same on any surface around it; the thumb is the
+// palette's accent fill, with its code in the ink made for that fill.
 
 :host {
   display: inline-flex;
@@ -29,13 +30,6 @@
   &:hover {
     border-color: var(--c-secondary);
   }
-
-  // The thumb's colour rather than the plain accent: the plain accent is
-  // only 3.1:1 against the white panels.
-  &:focus-visible {
-    outline: 2px solid var(--c-switch-thumb);
-    outline-offset: 2px;
-  }
 }
 
 .lang-thumb {
@@ -46,7 +40,7 @@
   // Half of the padding box, less the inset: the thumb covers one column.
   width: calc(50% - 0.125rem);
   border-radius: 2rem;
-  background-color: var(--c-switch-thumb);
+  background-color: var(--bg-accent);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 
   .thumb-end & {
@@ -60,7 +54,7 @@
   text-align: center;
 
   &.on-thumb {
-    color: var(--c-on-switch-thumb);
+    color: var(--c-on-accent);
   }
 }
 

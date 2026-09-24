@@ -33,7 +33,7 @@ const RENDERABLE_SECTIONS: ReadonlySet<SectionId> = new Set([
  * Everything an automated parser needs is enforced structurally here:
  * a single column where DOM order is reading order, the name and contact
  * block first, real heading levels (h1 name, h2 section, h3 entry), `ul`
- * lists, and no icon carrying information without text beside it. Layout
+ * lists, and every contact named by a visible label, never by an icon. Layout
  * uses only block flow and floats — never flexbox or `order` — so the text
  * stream, the tag tree, and the visual page all agree.
  *

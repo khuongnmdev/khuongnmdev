@@ -19,6 +19,8 @@
 //   content, so extracted text matches the data character for character.
 // ---------------------------------------------------------------------------
 
+@use 'palettes';
+
 @page {
   size: A4 portrait;
   margin: 12mm 14mm; // usable width: 210 - 2 x 14 = 182mm
@@ -34,14 +36,11 @@ app-print-cv {
 // ---------------------------------------------------------------------------
 
 .print-cv {
-  // The sheet is always the light palette: the tokens are pinned locally so
-  // the web theme's `data-theme` switch can never reach the paper — nor the
-  // on-screen preview of it. On this sheet `--c-secondary` paints the
-  // decoration — the avatar ring, the contact icons and the section rules —
-  // and `--c-accent` (4.5:1 or more on white) every run of text.
-  --c-primary: #060504;
-  --c-secondary: #f0690b;
-  --c-accent: #b64a00;
+  // The sheet is always the light palette: it is pinned here, on the sheet
+  // itself, so the web theme's `data-theme` switch can never reach the paper
+  // — nor the on-screen preview of it. Its one orange paints the decoration
+  // (the avatar ring, the section rules) and every run of accent text alike.
+  @include palettes.light-tokens;
 
   width: 182mm;
   margin: 0 auto;
@@ -113,33 +112,10 @@ app-print-cv {
   font-size: 9.5pt;
 }
 
-.print-contact-icon {
-  color: var(--c-secondary);
-  margin-right: 2pt;
-}
-
-// Names the contact ("Email:") for a screen reader without showing it — the
-// icon alone says nothing, and the label must not repeat on the page.
-//
-// Clipped in place rather than with Bootstrap's `.visually-hidden`: that one
-// is absolutely positioned, and with no positioned ancestor its boxes resolve
-// against the initial containing block, so the label furthest right pushed the
-// preview's scroll width to 454px against a 360px phone viewport and cut the
-// sheet off. A 1pt clipped inline-block stays inside its own line box, so it
-// can never widen the page.
-//
-// Chrome drops fully clipped glyphs from a printed PDF's text layer, so these
-// labels reach the accessibility tree but not a text extractor. Measured: that
-// is equally true of the absolutely positioned version, so nothing is lost
-// here — only painted text survives extraction, and every contact value is
-// painted.
 .print-contact-label {
-  display: inline-block;
-  width: 1pt;
-  height: 1pt;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+  // Muted like the entry meta lines, so the value leads the eye and the
+  // label only names it.
+  color: #555555;
 }
 
 .print-section {
@@ -331,15 +307,19 @@ app-print-cv {
   }
 
   .print-toolbar {
+    // The toolbar is the same dark chrome in both site themes, so it stands
+    // on the dark palette whatever the page's: its background, the Export
+    // fill and ink, the keyboard ring, and the language switch inside it all
+    // take the dark palette's one orange.
+    @include palettes.dark-tokens;
+
     position: sticky;
     top: 0;
     z-index: 10;
     display: flex;
     align-items: center;
     gap: 1rem;
-    // Literal on purpose: `--bg-primary` follows the web theme, and this
-    // toolbar must stay the same dark chrome in both.
-    background-color: #060504;
+    background-color: var(--bg-primary);
     color: #ffffff;
     padding: 0.75rem 1.25rem;
     margin-bottom: 1.5rem;
@@ -350,7 +330,10 @@ app-print-cv {
       text-decoration: none;
       opacity: 0.8;
 
-      &:hover {
+      // Full opacity while focused as well: opacity fades the outline too,
+      // which would paint the ring a darker orange than the other controls'.
+      &:hover,
+      &:focus-visible {
         opacity: 1;
       }
     }
@@ -370,12 +353,11 @@ app-print-cv {
       }
     }
 
+    // The dark palette's accent fill under its dark ink, as on the dark
+    // theme's active menu pill: 6.53:1.
     .toolbar-export {
-      // Literal for the same reason as the toolbar background above: the
-      // light palette's `--bg-accent`, which keeps white text at 4.5:1 or
-      // more (the plain accent gives 3.1:1).
-      background-color: #b64a00;
-      color: #ffffff;
+      background-color: var(--bg-accent);
+      color: var(--c-on-accent);
       font-weight: 700;
       border: 0;
       border-radius: 0.375rem;
@@ -386,16 +368,23 @@ app-print-cv {
       }
     }
 
-    // The toolbar keeps its dark chrome in both themes, so its keyboard ring
-    // is a literal too: the brand orange is 6.5:1 against that background,
-    // and the offset leaves a gap of chrome between the ring and the Export
-    // fill. The select is named because Bootstrap clears its outline on
-    // focus and replaces it with a pale blue glow.
+    // The page's keyboard ring in the toolbar's palette: 6.53:1 against the
+    // chrome, and the offset leaves a band of chrome between the ring and a
+    // filled control, the Export button and the white select alike. The
+    // select is named because Bootstrap clears its outline on focus.
     .toolbar-back:focus-visible,
     .toolbar-field select:focus-visible,
     .toolbar-export:focus-visible {
-      outline: 2px solid #f0690b;
+      outline: 2px solid var(--c-accent);
       outline-offset: 2px;
+    }
+
+    // Bootstrap marks a focused select with a blue border and a blue glow of
+    // its own, on any focus, mouse included. Both go, so the ring above is
+    // the only focus treatment on every control in the toolbar.
+    .toolbar-field select:focus {
+      border-color: var(--bs-border-color);
+      box-shadow: none;
     }
 
     // One row needs about 36rem. Below Bootstrap's `sm` breakpoint the

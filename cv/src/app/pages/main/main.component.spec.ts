@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { PUBLISHED_LOCALES_TOKEN } from '@core/i18n/published-locales';
 import { CvDataService } from '@core/services/cv-data.service';
 import { SidebarService } from '@core/services/sidebar.service';
 import type { CvData } from '@core/models/cv-data.model';
@@ -142,10 +143,10 @@ describe('MainComponent with the bundled dataset', () => {
 
   // The palettes live in the global stylesheet, which the tests do not load,
   // so the computed colours stay the token references each rule declares.
-  it('should colour accent text with the text accent, never the decorative brand accent', async () => {
+  // Every accent token resolves to the palette's one orange; text names the
+  // role made for it, so the rule says the contrast is required.
+  it('should colour accent text with the text accent role, never the bare brand token', async () => {
     const compiled = await render();
-    // The plain brand accent is about 3:1 on the light surfaces: enough for
-    // a dot or a rule, not for text.
     const texts = Array.from(compiled.querySelectorAll('*')).filter((element) =>
       Array.from(element.childNodes).some(
         (node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
@@ -173,6 +174,84 @@ describe('MainComponent with the bundled dataset', () => {
     // The skill dots carry the level, so they need the contrast too.
     const dot = compiled.querySelector('.level-dot.filled')!;
     expect(getComputedStyle(dot).backgroundColor).toBe('var(--c-accent)');
+  });
+});
+
+/**
+ * Every literal colour written in a stylesheet that falls in the orange
+ * range: hue 15–35°, saturation above 50%.
+ */
+function orangeLiterals(css: string): string[] {
+  const colour = /#([0-9a-f]{6}|[0-9a-f]{3})\b|rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)[^)]*\)/gi;
+  return Array.from(css.matchAll(colour))
+    .filter((match) => {
+      let rgb: number[];
+      if (match[1]) {
+        const hex = match[1].length === 3 ? [...match[1]].map((c) => c + c).join('') : match[1];
+        rgb = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
+      } else {
+        rgb = [match[2], match[3], match[4]].map(Number);
+      }
+      const [r, g, b] = rgb.map((channel) => channel / 255);
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      if (max === min || max !== r) return false;
+      const saturation = (max - min) / (1 - Math.abs(max + min - 1));
+      const hue = (60 * (g - b)) / (max - min);
+      return hue >= 15 && hue <= 35 && saturation > 0.5;
+    })
+    .map((match) => match[0]);
+}
+
+describe('MainComponent stylesheets', () => {
+  beforeEach(async () => {
+    // Everything the page can render: hobbies enabled, and a second language
+    // published so the language switch is on the page too.
+    const data = cloneCvData();
+    data.sections = data.sections.map((section) =>
+      section.id === 'hobbies' ? { ...section, enabled: true } : section,
+    );
+    data.hobbies = [{ name: 'Photography', icon: 'fa-solid fa-camera' }];
+    await TestBed.configureTestingModule({
+      imports: [MainComponent],
+      providers: [
+        provideRouter([]),
+        { provide: CvDataService, useValue: cvDataServiceWith(data) },
+        { provide: PUBLISHED_LOCALES_TOKEN, useValue: ['en', 'vi'] },
+      ],
+    }).compileComponents();
+  });
+
+  // The global palettes are the only place an orange is written, once per
+  // palette. A component writing one of its own would put a second orange
+  // beside the palette's, in one theme or the other.
+  it('should take every orange from a palette token, never from a literal', async () => {
+    const fixture = TestBed.createComponent(MainComponent);
+    await fixture.whenStable();
+    const css = Array.from(document.head.querySelectorAll('style'))
+      .map((style) => style.textContent ?? '')
+      .join('\n');
+
+    // The stylesheets of every component on the page were collected.
+    for (const rule of ['.nav-item', '.lang-thumb', '.experience-item', '.hobby-chip']) {
+      expect(css, rule).toContain(rule);
+    }
+    expect(css).toContain('var(--c-secondary)');
+    expect(orangeLiterals(css)).toEqual([]);
+    // The language switch's own thumb tokens are gone: its thumb is the
+    // palette's accent fill.
+    expect(css).not.toMatch(/--c-(on-)?switch-thumb/);
+  });
+
+  it('should recognise an orange literal when one is written', () => {
+    expect(orangeLiterals('a { color: #f0690b; border: 1px solid rgb(182, 74, 0); }')).toEqual([
+      '#f0690b',
+      'rgb(182, 74, 0)',
+    ]);
+    expect(orangeLiterals('a { color: #a84a08; background: #b64a00; }')).toHaveLength(2);
+    // Greys, blue, red, and a pale tint are not orange.
+    expect(orangeLiterals('a { color: #687078; fill: #0d6efd; stroke: #dc3545; }')).toEqual([]);
+    expect(orangeLiterals('a { color: #fff; background: #f8f9fa; }')).toEqual([]);
   });
 });
 

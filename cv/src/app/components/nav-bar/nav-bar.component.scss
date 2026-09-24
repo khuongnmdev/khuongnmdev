@@ -46,8 +46,7 @@
       padding: 0;
       border: 0;
       border-radius: 50%;
-      // The solid accent, like the active pill it shares the panel with: the
-      // brand orange would put a second, lighter shade on the same surface.
+      // An accent fill with an icon on it, like the active pill.
       background-color: var(--bg-accent);
       color: var(--c-on-accent);
       font-size: 0.75rem;
@@ -85,17 +84,15 @@
     font-size: 1rem;
     cursor: pointer;
 
-    // The same light tint as a hovered menu item; the icon takes the text
-    // accent, since the plain one drops below 3:1 on the tint.
+    // The same tint as a hovered menu item, with the icon in the accent.
     &:hover {
-      background-color: color-mix(in srgb, var(--c-secondary) 10%, transparent);
+      background-color: var(--bg-hover);
       color: var(--c-accent);
     }
   }
 
-  // The ring takes the solid accent for the same reason as the collapse
-  // button: it sits on the panel beside the active pill, in the phone bar as
-  // well as the sidebar, so both must be the one orange.
+  // A band of the accent fill, beside the active pill in the phone bar as
+  // well as in the sidebar.
   .avatar-block {
     max-width: 40px;
     max-height: 40px;
@@ -239,10 +236,10 @@
     flex-shrink: 0;
   }
 
-  // 10% and no more: the light palette's accent label keeps 4.5:1 on this
-  // tint over both the white panel and the mobile menu's grey surface.
+  // The palette's hover tint, which keeps the label at 4.5:1 or more over the
+  // white panel and the mobile menu's grey surface alike.
   &:hover {
-    background-color: color-mix(in srgb, var(--c-secondary) 10%, transparent);
+    background-color: var(--bg-hover);
   }
 
   &.activated {
