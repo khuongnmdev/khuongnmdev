@@ -17,13 +17,15 @@
     />
     <h1 class="print-name">{{ profile().fullName }}</h1>
     <p class="print-headline">{{ profile().headline }}</p>
+    <!-- Every contact reads as a visible label and its value ("Email: …"):
+         painted text, so the label reaches the PDF's text layer as well as the
+         accessibility tree. An icon beside the label would only repeat it.
+         `&ngsp;` keeps a real space between the two, which Angular's
+         whitespace stripping would otherwise drop. -->
     <ul class="print-contacts">
       @for (contact of contacts(); track contact.label) {
         <li class="print-contact">
-          @if (contact.icon; as icon) {
-            <span class="print-contact-icon" aria-hidden="true"><i [class]="icon"></i></span>
-          }
-          <span class="print-contact-label">{{ contact.label }}:</span>
+          <span class="print-contact-label">{{ contact.label }}:</span>&ngsp;
           @if (contact.href; as href) {
             <a [href]="href">{{ contact.value }}</a>
           } @else {

@@ -39,8 +39,7 @@ app-print-cv {
   // The sheet is always the light palette: it is pinned here, on the sheet
   // itself, so the web theme's `data-theme` switch can never reach the paper
   // — nor the on-screen preview of it. Its one orange paints the decoration
-  // (the avatar ring, the contact icons, the section rules) and every run of
-  // accent text alike.
+  // (the avatar ring, the section rules) and every run of accent text alike.
   @include palettes.light-tokens;
 
   width: 182mm;
@@ -113,33 +112,10 @@ app-print-cv {
   font-size: 9.5pt;
 }
 
-.print-contact-icon {
-  color: var(--c-secondary);
-  margin-right: 2pt;
-}
-
-// Names the contact ("Email:") for a screen reader without showing it — the
-// icon alone says nothing, and the label must not repeat on the page.
-//
-// Clipped in place rather than with Bootstrap's `.visually-hidden`: that one
-// is absolutely positioned, and with no positioned ancestor its boxes resolve
-// against the initial containing block, so the label furthest right pushed the
-// preview's scroll width to 454px against a 360px phone viewport and cut the
-// sheet off. A 1pt clipped inline-block stays inside its own line box, so it
-// can never widen the page.
-//
-// Chrome drops fully clipped glyphs from a printed PDF's text layer, so these
-// labels reach the accessibility tree but not a text extractor. Measured: that
-// is equally true of the absolutely positioned version, so nothing is lost
-// here — only painted text survives extraction, and every contact value is
-// painted.
 .print-contact-label {
-  display: inline-block;
-  width: 1pt;
-  height: 1pt;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+  // Muted like the entry meta lines, so the value leads the eye and the
+  // label only names it.
+  color: #555555;
 }
 
 .print-section {
