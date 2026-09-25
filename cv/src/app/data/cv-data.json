@@ -1,6 +1,6 @@
 {
   "meta": {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "locale": "en",
     "updatedAt": "2026-09-25"
   },
@@ -552,8 +552,8 @@
       "school": "FPT University",
       "degree": "Bachelor of Software Engineering",
       "field": "Software Engineering",
-      "startDate": "2010-09",
-      "endDate": "2015-12",
+      "startDate": "2010",
+      "endDate": "2015",
       "showInWeb": true,
       "showInPrint": true
     }

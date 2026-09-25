@@ -25,35 +25,43 @@ describe('DateRangePipe', () => {
   });
 
   it('passes a year precision through to the formatter', () => {
-    expect(pipe.transform('2010-09', '2015-12', 'Present', 'year')).toBe('2010 – 2015');
-    expect(pipe.transform('2024-09', null, 'Hiện tại', 'year')).toBe('2024 – Hiện tại');
+    expect(pipe.transform('2010', '2015', 'Present', 'year')).toBe('2010 – 2015');
+    expect(pipe.transform('2024', null, 'Hiện tại', 'year')).toBe('2024 – Hiện tại');
   });
 });
 
 describe('formatDateRange', () => {
   it('defaults to month precision', () => {
-    expect(formatDateRange('2010-09', '2015-12', 'Present')).toBe('09/2010 – 12/2015');
-    expect(formatDateRange('2010-09', '2015-12', 'Present', 'month')).toBe('09/2010 – 12/2015');
+    expect(formatDateRange('2021-04', '2023-07', 'Present')).toBe('04/2021 – 07/2023');
+    expect(formatDateRange('2021-04', '2023-07', 'Present', 'month')).toBe('04/2021 – 07/2023');
   });
 
-  it('shows years only at year precision, with the same en dash', () => {
-    const result = formatDateRange('2010-09', '2015-12', 'Present', 'year');
+  it('formats a YYYY range at year precision, with the same en dash', () => {
+    const result = formatDateRange('2010', '2015', 'Present', 'year');
     expect(result).toBe('2010 – 2015');
+    expect(result).toContain(' – ');
+    expect(result).not.toContain(' - ');
+  });
+
+  it('drops the months of a YYYY-MM range at year precision', () => {
+    const result = formatDateRange('2021-04', '2023-07', 'Present', 'year');
+    expect(result).toBe('2021 – 2023');
     expect(result).not.toMatch(/\d{2}\//);
   });
 
   it('keeps the present text for an ongoing range at year precision', () => {
-    expect(formatDateRange('2024-09', null, 'Present', 'year')).toBe('2024 – Present');
-    expect(formatDateRange('2024-09', null, 'Hiện tại', 'year')).toBe('2024 – Hiện tại');
+    expect(formatDateRange('2024', null, 'Present', 'year')).toBe('2024 – Present');
+    expect(formatDateRange('2024', null, 'Hiện tại', 'year')).toBe('2024 – Hiện tại');
   });
 
   it('collapses a closed range inside one year to that year', () => {
+    expect(formatDateRange('2015', '2015', 'Present', 'year')).toBe('2015');
     expect(formatDateRange('2015-02', '2015-11', 'Present', 'year')).toBe('2015');
   });
 
   it('never collapses an ongoing range, even one that started this year', () => {
-    const year = new Date().getFullYear();
-    expect(formatDateRange(`${year}-01`, null, 'Present', 'year')).toBe(`${year} – Present`);
+    const year = String(new Date().getFullYear());
+    expect(formatDateRange(year, null, 'Present', 'year')).toBe(`${year} – Present`);
   });
 
   it('never collapses at month precision', () => {
@@ -69,6 +77,10 @@ describe('formatYearMonth', () => {
 });
 
 describe('formatYear', () => {
+  it('returns a YYYY year unchanged', () => {
+    expect(formatYear('2010')).toBe('2010');
+  });
+
   it('keeps only the year of YYYY-MM', () => {
     expect(formatYear('2024-01')).toBe('2024');
   });

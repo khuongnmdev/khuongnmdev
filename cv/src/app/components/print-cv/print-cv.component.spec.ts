@@ -118,7 +118,7 @@ describe('PrintCvComponent', () => {
   }
 
   it('should print the education period in years only, experience keeping MM/YYYY', async () => {
-    // The bundled dataset keeps the months (2010-09 to 2015-12).
+    // The bundled dataset stores years (2010 to 2015); no month may appear.
     const data = cloneCvData();
     const compiled = await render(data);
     expect(educationPeriods(compiled, data)).toEqual(['2010 – 2015']);
@@ -131,7 +131,7 @@ describe('PrintCvComponent', () => {
   it('should end an ongoing education with the present text', async () => {
     const data = cloneCvData();
     data.education = [
-      { school: 'Current School', degree: 'Master', startDate: '2024-09', endDate: null },
+      { school: 'Current School', degree: 'Master', startDate: '2024', endDate: null },
     ];
     expect(educationPeriods(await render(data), data)).toEqual(['2024 – Present']);
   });
@@ -140,7 +140,7 @@ describe('PrintCvComponent', () => {
     const data = cloneCvData();
     data.ui = structuredClone(CV_DATA_VI.ui);
     data.education = [
-      { school: 'Current School', degree: 'Master', startDate: '2024-09', endDate: null },
+      { school: 'Current School', degree: 'Master', startDate: '2024', endDate: null },
     ];
     expect(educationPeriods(await render(data), data)).toEqual(['2024 – Hiện tại']);
   });
