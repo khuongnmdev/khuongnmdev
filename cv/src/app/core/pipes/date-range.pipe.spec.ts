@@ -1,4 +1,10 @@
-import { DateRangePipe, formatYearMonth, yearsOfExperience } from './date-range.pipe';
+import {
+  DateRangePipe,
+  formatDateRange,
+  formatYear,
+  formatYearMonth,
+  yearsOfExperience,
+} from './date-range.pipe';
 
 describe('DateRangePipe', () => {
   const pipe = new DateRangePipe();
@@ -17,11 +23,54 @@ describe('DateRangePipe', () => {
     expect(result).toContain(' – ');
     expect(result).not.toContain(' - ');
   });
+
+  it('passes a year precision through to the formatter', () => {
+    expect(pipe.transform('2010-09', '2015-12', 'Present', 'year')).toBe('2010 – 2015');
+    expect(pipe.transform('2024-09', null, 'Hiện tại', 'year')).toBe('2024 – Hiện tại');
+  });
+});
+
+describe('formatDateRange', () => {
+  it('defaults to month precision', () => {
+    expect(formatDateRange('2010-09', '2015-12', 'Present')).toBe('09/2010 – 12/2015');
+    expect(formatDateRange('2010-09', '2015-12', 'Present', 'month')).toBe('09/2010 – 12/2015');
+  });
+
+  it('shows years only at year precision, with the same en dash', () => {
+    const result = formatDateRange('2010-09', '2015-12', 'Present', 'year');
+    expect(result).toBe('2010 – 2015');
+    expect(result).not.toMatch(/\d{2}\//);
+  });
+
+  it('keeps the present text for an ongoing range at year precision', () => {
+    expect(formatDateRange('2024-09', null, 'Present', 'year')).toBe('2024 – Present');
+    expect(formatDateRange('2024-09', null, 'Hiện tại', 'year')).toBe('2024 – Hiện tại');
+  });
+
+  it('collapses a closed range inside one year to that year', () => {
+    expect(formatDateRange('2015-02', '2015-11', 'Present', 'year')).toBe('2015');
+  });
+
+  it('never collapses an ongoing range, even one that started this year', () => {
+    const year = new Date().getFullYear();
+    expect(formatDateRange(`${year}-01`, null, 'Present', 'year')).toBe(`${year} – Present`);
+  });
+
+  it('never collapses at month precision', () => {
+    expect(formatDateRange('2015-02', '2015-11', 'Present')).toBe('02/2015 – 11/2015');
+    expect(formatDateRange('2015-03', '2015-03', 'Present')).toBe('03/2015 – 03/2015');
+  });
 });
 
 describe('formatYearMonth', () => {
   it('turns YYYY-MM into MM/YYYY', () => {
     expect(formatYearMonth('2024-01')).toBe('01/2024');
+  });
+});
+
+describe('formatYear', () => {
+  it('keeps only the year of YYYY-MM', () => {
+    expect(formatYear('2024-01')).toBe('2024');
   });
 });
 

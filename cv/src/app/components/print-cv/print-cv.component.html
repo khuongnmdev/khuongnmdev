@@ -121,7 +121,9 @@
                 <span class="print-entry-role">{{ entry.degree }}</span>
               </h3>
               <p class="print-entry-meta">
-                <span>{{ entry.startDate | dateRange: entry.endDate : ui().present }}</span>
+                <span>{{
+                  entry.startDate | dateRange: entry.endDate : ui().present : 'year'
+                }}</span>
                 @if (entry.field; as field) {
                   <span>{{ field }}</span>
                 }

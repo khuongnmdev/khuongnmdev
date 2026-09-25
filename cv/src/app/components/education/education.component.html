@@ -13,7 +13,7 @@
           }
         </p>
         <p class="education-meta">
-          <span>{{ entry.startDate | dateRange: entry.endDate : ui().present }}</span>
+          <span>{{ entry.startDate | dateRange: entry.endDate : ui().present : 'year' }}</span>
           @if (entry.gpa; as gpa) {
             &ngsp;<span>{{ ui().gpa }}: {{ gpa }}</span>
           }

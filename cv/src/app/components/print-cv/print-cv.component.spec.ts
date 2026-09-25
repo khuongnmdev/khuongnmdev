@@ -106,6 +106,45 @@ describe('PrintCvComponent', () => {
     expect(text).toContain('04/2021 – 07/2023');
   });
 
+  /** Date lines of the education section, found by its heading from the data. */
+  function educationPeriods(compiled: HTMLElement, data: CvData): (string | undefined)[] {
+    const title = data.sections.find((section) => section.id === 'education')!.title;
+    const section = Array.from(compiled.querySelectorAll('.print-section')).find(
+      (candidate) => candidate.querySelector('h2')?.textContent?.trim() === title,
+    )!;
+    return Array.from(section.querySelectorAll('.print-entry-meta > span:first-child')).map(
+      (span) => span.textContent?.trim(),
+    );
+  }
+
+  it('should print the education period in years only, experience keeping MM/YYYY', async () => {
+    // The bundled dataset keeps the months (2010-09 to 2015-12).
+    const data = cloneCvData();
+    const compiled = await render(data);
+    expect(educationPeriods(compiled, data)).toEqual(['2010 – 2015']);
+    const text = compiled.textContent ?? '';
+    expect(text).not.toContain('09/2010');
+    expect(text).not.toContain('12/2015');
+    expect(text).toContain('04/2021 – 07/2023');
+  });
+
+  it('should end an ongoing education with the present text', async () => {
+    const data = cloneCvData();
+    data.education = [
+      { school: 'Current School', degree: 'Master', startDate: '2024-09', endDate: null },
+    ];
+    expect(educationPeriods(await render(data), data)).toEqual(['2024 – Present']);
+  });
+
+  it('should end an ongoing education with the present text of the dataset language', async () => {
+    const data = cloneCvData();
+    data.ui = structuredClone(CV_DATA_VI.ui);
+    data.education = [
+      { school: 'Current School', degree: 'Master', startDate: '2024-09', endDate: null },
+    ];
+    expect(educationPeriods(await render(data), data)).toEqual(['2024 – Hiện tại']);
+  });
+
   it('should join tech stacks into plain comma-separated text', async () => {
     const compiled = await render(cloneCvData());
     const tech = Array.from(compiled.querySelectorAll('.print-tech')).map(
