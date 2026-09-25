@@ -4,12 +4,17 @@
  * Principles:
  * - Data carries content only: no colors, CSS classes, or styling.
  * - Dates are `YYYY-MM` strings rather than `Date`, to stay timezone-independent.
+ *   Education is the exception: a study period is stated in years, so its
+ *   dates are `YYYY` strings and carry no month at all.
  * - The `showInWeb` / `showInPrint` flags let one dataset render differently on
  *   the web (full detail) and in the A4 export (trimmed to fit).
  */
 
 /** `YYYY-MM`, for example `"2021-04"`. */
 export type YearMonth = string;
+
+/** `YYYY`, for example `"2010"`. Year precision, used by education only. */
+export type Year = string;
 
 /** `YYYY-MM-DD`, for example `"2026-08-10"`. */
 export type IsoDate = string;
@@ -150,8 +155,9 @@ export interface EducationItem extends Visibility {
   school: string;
   degree: string;
   field?: string;
-  startDate: YearMonth;
-  endDate: YearMonth | null;
+  startDate: Year;
+  /** `null` while still studying. */
+  endDate: Year | null;
   gpa?: string;
   highlights?: string[];
 }

@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import type { YearMonth } from '@core/models/cv-data.model';
+import type { Year, YearMonth } from '@core/models/cv-data.model';
 
 /**
- * How much of a `YearMonth` a range shows: `'month'` prints `MM/YYYY`,
- * `'year'` prints the year alone. The data always keeps the month, so
- * sorting stays exact whatever a section chooses to show.
+ * How much of a date a range shows: `'month'` prints `MM/YYYY` and needs a
+ * `YearMonth`; `'year'` prints the year alone and takes either a `Year` or a
+ * `YearMonth`. Education stores `Year` values, so it must use `'year'`.
  */
 export type DatePrecision = 'month' | 'year';
 
@@ -14,8 +14,8 @@ export function formatYearMonth(date: YearMonth): string {
   return `${month}/${year}`;
 }
 
-/** `"2021-04"` → `"2021"`. */
-export function formatYear(date: YearMonth): string {
+/** `"2010"` → `"2010"`; `"2021-04"` → `"2021"`. */
+export function formatYear(date: Year | YearMonth): string {
   const [year] = date.split('-');
   return year;
 }
@@ -24,19 +24,20 @@ export function formatYear(date: YearMonth): string {
  * `"2021-04"` + `"2023-07"` → `"04/2021 – 07/2023"`;
  * `"2016-01"` + `null` + `"Present"` → `"01/2016 – Present"`.
  *
- * At `'year'` precision, `"2010-09"` + `"2015-12"` → `"2010 – 2015"` and
- * `"2024-09"` + `null` → `"2024 – Present"`. A closed range inside one year
- * collapses to that year (`"2015"`, not `"2015 – 2015"`): the repeated year
- * is an artifact of dropping the months, not information, and reads like a
- * typo on a CV. Month precision never collapses, so its output is unchanged.
+ * At `'year'` precision, `"2010"` + `"2015"` → `"2010 – 2015"` and
+ * `"2024"` + `null` → `"2024 – Present"`; a `YearMonth` loses its month the
+ * same way. A closed range inside one year collapses to that year (`"2015"`,
+ * not `"2015 – 2015"`): the repeated year carries no information and reads
+ * like a typo on a CV. Month precision never collapses, so its output is
+ * unchanged.
  *
  * The separator is an en dash (U+2013), the typographic convention for ranges.
  * `presentText` has no default on purpose: it is a translated interface
  * string, and a silent English fallback would leak into other languages.
  */
 export function formatDateRange(
-  start: YearMonth,
-  end: YearMonth | null,
+  start: Year | YearMonth,
+  end: Year | YearMonth | null,
   presentText: string,
   precision: DatePrecision = 'month',
 ): string {
@@ -64,7 +65,8 @@ export function yearsOfExperience(start: YearMonth, now: Date = new Date()): str
 /**
  * Formats a `YearMonth` range with the one date format shared by every theme:
  * `MM/YYYY – MM/YYYY`, or `MM/YYYY – <present>` while the period is ongoing.
- * A trailing `'year'` shows years only, `YYYY – YYYY` or `YYYY – <present>`.
+ * A trailing `'year'` shows years only, `YYYY – YYYY` or `YYYY – <present>`,
+ * and is the only precision a `Year` range (education) can use.
  *
  * ```html
  * {{ job.startDate | dateRange: job.endDate : ui().present }}
@@ -74,8 +76,8 @@ export function yearsOfExperience(start: YearMonth, now: Date = new Date()): str
 @Pipe({ name: 'dateRange' })
 export class DateRangePipe implements PipeTransform {
   transform(
-    start: YearMonth,
-    end: YearMonth | null,
+    start: Year | YearMonth,
+    end: Year | YearMonth | null,
     presentText: string,
     precision: DatePrecision = 'month',
   ): string {

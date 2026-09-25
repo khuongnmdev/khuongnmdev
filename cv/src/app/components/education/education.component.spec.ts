@@ -24,7 +24,7 @@ describe('EducationComponent', () => {
   }
 
   it('should show the study period in years only', async () => {
-    // The bundled dataset keeps the months (2010-09 to 2015-12).
+    // The bundled dataset stores years (2010 to 2015); no month may appear.
     const compiled = await render(cloneCvData());
     expect(periods(compiled)).toEqual(['2010 – 2015']);
     const text = compiled.textContent ?? '';
@@ -36,7 +36,7 @@ describe('EducationComponent', () => {
   it('should end an ongoing study period with the present text', async () => {
     const data = cloneCvData();
     data.education = [
-      { school: 'Current School', degree: 'Master', startDate: '2024-09', endDate: null },
+      { school: 'Current School', degree: 'Master', startDate: '2024', endDate: null },
     ];
     expect(periods(await render(data))).toEqual(['2024 – Present']);
   });
@@ -45,25 +45,41 @@ describe('EducationComponent', () => {
     const data = cloneCvData();
     data.ui = structuredClone(CV_DATA_VI.ui);
     data.education = [
-      { school: 'Current School', degree: 'Master', startDate: '2024-09', endDate: null },
+      { school: 'Current School', degree: 'Master', startDate: '2024', endDate: null },
     ];
     const compiled = await render(data);
     expect(periods(compiled)).toEqual(['2024 – Hiện tại']);
     expect(compiled.textContent).not.toContain('Present');
   });
 
-  it('should still sort newest first by the full date when only years show', async () => {
-    const data = cloneCvData();
-    // Both in 2015, oldest first in the array: only the months tell them apart.
-    data.education = [
-      { school: 'Spring Course', degree: 'Certificate', startDate: '2015-02', endDate: '2015-06' },
-      { school: 'Autumn Course', degree: 'Certificate', startDate: '2015-09', endDate: '2015-12' },
-    ];
-    const compiled = await render(data);
-    const schools = Array.from(compiled.querySelectorAll('.education-school')).map((school) =>
+  /** School names in rendered order. */
+  function schools(compiled: HTMLElement): (string | undefined)[] {
+    return Array.from(compiled.querySelectorAll('.education-school')).map((school) =>
       school.textContent?.trim(),
     );
-    expect(schools).toEqual(['Autumn Course', 'Spring Course']);
-    expect(periods(compiled)).toEqual(['2015', '2015']);
+  }
+
+  it('should sort newest first by the start year', async () => {
+    const data = cloneCvData();
+    // Oldest first in the array, so array order alone would fail.
+    data.education = [
+      { school: 'College', degree: 'Associate', startDate: '2006', endDate: '2009' },
+      { school: 'University', degree: 'Bachelor', startDate: '2010', endDate: '2015' },
+    ];
+    const compiled = await render(data);
+    expect(schools(compiled)).toEqual(['University', 'College']);
+    expect(periods(compiled)).toEqual(['2010 – 2015', '2006 – 2009']);
+  });
+
+  it('should keep the data order for studies that start in the same year', async () => {
+    const data = cloneCvData();
+    // Year precision cannot tell these apart, so the stable sort keeps them as written.
+    data.education = [
+      { school: 'Spring Course', degree: 'Certificate', startDate: '2015', endDate: '2015' },
+      { school: 'Autumn Course', degree: 'Certificate', startDate: '2015', endDate: '2016' },
+    ];
+    const compiled = await render(data);
+    expect(schools(compiled)).toEqual(['Spring Course', 'Autumn Course']);
+    expect(periods(compiled)).toEqual(['2015', '2015 – 2016']);
   });
 });

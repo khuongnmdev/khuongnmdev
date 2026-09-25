@@ -97,6 +97,66 @@ describe('validateCvData', () => {
     expect(errorsOf(missing)).toEqual(['experience[0].endDate: undefined is not a YYYY-MM date']);
   });
 
+  describe('education dates', () => {
+    it('accepts YYYY years and a null endDate', () => {
+      const ongoing = clone();
+      ongoing.education[0].startDate = '2024';
+      ongoing.education[0].endDate = null;
+      expect(validateCvData(ongoing).ok).toBe(true);
+    });
+
+    it('rejects a month-bearing YYYY-MM value', () => {
+      const data = clone();
+      data.education[0].startDate = '2010-09';
+      data.education[0].endDate = '2015-12';
+      expect(errorsOf(data)).toEqual([
+        'education[0].startDate: "2010-09" is not a YYYY year',
+        'education[0].endDate: "2015-12" is not a YYYY year',
+      ]);
+    });
+
+    it('rejects a two-digit year', () => {
+      const data = clone();
+      data.education[0].startDate = '10';
+      expect(errorsOf(data)).toEqual(['education[0].startDate: "10" is not a YYYY year']);
+    });
+
+    it('rejects garbage, a number, and a missing value', () => {
+      for (const value of ['soon', '', ' 2010', '2010.', '09/2010']) {
+        const data = clone();
+        data.education[0].endDate = value;
+        expect(errorsOf(data)).toEqual([
+          `education[0].endDate: ${JSON.stringify(value)} is not a YYYY year`,
+        ]);
+      }
+      const number = clone();
+      number.education[0].startDate = 2010;
+      expect(errorsOf(number)).toEqual(['education[0].startDate: 2010 is not a YYYY year']);
+
+      const missing = clone();
+      delete missing.education[0].endDate;
+      expect(errorsOf(missing)).toEqual(['education[0].endDate: undefined is not a YYYY year']);
+    });
+
+    it('rejects a year outside 1900-2099 and accepts both bounds', () => {
+      for (const year of ['1899', '2100', '0210']) {
+        const data = clone();
+        data.education[0].startDate = year;
+        expect(errorsOf(data)).toEqual([`education[0].startDate: "${year}" is outside 1900-2099`]);
+      }
+      const bounds = clone();
+      bounds.education[0].startDate = '1900';
+      bounds.education[0].endDate = '2099';
+      expect(validateCvData(bounds).ok).toBe(true);
+    });
+
+    it('leaves the other dates at month precision', () => {
+      const data = clone();
+      data.experience[0].startDate = '2016';
+      expect(errorsOf(data)).toEqual(['experience[0].startDate: "2016" is not a YYYY-MM date']);
+    });
+  });
+
   it('rejects a missing meta version', () => {
     const data = clone();
     delete data.meta.version;

@@ -26,6 +26,19 @@ export type CvDataValidationResult = { ok: true; data: CvData } | { ok: false; e
 /** `YYYY-MM` with a real month, `01`–`12`. */
 const YEAR_MONTH = /^\d{4}-(0[1-9]|1[0-2])$/;
 
+/** `YYYY` alone: a month-bearing `YYYY-MM` does not match. */
+const YEAR = /^\d{4}$/;
+
+/**
+ * Bounds of a plausible `YYYY` year. The lower one sits before anyone alive
+ * could have studied, so it only rejects slips that still have four digits
+ * (`"0210"`, `"1010"`). The upper one is fixed rather than the current year:
+ * an expected graduation year is legitimately in the future, and a bound read
+ * from the clock would make the same file pass or fail depending on the day.
+ */
+const MIN_YEAR = 1900;
+const MAX_YEAR = 2099;
+
 /** `YYYY-MM-DD` with a real month and a day of `01`–`31`. */
 const ISO_DATE = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
 
@@ -129,6 +142,25 @@ function checkYearMonthOrNull(value: unknown, path: string, errors: string[]): v
   checkYearMonth(value, path, errors);
 }
 
+function checkYear(value: unknown, path: string, errors: string[]): void {
+  if (typeof value !== 'string' || !YEAR.test(value)) {
+    errors.push(`${path}: ${show(value)} is not a YYYY year`);
+    return;
+  }
+  const year = Number(value);
+  if (year < MIN_YEAR || year > MAX_YEAR) {
+    errors.push(`${path}: ${show(value)} is outside ${MIN_YEAR}-${MAX_YEAR}`);
+  }
+}
+
+/** The `YYYY` counterpart of `checkYearMonthOrNull`. */
+function checkYearOrNull(value: unknown, path: string, errors: string[]): void {
+  if (value === null) {
+    return;
+  }
+  checkYear(value, path, errors);
+}
+
 function validateMeta(meta: unknown, errors: string[]): void {
   if (!isRecord(meta)) {
     errors.push('meta: expected an object');
@@ -229,8 +261,9 @@ function validateEducation(entries: unknown[], errors: string[]): void {
       errors.push(`education[${i}]: expected an object`);
       return;
     }
-    checkYearMonth(entry['startDate'], `education[${i}].startDate`, errors);
-    checkYearMonthOrNull(entry['endDate'], `education[${i}].endDate`, errors);
+    // Year precision: a study period is stated in years, so a month is rejected.
+    checkYear(entry['startDate'], `education[${i}].startDate`, errors);
+    checkYearOrNull(entry['endDate'], `education[${i}].endDate`, errors);
   });
 }
 
