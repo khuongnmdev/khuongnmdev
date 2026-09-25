@@ -204,10 +204,10 @@
         },
         {
           "name": "Cổng thông tin đại lý",
-          "description": "Website mới dành cho đại lý, xây dựng từ đầu trên standalone component của Angular 14 cùng một design system dùng chung; triển khai module Sao kê tài khoản (Account Statement).",
+          "description": "Website mới dành cho đại lý, xây dựng từ đầu trên standalone component của Angular 18 cùng một design system dùng chung; triển khai module Sao kê tài khoản (Account Statement).",
           "role": "Lập trình viên Front-end",
           "techStack": [
-            "Angular 14+",
+            "Angular 18",
             "RxJS",
             "SCSS"
           ],
@@ -552,7 +552,7 @@
       "school": "Trường Đại học FPT",
       "degree": "Cử nhân Kỹ thuật phần mềm",
       "field": "Kỹ thuật phần mềm",
-      "startDate": "2009-09",
+      "startDate": "2010-09",
       "endDate": "2015-12",
       "showInWeb": true,
       "showInPrint": true

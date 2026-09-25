@@ -204,10 +204,10 @@
         },
         {
           "name": "Agent portal",
-          "description": "Greenfield agent-facing site built from scratch on Angular 14 standalone components with a shared design system; delivered the Account Statement module.",
+          "description": "Greenfield agent-facing site built from scratch on Angular 18 standalone components with a shared design system; delivered the Account Statement module.",
           "role": "Front-end developer",
           "techStack": [
-            "Angular 14+",
+            "Angular 18",
             "RxJS",
             "SCSS"
           ],
@@ -552,7 +552,7 @@
       "school": "FPT University",
       "degree": "Bachelor of Software Engineering",
       "field": "Software Engineering",
-      "startDate": "2009-09",
+      "startDate": "2010-09",
       "endDate": "2015-12",
       "showInWeb": true,
       "showInPrint": true
