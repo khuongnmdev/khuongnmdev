@@ -2,7 +2,7 @@
   "meta": {
     "version": "1.0.0",
     "locale": "en",
-    "updatedAt": "2026-09-22"
+    "updatedAt": "2026-09-25"
   },
   "ui": {
     "present": "Present",
@@ -173,7 +173,7 @@
         },
         {
           "name": "Multi-brand member sites",
-          "description": "Customer-facing Angular sites for several brands: migrated the codebase from Angular 14 to 21+, rebuilt the UI with mobile support and render optimization, implemented brand layout and template switching shared across sites, multi-bank-account management on strongly typed FormArray.",
+          "description": "Customer-facing Angular sites for several brands: migrated the codebase from Angular 14 to 21+, rebuilt the UI with mobile support and render optimization, implemented brand layout and template switching shared across sites, multi-bank-account management on strongly typed FormArray. Orchestrated AI coding agents under role-based permissions, with separate agents for implementation and review, and personally reviewed every output before it was merged.",
           "role": "Front-end developer",
           "techStack": [
             "Angular 14–21+",
@@ -182,7 +182,8 @@
             "RxJS",
             "Bootstrap 5",
             "SCSS",
-            "Directus"
+            "Directus",
+            "AI coding agents"
           ],
           "showInWeb": true,
           "showInPrint": true
@@ -247,7 +248,7 @@
       "startDate": "2023-07",
       "endDate": "2023-12",
       "current": false,
-      "summary": "Maintain Touchwaiter project and another stock-related project.",
+      "summary": "Maintain Touchwaiter project (Elisoft) and another stock-related project.",
       "techStack": [
         "StencilJS",
         "Angular 14",

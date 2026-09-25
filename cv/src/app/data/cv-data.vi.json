@@ -2,7 +2,7 @@
   "meta": {
     "version": "1.0.0",
     "locale": "vi",
-    "updatedAt": "2026-09-22"
+    "updatedAt": "2026-09-25"
   },
   "ui": {
     "present": "Hiện tại",
@@ -173,7 +173,7 @@
         },
         {
           "name": "Website thành viên đa thương hiệu",
-          "description": "Các website Angular dành cho khách hàng của nhiều thương hiệu: nâng cấp codebase từ Angular 14 lên 21+, xây dựng lại giao diện với hỗ trợ thiết bị di động và tối ưu hóa render, triển khai cơ chế chuyển đổi layout và template theo thương hiệu dùng chung giữa các website, cùng tính năng quản lý nhiều tài khoản ngân hàng dựa trên FormArray được định kiểu chặt chẽ.",
+          "description": "Các website Angular dành cho khách hàng của nhiều thương hiệu: nâng cấp codebase từ Angular 14 lên 21+, xây dựng lại giao diện với hỗ trợ thiết bị di động và tối ưu hóa render, triển khai cơ chế chuyển đổi layout và template theo thương hiệu dùng chung giữa các website, cùng tính năng quản lý nhiều tài khoản ngân hàng dựa trên FormArray được định kiểu chặt chẽ. Điều phối các AI coding agent theo mô hình phân quyền, tách riêng agent triển khai và agent review, và trực tiếp review mọi output trước khi merge.",
           "role": "Lập trình viên Front-end",
           "techStack": [
             "Angular 14–21+",
@@ -182,7 +182,8 @@
             "RxJS",
             "Bootstrap 5",
             "SCSS",
-            "Directus"
+            "Directus",
+            "AI coding agents"
           ],
           "showInWeb": true,
           "showInPrint": true
@@ -247,7 +248,7 @@
       "startDate": "2023-07",
       "endDate": "2023-12",
       "current": false,
-      "summary": "Bảo trì dự án Touchwaiter và một dự án khác liên quan đến chứng khoán.",
+      "summary": "Bảo trì dự án Touchwaiter (Elisoft) và một dự án khác liên quan đến chứng khoán.",
       "techStack": [
         "StencilJS",
         "Angular 14",
